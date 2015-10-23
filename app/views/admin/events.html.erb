@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-xs-2">
+        <%= link_to '<- back to admin', admin_path %>
+    </div>
+    <div class="col-xs-10"></div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-xs-2">
+        <input type="button" class="btn btn-primary" id="add-event-btn" value="Add Event" />
+    </div>
+    <div class="col-xs-10"></div>
+</div>
+
+<div class="row"><br/></div>
+
+<table class="table table-striped" id="events-table">
+    <tr>
+        <th class="col-xs-3">
+            Event
+        </th>
+        <th class="col-xs-2">
+            Location
+        </th>
+        <th class="col-xs-2">
+            Start Date
+        </th>
+        <th class="col-xs-2">
+            End Date
+        </th>
+        <th class="col-xs-1" style="text-align: center;">
+            Current?
+        </th>
+        <th class="col-xs-2"></th>
+    </tr>
+    <% @events.each do |event| %>
+        <%= render partial: 'events/event', locals: { event: event } %>
+    <% end %>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $('#add-event-btn').click(function(){
+            if($('#events-table').find('tr[data-event-id=""]').length <= 0){
+                $.get('/admin/events/edit', null, null, 'script');
+            }
+        });
+
+        $('#events-table').delegate('.edit-event-btn', 'click', function(){
+            $.get('/admin/events/edit', { id: $(this).parents('tr').data('event-id') }, null, 'script');
+        }).delegate('.cancel-event-btn', 'click', function(){
+            $.get('/admin/events/cancel', { id: $(this).parents('tr').data('event-id') }, null, 'script');
+        }).delegate('.save-event-btn', 'click', function(){
+            var row = $(this).parents('tr'),
+                data = row.find('input').serializeArray();
+            $.ajax({
+                url: '/admin/events/' + row.data('event-id'),
+                data: data,
+                method: 'put',
+                dataType: 'script'
+            });
+        }).delegate('.new-event-btn', 'click', function(){
+            $.ajax({
+                url: '/admin/events',
+                data: $(this).parents('tr').find('input').serializeArray(),
+                method: 'post',
+                dataType: 'script'
+            });
+        });
+    });
+</script>

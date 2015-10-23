@@ -1,0 +1,22 @@
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6" style="text-align: center;">
+        <span id="total-games">X</span> games in the library
+    </div>
+    <div class="col-xs-3"></div>
+</div>
+
+<div class="row"><br/></div>
+
+<nav class="row">
+    <ul class="nav nav-tabs">
+        <li class="col-xs-3 <%= 'active' if current_page?(root_path) %>"><a href="<%= root_path %>">checkout/return</a></li>
+        <li class="col-xs-3 <%= 'active' if current_page?(games_path) %>"><a href="<%= games_path %>">games list</a></li>
+        <li class="col-xs-3 <%= 'active' if current_page?(find_path) %>"><a href="<%= find_path %>">find a checkout</a></li>
+        <li class="col-xs-3 <%= 'active' if params[:controller] == 'admin' %>"><a href="<%= admin_path %>">admin/setup/teardown</a></li>
+    </ul>
+</nav>
+
+<div class="row"><br/></div>

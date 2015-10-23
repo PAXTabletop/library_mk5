@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <%= link_to '<- back to admin', admin_path %>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12" style="text-align: center;">
+        <h3>
+            Cull Game
+        </h3>
+        <p>This will remove a game copy from the system.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8 glyphicon-custom-left" style="text-align:center;">
+        <input type="text" id="cull-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode here." autofocus />
+        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div id="game-display"></div>
+
+<script>
+    $(document).ready(function(){
+        $('#cull-barcode').change(function(){
+            $.get('/admin/cull', $(this).serialize(), null, 'script');
+        });
+    });
+</script>

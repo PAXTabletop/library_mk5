@@ -1,0 +1,23 @@
+<tr class="edit-event-row" data-event-id="<%= @event.id %>">
+    <td class="col-xs-3">
+        <input type="text" class="form-control" name="name" placeholder="Event Name" value="<%= @event.name %>" />
+    </td>
+    <td class="col-xs-2">
+        <input type="text" class="form-control" name="location" placeholder="Location" value="<%= @event.location %>" />
+    </td>
+    <td class="col-xs-2">
+        <input type="text" class="form-control" name="start_date" placeholder="(yyyy-mm-dd)" value="<%= @event.start_date %>" />
+    </td>
+    <td class="col-xs-2">
+        <input type="text" class="form-control" name="end_date" placeholder="(yyyy-mm-dd)" value="<%= @event.end_date %>" />
+    </td>
+    <td class="col-xs-1"></td>
+    <td class="col-xs-2">
+        <% if @event.new_record? %>
+            <input type="button" class="btn btn-primary new-event-btn" value="Add" />
+        <% else %>
+            <input type="button" class="btn btn-primary save-event-btn" value="Save" />
+        <% end %>
+        <input type="button" class="btn btn-default cancel-event-btn" style="float:right;" value="Cancel" />
+    </td>
+</tr>

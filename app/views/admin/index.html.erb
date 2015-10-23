@@ -1,0 +1,30 @@
+<!--
+new game
+-->
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8" style="text-align:center;">
+        <div class="form-group">
+            <%= link_to 'Setup', setup_path, class: 'btn btn-default form-control' %>
+        </div>
+        <div class="form-group">
+            <%= link_to 'Teardown', teardown_path, class: 'btn btn-default form-control' %>
+        </div>
+        <div class="form-group">
+            <%= link_to 'Events', events_path, class: 'btn btn-default form-control' %>
+        </div>
+        <div class="form-group">
+            <%= link_to 'New Game', new_game_path, class: 'btn btn-default form-control' %>
+        </div>
+        <div class="form-group">
+            <%= link_to 'Cull Game', cull_path, class: 'btn btn-default form-control' %>
+        </div>
+        <!--
+        <div class="form-group">
+            <%= link_to 'Backup Database', admin_path, class: 'btn btn-default form-control' %>
+        </div>
+        -->
+    </div>
+    <div class="col-xs-2"></div>
+</div>

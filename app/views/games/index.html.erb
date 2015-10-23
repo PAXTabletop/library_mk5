@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-xs-12 glyphicon-custom-left">
+        <input type="text" id="g-search" class="form-control" name="search" placeholder="Enter search terms here. Use tags like 'tag:tournament' and 'tag:checkedout' to filter your results."
+               value="<%= @search %>" autofocus onfocus="this.value = this.value;"/>
+        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div id="games-table">
+    <%= render 'table' %>
+</div>

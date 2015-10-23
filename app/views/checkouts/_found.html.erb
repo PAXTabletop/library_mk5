@@ -1,0 +1,61 @@
+<% if @object %>
+    <div class="row">
+        <div class="col-xs-12" style="text-align: center;">
+            <h3>
+                You searched for <%= @object.is_a?(Attendee) ? 'an ATTENDEE' : 'a GAME' %>:
+            </h3>
+            <h3>
+                <%= @object.full_name %>
+            </h3>
+        </div>
+    </div>
+<% else %>
+    <div class="row" style="text-align: center;">
+        <% if params[:barcode] %>
+            <p>No information found.</p>
+        <% end %>
+    </div>
+<% end %>
+
+<br/>
+
+<% if @checkouts && @object %>
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-2">
+                Checked Out @
+            </th>
+            <th class="col-xs-2">
+                Returned @
+            </th>
+            <th class="col-xs-2">
+                Status
+            </th>
+            <th class="col-xs-3">
+                Game
+            </th>
+            <th class="col-xs-3">
+                Attendee
+            </th>
+        </tr>
+        <% @checkouts.each do |checkout| %>
+            <tr>
+                <td class="col-xs-2">
+                    <%= ct(checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
+                </td>
+                <td class="col-xs-2">
+                    <%= checkout.return_time ? ct(checkout.return_time).strftime('%m/%d %I:%M%P') : nil %>
+                </td>
+                <td class="col-xs-2">
+                    <%= checkout.closed ? 'RETURNED' : 'CHECKED OUT' %>
+                </td>
+                <td class="col-xs-3" style="<%= 'text-decoration:line-through;' if checkout.game.culled %>">
+                    <%= checkout.game.full_name %>
+                </td>
+                <td class="col-xs-3">
+                    <%= checkout.attendee.full_name %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+<% end %>

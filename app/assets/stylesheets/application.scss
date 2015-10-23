@@ -1,0 +1,142 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+#body-wrapper {
+    width: 950px;
+    margin: 0px auto 3em;
+}
+
+nav ul li {
+    text-align: center;
+}
+
+footer {
+    background-color: #eee;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 3em;
+    color: #fff;
+    div {
+        transform: translateX(0%) translateY(50%);
+    }
+}
+
+#logo {
+    height: 90px;
+    margin: 0 auto;
+    width: 500px;
+}
+
+header[data-event="prime"] {
+    background: asset-url("event_background_vert.png", image) 0 0 repeat;
+    #logo {
+        background: asset-url("event_logos_vert.png", image) 0 0 no-repeat;
+    }
+}
+header[data-event="east"] {
+    background: asset-url("event_background_vert.png", image) 0 -90px repeat;
+    #logo {
+        background: asset-url("event_logos_vert.png", image) 0 -90px no-repeat;
+    }
+}
+header[data-event="south"] {
+    background: asset-url("event_background_vert.png", image) 0 -180px repeat;
+    #logo {
+        width: 550px;
+        background: asset-url("event_logos_vert.png", image) 0 -180px no-repeat;
+    }
+}
+header[data-event="aus"] {
+    background: asset-url("event_background_vert.png", image) 0 -270px repeat;
+    #logo {
+        width: 475px;
+        background: asset-url("event_logos_vert.png", image) 0 -270px no-repeat;
+    }
+}
+header[data-event="dev"] {
+    background: asset-url("event_background_vert.png", image) 0 -360px repeat;
+    #logo {
+        width: 475px;
+        background: asset-url("event_logos_vert.png", image) 0 -360px no-repeat;
+    }
+}
+
+footer[data-event="prime"] {
+    background-color: #009DDC;
+}
+footer[data-event="east"] {
+    background-color: #CE1D24;
+}
+footer[data-event="south"] {
+    background-color: #CC5500;
+}
+footer[data-event="aus"] {
+    background-color: #FBB024;
+}
+footer[data-event="dev"] {
+    background-color: #00A192;
+}
+
+#notification-bin {
+    width: 20%;
+    position: absolute;
+    color: #666;
+    right: 25px;
+    top: 10px;
+    .note {
+        position: relative;
+        margin-bottom: 10px;
+        z-index: 1000;
+    }
+}
+
+.row p {
+    padding: 10px 0;
+    margin: 0;
+}
+
+#a-form, #g-form {
+    .col-xs-8 {
+        padding: 0;
+    }
+}
+
+.glyphicon-table {
+    width: 100%;
+    text-align: center;
+}
+
+.glyphicon-custom-left .glyphicon {
+    right: auto;
+    left: 15px;
+}
+.glyphicon-custom-left input.form-control {
+    padding-left: 34px;
+}
+
+#suggest-row {
+    position: fixed;
+    bottom: 3em;
+    right: 0;
+    input {
+        margin: 27px 10px;
+        float: right;
+    }
+}

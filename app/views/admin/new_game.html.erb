@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <%= link_to '<- back to admin', admin_path %>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12" style="text-align: center;">
+        <h3>
+            New Game
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6 glyphicon-custom-left">
+        <input type="text" id="new-g-barcode" class="form-control" placeholder="Enter new GAME's barcode here." autofocus />
+        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+    </div>
+    <div class="col-xs-3"></div>
+</div>
+
+<div id="g-name"></div>
+
+<div class="modal fade" id="g-form" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>New Game</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="title" placeholder="Game Title" list="_titles" />
+                            <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="publisher" placeholder="Game Publisher" list="_publishers" />
+                            <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <label class="form-control" style="border: 0;">
+                                <input type="checkbox" name="likely_tournament" value="true"> Likely for Tournament?
+                            </label>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" id="g-form-cancel">Cancel</button>
+                <button class="btn btn-primary" id="g-form-save">Save and Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<datalist id="_titles">
+    <% Title.select(:title).distinct.order(:title).each do |title| %>
+        <option value="<%= title.title %>"></option>
+    <% end %>
+</datalist>
+
+<datalist id="_publishers">
+    <% Publisher.select(:name).distinct.order(:name).each do |publisher| %>
+        <option value="<%= publisher.name %>"></option>
+    <% end %>
+</datalist>

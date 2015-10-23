@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6 glyphicon-custom-left">
+        <input type="text" id="a-barcode" class="form-control" placeholder="Enter ATTENDEE's barcode here." autofocus />
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <h3 id="a-name"></h3>
+    </div>
+    <div class="col-xs-1">
+        <input id="checkouts-x-btn" type="button" class="btn btn-default" style="display:none;" value="X" />
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="row" id="g-row" style="display:none;">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6 glyphicon-custom-left">
+        <input type="text" id="g-barcode" class="form-control" placeholder="Enter GAME barcode to checkout game." />
+        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+        <div id="games-container" style="padding: 15px 15px;"></div>
+    </div>
+    <div class="col-xs-1"></div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="modal fade" id="a-form" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>New Attendee</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="first_name" placeholder="First Name" />
+                            <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
+                            <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="handle" placeholder="Handle (if Enforcer)" />
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" id="a-form-cancel">Cancel</button>
+                <button class="btn btn-primary" id="a-form-save">Save and Continue</button>
+            </div>
+        </div>
+    </div>
+</div>

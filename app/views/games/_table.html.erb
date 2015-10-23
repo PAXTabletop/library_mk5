@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-xs-6">
+        <% unless @search.blank? %>
+            <div>
+                <span>
+                    <%= @search %>
+                </span>
+                <a href="<%= games_path %>" class="glyphicon glyphicon-remove"></a>
+            </div>
+        <% end %>
+    </div>
+    <div class="col-xs-6"></div>
+</div>
+
+<div class="row"><br/></div>
+
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-1">
+            Barcode
+        </th>
+        <th class="col-xs-4">
+            Title
+        </th>
+        <th class="col-xs-3">
+            Publisher
+        </th>
+        <th class="col-xs-2">
+            Tourney Viable?
+        </th>
+        <th class="col-xs-2">
+            Checked Out?
+        </th>
+    </tr>
+    <% @games.each do |game| %>
+        <tr>
+            <td class="col-xs-1">
+                <%= game.barcode %>
+            </td>
+            <td class="col-xs-4">
+                <%= game.name %>
+            </td>
+            <td class="col-xs-3">
+                <%= game.by %>
+            </td>
+            <td class="col-xs-2">
+                <% if game.tourney? %>
+                    <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+                <% end %>
+            </td>
+            <!-- FIXME: Fix the appearence of this icon float to the top right of the screen. -->
+            <td class="col-xs-2">
+                <% if game.checked_out? %>
+                    <span class="glyphicon glyphicon-share-alt glyphicon-table"></span>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>
+<%= will_paginate @games %>

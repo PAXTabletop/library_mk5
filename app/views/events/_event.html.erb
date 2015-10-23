@@ -1,0 +1,24 @@
+<tr class="display-event-row" data-event-id="<%= event.id %>">
+    <td class="col-xs-3">
+        <%= event.name %>
+    </td>
+    <td class="col-xs-2">
+        <%= event.location %>
+    </td>
+    <td class="col-xs-2">
+        <%= event.start_date %>
+    </td>
+    <td class="col-xs-2">
+        <%= event.end_date %>
+    </td>
+    <td class="col-xs-1">
+        <% if event.is_current %>
+            <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+        <% end %>
+    </td>
+    <td class="col-xs-2">
+        <% if !Event.is_live && event.is_current %>
+            <input type="button" class="btn btn-default edit-event-btn" style="width:100%;" value="Edit" />
+        <% end %>
+    </td>
+</tr>

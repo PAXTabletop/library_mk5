@@ -1,0 +1,21 @@
+class Suggestion < ActiveRecord::Base
+
+  before_create :format_val
+
+  def format_val
+    self.title.downcase!
+  end
+
+  def self.add_suggestion(title)
+    unless title.blank?
+      title.downcase!
+      title.strip!
+
+      suggestion = self.find_or_create_by(title: title, event_id: Event.current.id)
+      suggestion.update(votes: suggestion.votes + 1)
+
+      title.split(' ').map(&:capitalize).join(' ')
+    end
+  end
+
+end
