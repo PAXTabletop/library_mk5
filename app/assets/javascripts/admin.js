@@ -11,7 +11,7 @@ $(document).ready(function(){
         var barcode_val = $(this).val();
 
         if(!bc_regex.test(barcode_val)){
-            addNote('Invalid barcode format! Format should be like TTL####TT.', 'warning', 3000);
+            $.notify('Invalid barcode format! Format should be like TTL####TT.', 'warning', 3000);
             $(this).val('');
             return;
         }
@@ -24,7 +24,7 @@ $(document).ready(function(){
             if(response.status == 400){
                 $('#g-form').modal();
             }else{
-                addNote(DEFAULT_ERROR, 'danger');
+                $.notify(DEFAULT_ERROR, 'danger');
                 gameBarcode(true);
             }
         });

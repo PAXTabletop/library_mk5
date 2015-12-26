@@ -5,7 +5,7 @@ $(document).ready(function(){
         var barcode_val = $(this).val();
 
         if(!bc_regex.test(barcode_val)){
-            addNote('Invalid barcode format! Format should be like PAX####PA.', 'warning', 3000);
+            $.notify('Invalid barcode format! Format should be like PAX####PA.', 'warning', 3000);
             $(this).val('');
             return;
         }
@@ -20,7 +20,7 @@ $(document).ready(function(){
             if(response.status == 400){
                 $('#a-form').modal();
             }else{
-                addNote(DEFAULT_ERROR, 'danger');
+                $.notify(DEFAULT_ERROR, 'danger');
                 attendeeBarcode(true);
             }
         });
@@ -76,7 +76,7 @@ $(document).ready(function(){
         var barcode_val = $(this).val();
 
         if(!bc_regex.test(barcode_val)){
-            addNote('Invalid barcode format! Format should be like TTL####TT.', 'warning', 3000);
+            $.notify('Invalid barcode format! Format should be like TTL####TT.', 'warning', 3000);
             $(this).val('');
             return;
         }
@@ -85,17 +85,17 @@ $(document).ready(function(){
             if(response.errors){
                 $.each(response.errors, function(k, v){
                     // FIXME: Weird error of "can't be blank" comes back when entering a non-existant game barcode
-                    addNote(v, 'danger');
+                    $.notify(v, 'danger');
                 });
             }else if(response.checkouts.length == 1){
-                addNote('Game successfully checked out!');
+                $.notify('Game successfully checked out!');
                 resetCheckout();
             }else{
-                addNote('Game successfully checked out!');
+                $.notify('Game successfully checked out!');
                 displayCheckouts(response.checkouts);
             }
         }).error(function(){
-            addNote(DEFAULT_ERROR, 'danger');
+            $.notify(DEFAULT_ERROR, 'danger');
         }).complete(function(){
             $('#g-barcode').val('');
         });
@@ -104,13 +104,13 @@ $(document).ready(function(){
     $('#games-container').delegate('.return-game', 'click', function(){
         var _me = $(this);
         $.post('/return', { co_id: _me.data('checkout-id') }).success(function(){
-            addNote('Returned game successfully!');
+            $.notify('Returned game successfully!');
             _me.closest('.row').remove();
             if($('#games-container').children().length <= 0){
                 resetCheckout();
             }
         }).error(function(){
-            addNote(DEFAULT_ERROR, 'danger');
+            $.notify(DEFAULT_ERROR, 'danger');
         });
     });
 

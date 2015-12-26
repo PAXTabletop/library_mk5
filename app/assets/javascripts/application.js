@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
 var bc_regex = /^[a-z]{3}[a-z0-9]{3,6}$/i;
@@ -46,7 +47,7 @@ $(document).ready(function(){
             data: { title: $('#suggest-title').val() },
             success: function(response){
                 if(response.title){
-                    addNote('Thanks for suggesting ' + response.title + '!');
+                    $.notify('Thanks for suggesting ' + response.title + '!');
                 }
             },
             complete: function(){
@@ -65,45 +66,6 @@ function pollStatus(){
 
         setTimeout(pollStatus, 5000);
     });
-}
-
-function makeToken(n){
-    if(!n){
-        n = 10;
-    }
-    var text = '',
-        possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for(var i=0; i < n; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-
-/*
-* success - green
-* info - blue
-* warning - yellow
-* danger - red
-* */
-function addNote(text, status, dismissTime){
-    if(!status){
-        status = 'success';
-    }
-    if(!dismissTime){
-        dismissTime = 5000;
-    }
-    var token = makeToken();
-    $('#notification-bin').append(
-        '<div class="row note alert alert-' + status + ' alert-dismissible" id="' + token + '">'
-        + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-        + '<div>'
-        + text
-        + '</div>'
-        + '</div>'
-    );
-    setTimeout(function(){
-        $('#' + token).animate({'opacity': '0.01'}).slideUp(500, function(){ $(this).remove() });
-    }, dismissTime);
 }
 
 function hideSuggest(){
