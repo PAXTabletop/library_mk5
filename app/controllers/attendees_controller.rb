@@ -15,7 +15,7 @@ class AttendeesController < ApplicationController
   end
 
   def new
-    attendee = Attendee.create(params.permit(:barcode, :first_name, :last_name, :handle))
+    attendee = Attendee.create(params.permit(:barcode, :first_name, :last_name, :handle, :id_state))
 
     if attendee.errors && !attendee.errors.messages.blank?
       render json: {

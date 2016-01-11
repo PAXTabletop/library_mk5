@@ -31,7 +31,12 @@ class CheckoutsController < ApplicationController
       # check for games
       game = Game.get(params[:barcode])
       # check attendees
-      attendee = Attendee.get(params[:barcode])
+      attendee = Attendee.where(
+        "(barcode = ? or lower(last_name) like ?) and event_id = ?",
+        params[:barcode].upcase,
+        "%#{params[:barcode].downcase}%",
+        @current_event
+      ).order(id: :desc).first
       # if both exist, set attendee to nil
       @object = game || attendee
       # return latest checkouts for game/attendee

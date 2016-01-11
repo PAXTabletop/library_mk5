@@ -23,10 +23,15 @@ class Attendee < ActiveRecord::Base
     self.event = Event.current
     self.first_name = Utilities.capitalize self.first_name
     self.last_name = Utilities.capitalize self.last_name
+    self.id_state = self.id_state.upcase if self.id_state.size == 2
   end
 
   def name
-    "#{self.last_name}, #{self.first_name}#{self.volunteer ? " - [#{self.handle}]" : nil }"
+    str = "#{self.last_name}, #{self.first_name}"
+    str += " - [#{self.handle}]" if self.volunteer
+    str += " from #{self.id_state}" if self.id_state
+
+    str
   end
 
   def full_name
@@ -34,7 +39,9 @@ class Attendee < ActiveRecord::Base
   end
 
   def info
-    self.attributes.select {|k, v| %w(first_name last_name handle barcode).include? k }.merge(name: self.name)
+    self.attributes.select do |k, v|
+      %w(first_name last_name handle barcode id_state).include? k
+    end.merge(name: self.name)
   end
 
   def open_co
