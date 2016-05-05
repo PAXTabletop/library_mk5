@@ -45,32 +45,39 @@ $(document).ready(function(){
     });
 
     // Submit new attendee information. On success, hide form and display new info.
-    $('#a-form-save').click(function(){
-        var data = $('#a-form').find('.form-control').serializeArray();
-        data.push({
-            name: 'barcode',
-            value: $('#a-barcode').val()
-        });
-        $('#a-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
-        $.post('attendee/new', data).success(function(response){
-            if(response.attendee){
-                $('#a-form').modal('hide');
-                $('#a-name').text(response.attendee.name);
-                $('#g-row').show();
-                $('#g-barcode').focus();
-            }else{
-                // got errors
-                $.each(response.errors, function(k, v){
-                    var input = $('[name="' + k + '"]');
+    var saveAttendee = function(){
+            var data = $('#a-form').find('.form-control').serializeArray();
+            data.push({
+                name: 'barcode',
+                value: $('#a-barcode').val()
+            });
+            $('#a-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
+            $.post('attendee/new', data).success(function(response){
+                if(response.attendee){
+                    $('#a-form').modal('hide');
+                    $('#a-name').text(response.attendee.name);
+                    $('#g-row').show();
+                    $('#g-barcode').focus();
+                }else{
+                    // got errors
+                    $.each(response.errors, function(k, v){
+                        var input = $('[name="' + k + '"]');
 
-                    input.parent().addClass('has-error');
-                    input.siblings('.glyphicon').show();
-                });
+                        input.parent().addClass('has-error');
+                        input.siblings('.glyphicon').show();
+                    });
+                }
+            }).error(function(){
+
+            });
+        },
+        saveByEnter = function(e){
+            if(e.keyCode === 13 && $('#a-form').is(':visible')){
+                saveAttendee();
             }
-        }).error(function(){
-
-        });
-    });
+        };
+    $('#a-form-save').click(saveAttendee);
+    $('#a-form').find('input[type="text"]').keypress(saveByEnter);
 
     $('#g-barcode').change(function(){
         var barcode_val = $(this).val();
