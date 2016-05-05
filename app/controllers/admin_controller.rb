@@ -22,4 +22,16 @@ class AdminController < ApplicationController
     @message = @game.cull_game if @game
   end
 
+  def titles
+    respond_to do |format|
+      format.json { render json: Title.select(:title).distinct.order(:title).map(&:title) }
+    end
+  end
+
+  def publishers
+    respond_to do |format|
+      format.json { render json: Publisher.select(:name).distinct.order(:name).map(&:name) }
+    end
+  end
+
 end

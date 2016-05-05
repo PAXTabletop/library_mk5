@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   put '/admin/events/:id', to: 'events#update'
   get '/admin/events/cancel', to: 'events#cancel'
 
+  get '/titles', to: 'admin#titles'
+  get '/publishers', to: 'admin#publishers'
+
   get '/game/status', to: 'games#status'
   post '/game/new', to: 'games#new'
   get '/game/display', to: 'games#display'

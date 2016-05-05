@@ -67,25 +67,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function(){
-        var titles = <%= raw Title.select(:title).distinct.order(:title).map { |t| "#{t.title}" } %>,
-            publishers = <%= raw Publisher.select(:name).distinct.order(:name).map { |p| "#{p.name}" } %>;
-
-        $('[name="title"]').typeahead({
-            minLength: 1,
-            highlight: true
-        },{
-            source: substringMatcher(titles)
-        });
-
-        $('[name="publisher"]').typeahead({
-            minLength: 1,
-            highlight: true
-        },{
-            source: substringMatcher(publishers)
-        });
-
-    });
-</script>

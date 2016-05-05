@@ -1,3 +1,14 @@
+var titleDataSource = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../titles.json'
+    }),
+    publisherDataSource = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../publishers.json'
+    });
+
 $(document).ready(function(){
 
     // Hide form, clear game barcode field on cancel click.
@@ -46,6 +57,11 @@ $(document).ready(function(){
                 $('#g-form').modal('hide');
                 $.get('/game/display', { barcode: barcode_val, message: 'Game successfully added!' }, null, 'script');
                 gameBarcode(true);
+
+                titleDataSource.clearPrefetchCache();
+                titleDataSource.initialize(true);
+                publisherDataSource.clearPrefetchCache();
+                publisherDataSource.initialize(true);
             }else{
                 // got errors
                 $.each(response.errors, function(k, v){
@@ -65,6 +81,20 @@ $(document).ready(function(){
         $('#g-form').find('input').val('').prop('checked', false);
     }).on('shown.bs.modal', function(){
         $('#g-form').find('[name="title"]').focus();
+    });
+
+    $('[name="title"]').typeahead({
+        minLength: 1,
+        highlight: true
+    },{
+        source: titleDataSource
+    });
+
+    $('[name="publisher"]').typeahead({
+        minLength: 1,
+        highlight: true
+    },{
+        source: publisherDataSource
     });
 
 });
