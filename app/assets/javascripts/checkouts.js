@@ -71,13 +71,13 @@ $(document).ready(function(){
 
             });
         },
-        saveByEnter = function(e){
+        saveAttendeeByEnter = function(e){
             if(e.keyCode === 13 && $('#a-form').is(':visible')){
                 saveAttendee();
             }
         };
     $('#a-form-save').click(saveAttendee);
-    $('#a-form').find('input[type="text"]').keypress(saveByEnter);
+    $('#a-form').find('input[type="text"]').keypress(saveAttendeeByEnter);
 
     $('#g-barcode').change(function(){
         var barcode_val = $(this).val();

@@ -44,37 +44,44 @@ $(document).ready(function(){
     });
 
     // Submit new game information. On success, hide form and display new info.
-    $('#g-form-save').click(function(){
-        var data = $('#g-form').find('input').serializeArray(),
-            barcode_val = $('#new-g-barcode').val();
-        data.push({
-            name: 'barcode',
-            value: barcode_val
-        });
-        $('#g-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
-        $.post('/game/new', data).success(function(response){
-            if(response.game){
-                $('#g-form').modal('hide');
-                $.get('/game/display', { barcode: barcode_val, message: 'Game successfully added!' }, null, 'script');
-                gameBarcode(true);
+    var saveGame = function(){
+            var data = $('#g-form').find('input').serializeArray(),
+                barcode_val = $('#new-g-barcode').val();
+            data.push({
+                name: 'barcode',
+                value: barcode_val
+            });
+            $('#g-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
+            $.post('/game/new', data).success(function(response){
+                if(response.game){
+                    $('#g-form').modal('hide');
+                    $.get('/game/display', { barcode: barcode_val, message: 'Game successfully added!' }, null, 'script');
+                    gameBarcode(true);
 
-                titleDataSource.clearPrefetchCache();
-                titleDataSource.initialize(true);
-                publisherDataSource.clearPrefetchCache();
-                publisherDataSource.initialize(true);
-            }else{
-                // got errors
-                $.each(response.errors, function(k, v){
-                    var input = $('[name="' + k + '"]');
+                    titleDataSource.clearPrefetchCache();
+                    titleDataSource.initialize(true);
+                    publisherDataSource.clearPrefetchCache();
+                    publisherDataSource.initialize(true);
+                }else{
+                    // got errors
+                    $.each(response.errors, function(k, v){
+                        var input = $('[name="' + k + '"]');
 
-                    input.parent().addClass('has-error');
-                    input.siblings('.glyphicon').show();
-                });
+                        input.parent().addClass('has-error');
+                        input.siblings('.glyphicon').show();
+                    });
+                }
+            }).error(function(){
+
+            });
+        },
+        saveGameByEnter = function(e){
+            if(e.keyCode === 13 && $('#g-form').is(':visible')){
+                saveGame();
             }
-        }).error(function(){
-
-        });
-    });
+        };
+    $('#g-form-save').click(saveGame);
+    $('#g-form').find('input[type="text"]').keypress(saveGameByEnter);
 
     // Clear all attendee form fields when the form is hidden.
     $('#g-form').on('hidden.bs.modal', function(){
