@@ -30,6 +30,11 @@
     $(document).ready(function(){
         $('#setup-barcode').change(function(){
             $.get('/admin/setup', $(this).serialize(), null, 'script');
+        }).blur(function(e){
+            // set focus to occur 10 ms later because blur event does not complete yet
+            setTimeout(function() {
+                $('#setup-barcode').focus();
+            }, 0);
         });
     });
 </script>

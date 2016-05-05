@@ -73,3 +73,26 @@ function hideSuggest(){
     $('#suggest-btn').show();
     $('#suggest-title').val('');
 }
+
+/*
+* Taken from typeahead.js examples.
+* https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md
+* */
+function substringMatcher(strs) {
+    return function findMatches(q, cb) {
+        // an array that will be populated with substring matches
+        var matches = [],
+        // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+        // iterate through the pool of strings and for any string that
+        // contains the substring `q`, add it to the `matches` array
+        $.each(strs, function(i, str) {
+            if (substrRegex.test(str)) {
+                matches.push(str);
+            }
+        });
+
+        cb(matches);
+    };
+}

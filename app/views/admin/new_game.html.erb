@@ -33,23 +33,23 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control" name="title" placeholder="Game Title" list="_titles" />
+                            <input type="text" class="form-control" name="title" placeholder="Game Title" autocomplete="off" />
                             <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
                         </div>
                         <div class="col-xs-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control" name="publisher" placeholder="Game Publisher" list="_publishers" />
+                            <input type="text" class="form-control" name="publisher" placeholder="Game Publisher" />
                             <span class="glyphicon glyphicon-remove form-control-feedback" style="display:none;"></span>
                         </div>
                         <div class="col-xs-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-xs-2"></div>
                         <div class="col-xs-8">
                             <label class="form-control" style="border: 0;">
@@ -68,14 +68,24 @@
     </div>
 </div>
 
-<datalist id="_titles">
-    <% Title.select(:title).distinct.order(:title).each do |title| %>
-        <option value="<%= title.title %>"></option>
-    <% end %>
-</datalist>
+<script>
+    $(document).ready(function(){
+        var titles = <%= raw Title.select(:title).distinct.order(:title).map { |t| "#{t.title}" } %>,
+            publishers = <%= raw Publisher.select(:name).distinct.order(:name).map { |p| "#{p.name}" } %>;
 
-<datalist id="_publishers">
-    <% Publisher.select(:name).distinct.order(:name).each do |publisher| %>
-        <option value="<%= publisher.name %>"></option>
-    <% end %>
-</datalist>
+        $('[name="title"]').typeahead({
+            minLength: 1,
+            highlight: true
+        },{
+            source: substringMatcher(titles)
+        });
+
+        $('[name="publisher"]').typeahead({
+            minLength: 1,
+            highlight: true
+        },{
+            source: substringMatcher(publishers)
+        });
+
+    });
+</script>
