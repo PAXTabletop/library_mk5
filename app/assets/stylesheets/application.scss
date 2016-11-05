@@ -20,7 +20,7 @@
 
 #body-wrapper {
     width: 950px;
-    margin: 0px auto 3em;
+    margin: 0 auto 3em;
 }
 
 nav ul li {
@@ -40,46 +40,50 @@ footer {
 }
 
 #logo {
-    height: 90px;
+    height: 30px;
+    width: 510px;
     margin: 0 auto;
-    width: 500px;
 }
 
-header[data-event="prime"] {
-    background: asset-url("event_background_vert.png", image) 0 0 repeat;
+#tabletop-tag {
+    height: 60px;
+    width: 510px;
+    margin: 0 auto;
+    background: asset-url("pax_tabletop_tag_mk5.png", image) no-repeat;
+}
+
+header[data-event="prime"],header[data-event="west"] {
+    background: asset-url("event_background_vert.png", image) repeat;
     #logo {
-        background: asset-url("event_logos_vert.png", image) 0 0 no-repeat;
+        background: asset-url("event_logos_bars_mk5.png", image) no-repeat;
     }
 }
 header[data-event="east"] {
     background: asset-url("event_background_vert.png", image) 0 -90px repeat;
     #logo {
-        background: asset-url("event_logos_vert.png", image) 0 -90px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png", image) 0 -30px no-repeat;
     }
 }
 header[data-event="south"] {
     background: asset-url("event_background_vert.png", image) 0 -180px repeat;
     #logo {
-        width: 550px;
-        background: asset-url("event_logos_vert.png", image) 0 -180px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png", image) 0 -60px no-repeat;
     }
 }
 header[data-event="aus"] {
     background: asset-url("event_background_vert.png", image) 0 -270px repeat;
     #logo {
-        width: 475px;
-        background: asset-url("event_logos_vert.png", image) 0 -270px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png", image) 0 -90px no-repeat;
     }
 }
 header[data-event="dev"] {
     background: asset-url("event_background_vert.png", image) 0 -360px repeat;
     #logo {
-        width: 475px;
-        background: asset-url("event_logos_vert.png", image) 0 -360px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png", image) 0 -120px no-repeat;
     }
 }
 
-footer[data-event="prime"] {
+footer[data-event="prime"], footer[data-event="west"] {
     background-color: #009DDC;
 }
 footer[data-event="east"] {

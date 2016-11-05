@@ -14,7 +14,9 @@ class Event < ActiveRecord::Base
   def short_name
     case self.name
       when /prime/i
-        'prime'
+        'west'
+      when /west/i
+        'west'
       when /east/i
         'east'
       when /south/i
