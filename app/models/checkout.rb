@@ -39,7 +39,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.recent
-    self.where(event: Event.current).order(updated_at: :desc).limit(5)
+    self.where(event: Event.current, return_time: nil).order(updated_at: :desc).limit(5)
   end
 
 end
