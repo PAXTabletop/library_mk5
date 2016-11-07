@@ -44,4 +44,8 @@ class CheckoutsController < ApplicationController
     end
   end
 
+  def recent
+    @recent = Checkout.recent
+  end
+
 end

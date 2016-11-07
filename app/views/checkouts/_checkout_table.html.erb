@@ -1,0 +1,24 @@
+<% if checkouts && checkouts.size > 0 %>
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-2">
+                Checked Out @
+            </th>
+            <th class="col-xs-2">
+                Returned @
+            </th>
+            <th class="col-xs-2">
+                Status
+            </th>
+            <th class="col-xs-3">
+                Game
+            </th>
+            <th class="col-xs-3">
+                Attendee
+            </th>
+        </tr>
+        <% checkouts.each do |checkout| %>
+            <%= render 'checkout_row', checkout: checkout %>
+        <% end %>
+    </table>
+<% end %>

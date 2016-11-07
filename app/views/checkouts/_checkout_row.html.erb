@@ -1,0 +1,17 @@
+<tr>
+    <td class="col-xs-2">
+        <%= ct(checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
+    </td>
+    <td class="col-xs-2">
+        <%= checkout.return_time ? ct(checkout.return_time).strftime('%m/%d %I:%M%P') : nil %>
+    </td>
+    <td class="col-xs-2">
+        <%= checkout.closed ? 'RETURNED' : 'CHECKED OUT' %>
+    </td>
+    <td class="col-xs-3" style="<%= 'text-decoration:line-through;' if checkout.game.culled %>">
+        <%= checkout.game.full_name %>
+    </td>
+    <td class="col-xs-3">
+        <%= checkout.attendee.full_name %>
+    </td>
+</tr>

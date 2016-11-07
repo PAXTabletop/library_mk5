@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/games', to: 'games#index', as: :games
   get '/find', to: 'checkouts#find', as: :find
   get '/admin', to: 'admin#index', as: :admin
+  get '/recent', to: 'checkouts#recent', as: :recent
 
   # to be sprockets
   get '/status', to: 'application#app_status', as: :status
