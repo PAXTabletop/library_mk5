@@ -1,0 +1,3 @@
+$('[data-title-id="<%= @title.id %>"]').replaceWith(
+    '<%= escape_javascript(render partial: 'title', locals: { title: @title }) %>'
+);

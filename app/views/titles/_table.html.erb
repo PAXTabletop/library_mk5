@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-4">
+            Title
+        </th>
+        <th class="col-xs-3">
+            Publisher
+        </th>
+        <th class="col-xs-1">
+            Copies
+        </th>
+        <th class="col-xs-2">
+            Tourney Viable?
+        </th>
+        <th class="col-xs-2"></th>
+    </tr>
+    <% @titles.each do |title| %>
+        <%= render partial: 'titles/title', locals: { title: title } %>
+    <% end %>
+</table>
+<%= will_paginate @titles %>

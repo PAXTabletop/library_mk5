@@ -1,0 +1,8 @@
+var originalRow = $('tr[data-title-id="<%= @title.id %>"]'),
+        html = '<%= escape_javascript(render 'form') %>';
+
+if(originalRow.length > 0){
+    originalRow.replaceWith(html);
+}else{
+    $('#titles-table').find('tr').first().after(html);
+}

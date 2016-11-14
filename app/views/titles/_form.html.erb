@@ -1,0 +1,18 @@
+<tr class="edit-title-row" data-title-id="<%= @title.id %>">
+    <td class="col-xs-4">
+        <input type="text" class="form-control" name="title" placeholder="Title" value="<%= @title.title %>" />
+    </td>
+    <td class="col-xs-3">
+        <!--<input type="text" class="form-control" name="publisher" placeholder="Publisher" value="<%= @title.publisher.name %>" />-->
+    </td>
+    <td class="col-xs-2">
+        <select class="form-control" name="likely_tournament">
+            <option <%= @title.likely_tournament ? 'selected' : nil %> value="true">Yes</option>
+            <option <%= @title.likely_tournament ? nil : 'selected' %> value="false">No</option>
+        </select>
+    </td>
+    <td class="col-xs-2">
+        <input type="button" class="btn btn-primary save-title-btn" value="Save" />
+        <input type="button" class="btn btn-default cancel-title-btn" style="float:right;" value="Cancel" />
+    </td>
+</tr>

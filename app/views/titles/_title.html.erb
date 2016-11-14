@@ -1,0 +1,19 @@
+<tr class="edit-title-row" data-title-id="<%= title.id %>">
+    <td class="col-xs-4">
+        <%= title.title %>
+    </td>
+    <td class="col-xs-3">
+        <%= title.publisher.name %>
+    </td>
+    <td class="col-xs-1">
+        <%= title.games.where(culled: false).size %>
+    </td>
+    <td class="col-xs-2">
+        <% if title.likely_tournament %>
+            <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+        <% end %>
+    </td>
+    <td class="col-xs-2">
+        <input type="button" class="btn btn-default edit-title-btn" style="width: 100%;" value="Edit" />
+    </td>
+</tr>
