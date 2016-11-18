@@ -11,7 +11,7 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
-    @event.update(params.permit(:name, :location, :start_date, :end_date))
+    @event.update(params.permit(:name, :location, :start_date, :end_date, :utc_offset))
   end
 
   def cancel

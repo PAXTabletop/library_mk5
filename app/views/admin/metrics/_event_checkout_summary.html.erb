@@ -1,0 +1,32 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-3">
+            Date
+        </th>
+        <th class="col-xs-3">
+            Time
+        </th>
+        <th class="col-xs-3">
+            Checkouts
+        </th>
+        <th class="col-xs-3">
+            Returns
+        </th>
+    </tr>
+    <% @event.event_checkout_summary.each_with_index do |s_row, index| %>
+        <tr data-event-id="<%= index %>">
+            <td class="col-xs-3">
+                <%= s_row['date'] %>
+            </td>
+            <td class="col-xs-3">
+                <%= s_row['time'] %>
+            </td>
+            <td class="col-xs-3">
+                <%= s_row['checkouts'] %>
+            </td>
+            <td class="col-xs-3">
+                <%= s_row['returns'] %>
+            </td>
+        </tr>
+    <% end %>
+</table>

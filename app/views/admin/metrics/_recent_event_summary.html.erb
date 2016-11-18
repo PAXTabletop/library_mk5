@@ -1,0 +1,34 @@
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-3">
+                Event
+            </th>
+            <th class="col-xs-3">
+                Attendees
+            </th>
+            <th class="col-xs-3">
+                Checkouts
+            </th>
+            <th class="col-xs-3">
+                Average Checkout / Attendee
+            </th>
+        </tr>
+        <% @event.recent_event_summary.each_with_index do |s_row, index| %>
+            <tr data-event-id="<%= index %>">
+                <td class="col-xs-3">
+                    <%= s_row['event'] %>
+                </td>
+                <td class="col-xs-3">
+                    <%= s_row['attendees'] %>
+                </td>
+                <td class="col-xs-3">
+                    <%= s_row['checkouts'] %>
+                </td>
+                <td class="col-xs-3">
+                    <%= s_row['avg_co_per_attendee'] %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+</div>

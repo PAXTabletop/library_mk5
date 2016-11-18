@@ -11,14 +11,17 @@
     <td class="col-xs-2">
         <%= event.end_date %>
     </td>
-    <td class="col-xs-1">
-        <% if event.is_current %>
-            <span class="glyphicon glyphicon-ok glyphicon-table"></span>
-        <% end %>
+    <td class="col-xs-1" style="text-align: center;">
+        <%= event.utc_offset %>
     </td>
     <td class="col-xs-2">
         <% if !Event.is_live && event.is_current %>
-            <input type="button" class="btn btn-default edit-event-btn" style="width:100%;" value="Edit" />
+            <input type="button" class="btn btn-default edit-event-btn" value="Edit" />
+            <a href="<%= metrics_path(event: event) %>" style="text-decoration: none;">
+                <button class="btn btn-default metric-event-btn" data-event="<%= event.short_name%>" style="float: right; color: #FFF;">
+                    Metrics
+                </button>
+            </a>
         <% end %>
     </td>
 </tr>

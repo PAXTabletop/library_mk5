@@ -1,0 +1,24 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-3"></th>
+        <th class="col-xs-3">
+            Publisher
+        </th>
+        <th class="col-xs-3">
+            Checkouts
+        </th>
+        <th class="col-xs-3"></th>
+    </tr>
+    <% @event.checkouts_by_publisher.each_with_index do |s_row, index| %>
+        <tr data-event-id="<%= index %>">
+            <td class="col-xs-3"></td>
+            <td class="col-xs-3">
+                <%= s_row['publisher'] %>
+            </td>
+            <td class="col-xs-3">
+                <%= s_row['checkouts'] %>
+            </td>
+            <td class="col-xs-3"></td>
+        </tr>
+    <% end %>
+</table>

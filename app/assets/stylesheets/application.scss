@@ -19,7 +19,7 @@
 @import "bootstrap";
 
 #body-wrapper {
-    width: 950px;
+    width: 1050px;
     margin: 0 auto 3em;
 }
 
@@ -56,7 +56,7 @@ footer {
     background: asset-url("pax_tabletop_tag_mk5.png", image) no-repeat;
 }
 
-header[data-event="prime"],header[data-event="west"] {
+header[data-event="prime"], header[data-event="west"] {
     background: asset-url("event_background_vert.png", image) repeat;
     #logo {
         background: asset-url("event_logos_bars_mk5.png", image) no-repeat;
@@ -87,19 +87,19 @@ header[data-event="dev"] {
     }
 }
 
-footer[data-event="prime"], footer[data-event="west"] {
+footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
-footer[data-event="east"] {
+footer[data-event="east"], .btn-default[data-event="east"]  {
     background-color: #CE1D24;
 }
-footer[data-event="south"] {
+footer[data-event="south"], .btn-default[data-event="south"] {
     background-color: #CC5500;
 }
-footer[data-event="aus"] {
+footer[data-event="aus"], .btn-default[data-event="aus"]  {
     background-color: #FBB024;
 }
-footer[data-event="dev"] {
+footer[data-event="dev"], .btn-default[data-event="dev"]  {
     background-color: #00A192;
 }
 
@@ -148,4 +148,8 @@ footer[data-event="dev"] {
         margin: 27px 10px;
         float: right;
     }
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #eeeeee;
 }

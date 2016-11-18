@@ -1,0 +1,31 @@
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-3"></th>
+            <th class="col-xs-2">
+                Active Games
+            </th>
+            <th class="col-xs-2">
+                Games At Setup
+            </th>
+            <th class="col-xs-2">
+                Games At Teardown
+            </th>
+            <th class="col-xs-3"></th>
+        </tr>
+        <% games_tracking_summary = @event.games_tracking_summary.first %>
+        <tr>
+            <th class="col-xs-3"></th>
+            <td class="col-xs-2">
+                <%= games_tracking_summary['active_games'] %>
+            </td>
+            <td class="col-xs-2">
+                <%= games_tracking_summary['games_at_setup'] %>
+            </td>
+            <td class="col-xs-2">
+                <%= games_tracking_summary['games_at_teardown'] %>
+            </td>
+            <th class="col-xs-3"></th>
+        </tr>
+    </table>
+</div>

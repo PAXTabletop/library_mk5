@@ -11,7 +11,9 @@
     <td class="col-xs-2">
         <input type="text" class="form-control" name="end_date" placeholder="(yyyy-mm-dd)" value="<%= @event.end_date %>" />
     </td>
-    <td class="col-xs-1"></td>
+    <td class="col-xs-1">
+        <input type="text" class="form-control" name="utc_offset" placeholder="-7" value="<%= @event.utc_offset %>" />
+    </td>
     <td class="col-xs-2">
         <% if @event.new_record? %>
             <input type="button" class="btn btn-primary new-event-btn" value="Add" />

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get '/admin/events', to: 'admin#events', as: :events
   get '/admin/cull', to: 'admin#cull', as: :cull
   get '/admin/new_game', to: 'admin#new_game', as: :new_game
+  get '/admin/metrics/:event', to: 'admin#metrics', as: :metrics
 
   post '/admin/events', to: 'events#create'
   get '/admin/events/edit', to: 'events#edit'

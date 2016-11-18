@@ -25,6 +25,8 @@ class Event < ActiveRecord::Base
         'aus'
       when /dev/i
         'dev'
+      else
+        'Unknown'
     end
   end
 
@@ -35,6 +37,110 @@ class Event < ActiveRecord::Base
   def self.is_live
     current = self.current
     (current.start_date..current.end_date) === Date.today
+  end
+
+  def recent_event_summary
+    Event.connection.execute(
+      <<-SQL
+        select
+          e.id as event_id
+          ,e.name as event
+          ,count(distinct c.attendee_id) as attendees
+          ,count(distinct c.id) as checkouts
+          ,round(count(distinct c.id)::numeric / count(distinct c.attendee_id)::numeric, 5) as avg_co_per_attendee
+        from events e
+        inner join checkouts c on c.event_id = e.id
+        where
+          e.id >= (#{self.id} - 2)
+        group by 1
+        order by 1 asc
+        limit 3
+      SQL
+    )
+  end
+
+  def games_tracking_summary
+    Event.connection.execute(
+      <<-SQL
+        select
+          count(distinct case when g.culled = false then g.id end) as active_games
+          ,count(distinct case when s.event_id = #{self.id} then g.id end) as games_at_setup
+          ,count(distinct case when t.event_id = #{self.id} then g.id end) as games_at_teardown
+        from games g
+        left join setups s on s.game_id = g.id
+        left join teardowns t on t.game_id = g.id
+      SQL
+    )
+  end
+
+  def checkouts_by_title
+    Event.connection.execute(
+      <<-SQL
+        select
+          initcap(lower(t.title)) as title
+          ,count(distinct c.id) as checkouts
+        from checkouts c
+        inner join games g on g.id = c.game_id
+        inner join titles t on t.id = g.title_id
+        where
+          c.event_id = #{self.id}
+        group by 1
+        order by 2 desc
+      SQL
+    )
+  end
+
+  def checkouts_by_publisher
+    Event.connection.execute(
+      <<-SQL
+        select
+          initcap(lower(p.name)) as publisher
+          ,count(distinct c.id) as checkouts
+        from checkouts c
+        inner join games g on g.id = c.game_id
+        inner join titles t on t.id = g.title_id
+        inner join publishers p on p.id = t.publisher_id
+        where
+          c.event_id = #{self.id}
+        group by 1
+        order by 2 desc
+      SQL
+    )
+  end
+
+  def event_checkout_summary
+    Event.connection.execute(
+      <<-SQL
+        select
+          coalesce(c.date, r.date) as date
+          ,coalesce(c.time, r.time) as time
+          ,c.checkouts
+          ,r.returns
+        from
+          (
+          select
+            to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD') as date
+            ,to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
+            ,count(*) as checkouts
+          from checkouts c
+          where event_id = #{self.id}
+          group by 1,2
+          ) c
+        full join
+          (
+          select
+            to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD') as date
+            ,to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
+            ,count(*) as returns
+          from checkouts c
+          where event_id = #{self.id}
+          group by 1,2
+          ) r
+          on c.date = r.date
+          and c.time = r.time
+        order by 1,2
+      SQL
+    )
   end
 
 end

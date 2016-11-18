@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-xs-2">
+        <%= link_to '<- back to events', events_path %>
+    </div>
+    <div class="col-xs-10"></div>
+</div>
+
+<div class="row">
+    <h3>
+        Library Stats for <%= @event.name %>
+        <span style="float: right; font-size: 16px;">
+            <%= @event.start_date %> to <%= @event.end_date %>
+        </span>
+    </h3>
+</div>
+
+<div class="row"><br/></div>
+
+<%= render 'admin/metrics/recent_event_summary' %>
+
+<%= render 'admin/metrics/games_tracking_summary' %>
+
+<div class="row">
+    <ul class="nav nav-tabs tab-btns">
+        <li class="col-xs-4 active" style="cursor: pointer;"><a class="tab-1-btn">Checkout Summary</a></li>
+        <li class="col-xs-4" style="cursor: pointer;"><a class="tab-2-btn">Checkouts by Title</a></li>
+        <li class="col-xs-4" style="cursor: pointer;"><a class="tab-3-btn">Checkouts by Publisher</a></li>
+    </ul>
+</div>
+
+<div class="row tab tab-1 active">
+    <%= render 'admin/metrics/event_checkout_summary' %>
+</div>
+
+<div class="row tab tab-2" style="display: none;">
+    <%= render 'admin/metrics/checkouts_by_title' %>
+</div>
+
+<div class="row tab tab-3" style="display: none;">
+    <%= render 'admin/metrics/checkouts_by_publisher' %>
+</div>
+
+<script>
+    function setTab(tabClass, ele){
+        $('.row.tab.active').removeClass('active').hide();
+        $('.row.tab.' + tabClass).addClass('active').show();
+        $('.tab-btns').find('.active').removeClass('active');
+        ele.parents('li').addClass('active');
+    }
+
+    $(document).ready(function(){
+        $('.tab-1-btn').click(function(){ setTab('tab-1', $(this)); });
+        $('.tab-2-btn').click(function(){ setTab('tab-2', $(this)); });
+        $('.tab-3-btn').click(function(){ setTab('tab-3', $(this)); });
+    });
+</script>
