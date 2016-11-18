@@ -54,7 +54,7 @@ class Game < ActiveRecord::Base
       result = where(barcode: search.upcase)
     elsif search
       search_str = search.size > 1 ? "%#{search}%" : "#{search}%"
-      result = where(title: Title.where('lower(title) like lower(?)', search_str))
+      result = where(title: Title.search(search_str))
     else
       result = where(nil)
     end
