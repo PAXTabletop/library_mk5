@@ -85,7 +85,7 @@ class Event < ActiveRecord::Base
         where
           c.event_id = #{self.id}
         group by 1
-        order by 2 desc
+        order by 2 desc, 1
       SQL
     )
   end
@@ -103,7 +103,7 @@ class Event < ActiveRecord::Base
         where
           c.event_id = #{self.id}
         group by 1
-        order by 2 desc
+        order by 2 desc, 1
       SQL
     )
   end
