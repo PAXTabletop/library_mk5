@@ -73,13 +73,11 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def reset_setup
-    self.update(
-      SETUP_SCAN_GAMES: nil,
-      SETUP_LIBRARY_SERVER: nil,
-      SETUP_ADD_NEW_GAMES: nil,
-      SETUP_COMPUTER_TZ: nil
-    )
+  def reset_setup_tags
+    SETUP_TAGS.each do |tag|
+      self.update({ tag => nil })
+    end
+    self.update({ reset_setup: Time.now })
   end
 
   def recent_event_summary
