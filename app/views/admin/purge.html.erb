@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-xs-2">
+        <%= link_to '<- back to admin', admin_path %>
+    </div>
+    <div class="col-xs-10"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>Purge Recommendations</h3>
+        <p>Titles listed here had at least 50% of their copies added to the library prior to the last three shows and have <em>0 checkouts across the last three shows</em>.</p>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-4">
+                Title
+            </th>
+            <th class="col-xs-2">
+                Total Copies
+            </th>
+            <th class="col-xs-2">
+                Last Copy Added On
+            </th>
+            <th class="col-xs-2">
+                C/O Last Four Shows
+            </th>
+            <th class="col-xs-2">
+                C/O Last Five Shows
+            </th>
+        </tr>
+        <% Checkout.purge_recommendations.each_with_index do |p_row, index| %>
+            <tr data-event-id="<%= index %>">
+                <td class="col-xs-4">
+                    <%= p_row['title'] %>
+                </td>
+                <td class="col-xs-2">
+                    <%= p_row['copies'] %>
+                </td>
+                <td class="col-xs-2">
+                    <%= p_row['latest_created_at'] %>
+                </td>
+                <td class="col-xs-2">
+                    <%= p_row['checkouts_from_four'] %>
+                </td>
+                <td class="col-xs-2">
+                    <%= p_row['checkouts_from_five'] %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+</div>

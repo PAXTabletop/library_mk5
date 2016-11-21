@@ -42,4 +42,54 @@ class Checkout < ActiveRecord::Base
     self.where(event: Event.current, return_time: nil).order(updated_at: :desc).limit(5)
   end
 
+  def self.purge_recommendations(gradation = 0.5)
+    Checkout.connection.execute(
+      <<-SQL
+        select
+          t.title
+          ,t.copies
+          ,t.copies_created_prior
+          ,t.checkouts_from_three
+          ,t.checkouts_from_four
+          ,t.checkouts_from_five
+          ,t.latest_created_at
+          ,round((copies_created_prior::numeric / copies::numeric), 2)
+        from
+          (
+          select
+            initcap(lower(t.title)) as title
+            ,count(distinct g.id)	as copies
+            ,sum(c.co_since_three) as checkouts_from_three
+            ,sum(c.co_since_four) as checkouts_from_four
+            ,sum(c.co_since_five) as checkouts_from_five
+            ,count(distinct
+              case when g.created_at::date <= '#{Event.two_events_ago.start_date}'::date then g.id
+              else null
+              end
+            ) as copies_created_prior
+            ,max(g.created_at::date) as latest_created_at
+          from
+            titles t
+          inner join games g on g.title_id = t.id and g.culled = false
+          left join (
+            select
+              c.game_id
+              ,count(case when e.id >= #{Event.two_events_ago.id} then c.id else null end) as co_since_three
+              ,count(case when e.id >= #{Event.three_events_ago.id} then c.id else null end) as co_since_four
+              ,count(case when e.id >= #{Event.four_events_ago.id} then c.id else null end) as co_since_five
+            from
+              checkouts c
+            inner join events e on e.id = c.event_id
+            group by 1
+          ) c on c.game_id = g.id
+          group by 1
+          ) t
+        where
+          t.checkouts_from_three = 0
+          and round((copies_created_prior::numeric / copies::numeric), 2) > #{gradation.round(2)}
+        order by 1
+      SQL
+    )
+  end
+
 end

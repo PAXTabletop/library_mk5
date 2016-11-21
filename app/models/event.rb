@@ -39,6 +39,18 @@ class Event < ActiveRecord::Base
     (current.start_date..current.end_date) === Date.today
   end
 
+  def self.two_events_ago
+    self.all.order(id: :desc).third
+  end
+
+  def self.three_events_ago
+    self.all.order(id: :desc).fourth
+  end
+
+  def self.four_events_ago
+    self.all.order(id: :desc).fifth
+  end
+
   def recent_event_summary
     Event.connection.execute(
       <<-SQL
@@ -51,7 +63,7 @@ class Event < ActiveRecord::Base
         from events e
         inner join checkouts c on c.event_id = e.id
         where
-          e.id >= (#{self.id} - 2)
+          e.id >= (#{Event.two_events_ago.id})
         group by 1
         order by 1 asc
         limit 3

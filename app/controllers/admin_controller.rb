@@ -26,6 +26,10 @@ class AdminController < ApplicationController
     @event = Event.find(params[:event]) if params[:event] # && params[:event].is_a?(Integer)
   end
 
+  def purge
+
+  end
+
   def titles
     respond_to do |format|
       format.json { render json: Title.select(:title).distinct.order(:title).map(&:title) }
