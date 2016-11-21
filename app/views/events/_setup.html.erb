@@ -1,0 +1,137 @@
+<div class="row setup-msg">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="text-align: center;">
+        <h3>Welcome to setup for <%= Event.current.formatted_name %>!</h3>
+        <p>Please complete these steps to set up the PAX Tabletop Library. Check off each item once it's complete.</p>
+    </div>
+</div>
+
+<div class="row complete-msg" style="display: none;">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="text-align: center;">
+        <h4>All steps complete! Please refresh the page to begin checking out games.</h4>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h5 style="margin-top: 0;">Configure computer timezones.</h5>
+        <small class="read-details rd-show">
+            Show Details
+        </small>
+        <small class="read-details rd-hide" style="display: none;">
+            Hide Details
+        </small>
+        <p class="setup-details" style="padding: 15px; display: none;">
+            Set the time of the library server computer to the local time. This only needs to be done for the server computer, however, it's helpful for librarians if all computers in the library have the correct time.
+        </p>
+    </div>
+    <div class="col-md-2">
+        <% if @current_event.setup_computer_tz.nil? %>
+            <div class="setup-check-box" data-setup-tag="<%= Event::SETUP_COMPUTER_TZ %>"></div>
+        <% else %>
+            <div class="setup-check-box glyphicon glyphicon-ok checked"></div>
+        <% end %>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h5 style="margin-top: 0;">Scan all games at Setup.</h5>
+        <small class="read-details rd-show">
+            Show Details
+        </small>
+        <small class="read-details rd-hide" style="display: none;">
+            Hide Details
+        </small>
+        <p class="setup-details" style="padding: 15px; display: none;">
+            Navigate to the "admin/setup/teardown" tab and click on the "Setup" page. Scan all games through that page using the Library computer running this server and an attached USB barcode scanner.
+        </p>
+    </div>
+    <div class="col-md-2">
+        <% if @current_event.setup_scan_games.nil? %>
+            <div class="setup-check-box" data-setup-tag="<%= Event::SETUP_SCAN_GAMES %>"></div>
+        <% else %>
+            <div class="setup-check-box glyphicon glyphicon-ok checked"></div>
+        <% end %>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h5 style="margin-top: 0;">Setup library server connections.</h5>
+        <small class="read-details rd-show">
+            Show Details
+        </small>
+        <small class="read-details rd-hide" style="display: none;">
+            Hide Details
+        </small>
+        <p class="setup-details" style="padding: 15px; display: none;">
+            Open the ReadMe.txt document in the library server's source folder on how to find the ip address of the library server computer and link the other laptops to it.
+        </p>
+    </div>
+    <div class="col-md-2">
+        <% if @current_event.setup_library_server.nil? %>
+            <div class="setup-check-box" data-setup-tag="<%= Event::SETUP_LIBRARY_SERVER %>"></div>
+        <% else %>
+            <div class="setup-check-box glyphicon glyphicon-ok checked"></div>
+        <% end %>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h5 style="margin-top: 0;">Add any new games that have been donated.</h5>
+        <small class="read-details rd-show">
+            Show Details
+        </small>
+        <small class="read-details rd-hide" style="display: none;">
+            Hide Details
+        </small>
+        <p class="setup-details" style="padding: 15px; display: none;">
+            Navigate to the "admin/setup/teardown" tab and click on the "New Game" page to add new games. Remember to apply a "PAX TT" sticker, a "TTLXXXXXX" barcode, and clear scotch tape on top of the barcode.
+        </p>
+    </div>
+    <div class="col-md-2">
+        <% if @current_event.setup_add_new_games.nil? %>
+            <div class="setup-check-box" data-setup-tag="<%= Event::SETUP_ADD_NEW_GAMES %>"></div>
+        <% else %>
+            <div class="setup-check-box glyphicon glyphicon-ok checked"></div>
+        <% end %>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.read-details,.hide-details').click(function(){
+            $(this).toggle();
+            $(this).siblings('.read-details.rd-hide,.read-details.rd-show').toggle();
+            $(this).siblings('.setup-details').slideToggle(150);
+        });
+
+        $('.setup-check-box').click(function(){
+            var _me = $(this),
+                dataTag = _me.data('setup-tag');
+            if(dataTag){
+                $.ajax({
+                    url: '/setup/tag',
+                    data: { tag: dataTag },
+                    method: 'put',
+                    success: function(){
+                        _me.addClass('glyphicon').addClass('glyphicon-ok').addClass('checked').data('setup-tag', '');
+
+                        var checked = $('.setup-check-box.checked').length;
+                        if(checked >= 4){
+                            $('.setup-msg').slideUp();
+                            $('.complete-msg').slideDown();
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

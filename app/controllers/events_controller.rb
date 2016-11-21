@@ -22,4 +22,8 @@ class EventsController < ApplicationController
     end
   end
 
+  def reset_setup
+    Event.find(params[:event]).reset_setup if params[:event]
+  end
+
 end

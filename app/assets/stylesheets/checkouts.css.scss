@@ -1,3 +1,25 @@
-// Place all the styles related to the checkouts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.read-details {
+    &:hover {
+        text-decoration: underline;
+    }
+    cursor: pointer;
+    color: #337ab7;
+    padding-left: 15px;
+}
+
+.setup-check-box {
+    &:hover {
+        cursor: pointer;
+        background-color: #dff0d8;
+    }
+    border: 1px solid #000000;
+    border-radius: 3px;
+    height: 30px;
+    width: 30px;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.setup-check-box.checked {
+    background-color: #dff0d8;
+}

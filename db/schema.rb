@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118063656) do
+ActiveRecord::Schema.define(version: 20161121035155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,10 +44,15 @@ ActiveRecord::Schema.define(version: 20161118063656) do
     t.string   "location"
     t.date     "start_date"
     t.date     "end_date"
-    t.boolean  "current",    default: false
+    t.boolean  "current",              default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "utc_offset", default: 0
+    t.integer  "utc_offset",           default: 0
+    t.datetime "setup_computer_tz"
+    t.datetime "setup_scan_games"
+    t.datetime "setup_add_new_games"
+    t.datetime "setup_library_server"
+    t.datetime "reset_setup"
   end
 
   create_table "games", force: true do |t|

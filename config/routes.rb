@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   get '/admin/metrics/:event', to: 'admin#metrics', as: :metrics
   get '/admin/purge', to: 'admin#purge', as: :purge
 
+  put '/setup/tag', to: 'admin#setup_tag', as: :setup_tag
+  put '/setup/reset', to: 'admin#reset_setup', as: :reset_setup
+
   post '/admin/events', to: 'events#create'
   get '/admin/events/edit', to: 'events#edit'
   put '/admin/events/:id', to: 'events#update'

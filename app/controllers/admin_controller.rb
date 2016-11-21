@@ -27,7 +27,11 @@ class AdminController < ApplicationController
   end
 
   def purge
+  end
 
+  def setup_tag
+    Event.current.update_setup_tag(params[:tag])
+    render json: :nothing
   end
 
   def titles

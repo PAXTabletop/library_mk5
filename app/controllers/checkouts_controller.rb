@@ -1,7 +1,12 @@
 class CheckoutsController < ApplicationController
 
   def index
-    @checkouts = Checkout.all
+    if Event.current.setup_complete?
+      @checkouts = Checkout.all
+    else
+      @current_event = Event.current
+      render '/events/_setup'
+    end
   end
 
   def new

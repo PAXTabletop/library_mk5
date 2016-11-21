@@ -3,6 +3,12 @@ class Event < ActiveRecord::Base
   has_many :attendees
   has_many :checkouts
 
+  SETUP_COMPUTER_TZ = :setup_computer_tz
+  SETUP_ADD_NEW_GAMES = :setup_add_new_games
+  SETUP_LIBRARY_SERVER = :setup_library_server
+  SETUP_SCAN_GAMES = :setup_scan_games
+  SETUP_TAGS = [SETUP_COMPUTER_TZ, SETUP_ADD_NEW_GAMES, SETUP_LIBRARY_SERVER, SETUP_SCAN_GAMES]
+
   def self.current
     self.all.order(start_date: :desc).first
   end
@@ -49,6 +55,31 @@ class Event < ActiveRecord::Base
 
   def self.four_events_ago
     self.all.order(id: :desc).fifth
+  end
+
+  def setup_complete?
+    !self.setup_computer_tz.nil? &&
+      !self.setup_add_new_games.nil? &&
+      !self.setup_library_server.nil? &&
+      !self.setup_scan_games.nil?
+  end
+
+  def update_setup_tag(tag)
+    tag = tag.to_sym
+    if SETUP_TAGS.include?(tag)
+      obj = {}
+      obj[tag] = Time.now
+      self.update(obj)
+    end
+  end
+
+  def reset_setup
+    self.update(
+      SETUP_SCAN_GAMES: nil,
+      SETUP_LIBRARY_SERVER: nil,
+      SETUP_ADD_NEW_GAMES: nil,
+      SETUP_COMPUTER_TZ: nil
+    )
   end
 
   def recent_event_summary

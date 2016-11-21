@@ -18,7 +18,7 @@
         <% if !Event.is_live && event.is_current %>
             <input type="button" class="btn btn-default edit-event-btn" value="Edit" />
             <a href="<%= metrics_path(event: event) %>" style="text-decoration: none;">
-                <button class="btn btn-default metric-event-btn" data-event="<%= event.short_name%>" style="float: right; color: #FFF;">
+                <button class="btn btn-default metric-event-btn" data-event="<%= event.short_name%>" style="color: #FFF;">
                     Metrics
                 </button>
             </a>
