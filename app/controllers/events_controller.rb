@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
 
   def create
-    @event = Event.create(params.permit(:name, :location, :start_date, :end_date))
+    @event = Event.create(params.permit(:name, :location, :start_date, :end_date, :utc_offset))
   end
 
   def edit
