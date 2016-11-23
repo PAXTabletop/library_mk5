@@ -9,7 +9,7 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <h3>Purge Recommendations</h3>
-        <p>Titles listed here had at least 50% of their copies added to the library prior to the last three shows and have <em>0 checkouts across the last three shows</em>.</p>
+        <p>Titles listed here had at least 50% of their copies added to the library prior to <%= Event.two_events_ago.formatted_name %> and have <em>0 checkouts across the last three events (<%= Event.two_events_ago.formatted_name %>, <%= Event.one_event_ago.formatted_name %>, <%= Event.current.formatted_name %>)</em>.</p>
     </div>
     <div class="col-md-2"></div>
 </div>

@@ -16,7 +16,12 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.longest_checkout_time_today(offset)
-    minimum_time = self.where(closed: false).where("(check_out_time - '#{offset} hours'::interval)::date = ?", Date.today.to_s).minimum(:check_out_time).to_i
+    start_time = (Time.now - 15.hours).strftime('%Y-%m-%d %H:%M:%S')
+    minimum_time = self.where(closed: false)
+                     .where(
+                       "(check_out_time - '#{offset} hours'::interval) > ?",
+                       start_time
+                     ).minimum(:check_out_time).to_i
 
     difference = minimum_time == 0 ? 0 : Time.now - minimum_time
 

@@ -45,6 +45,10 @@ class Event < ActiveRecord::Base
     (current.start_date..current.end_date) === Date.today
   end
 
+  def self.one_event_ago
+    self.all.order(id: :desc).second
+  end
+
   def self.two_events_ago
     self.all.order(id: :desc).third
   end
