@@ -1,6 +1,10 @@
 <div class="row">
-    <div class="col-xs-2">
-        <%= link_to '<- back to events', events_path %>
+    <div class="col-xs-4">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        <%= link_to 'Events', events_path %>
+        &gt;
+        Library Stats for <%= @event.name %>
     </div>
     <div class="col-xs-10"></div>
 </div>

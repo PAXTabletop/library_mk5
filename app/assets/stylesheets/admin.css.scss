@@ -6,3 +6,16 @@
         vertical-align: middle;
     }
 }
+
+.btn-admin-box {
+    height: 100px;
+    width: 200px;
+    .btn-admin-text {
+        text-align: right;
+        display: inline-block;
+    }
+    .btn-admin-glyph {
+        font-size: 50px;
+        top: 17px;
+    }
+}

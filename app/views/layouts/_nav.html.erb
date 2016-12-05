@@ -2,10 +2,10 @@
 
 <nav class="row">
     <ul class="nav nav-tabs">
-        <li class="col-xs-3 <%= 'active' if current_page?(root_path) %>"><a href="<%= root_path %>">checkout/return</a></li>
-        <li class="col-xs-3 <%= 'active' if current_page?(games_path) %>"><a href="<%= games_path %>">games list</a></li>
-        <li class="col-xs-3 <%= 'active' if current_page?(find_path) %>"><a href="<%= find_path %>">find a checkout</a></li>
-        <li class="col-xs-3 <%= 'active' if params[:controller] == 'admin' %>"><a href="<%= admin_path %>">admin/setup/teardown</a></li>
+        <li class="col-xs-3 <%= 'active' if current_page?(root_path) %>"><a href="<%= root_path %>">Checkout & Return</a></li>
+        <li class="col-xs-3 <%= 'active' if current_page?(games_path) %>"><a href="<%= games_path %>">Games List</a></li>
+        <li class="col-xs-3 <%= 'active' if current_page?(find_path) %>"><a href="<%= find_path %>">Find a Checkout</a></li>
+        <li class="col-xs-3 <%= 'active' if params[:controller] == 'admin' %>"><a href="<%= admin_path %>">Admin</a></li>
     </ul>
 </nav>
 

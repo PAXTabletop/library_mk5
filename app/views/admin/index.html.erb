@@ -3,37 +3,29 @@ new game
 -->
 
 <div class="row">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-8" style="text-align:center;">
-        <div class="form-group">
-            <%= link_to 'Setup', setup_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Teardown', teardown_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Events', events_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'New Game', new_game_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Cull Game', cull_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Edit Titles', titles_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Edit Publishers', publishers_path, class: 'btn btn-default form-control' %>
-        </div>
-        <div class="form-group">
-            <%= link_to 'Purge Recommendations', purge_path, class: 'btn btn-default form-control' %>
-        </div>
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10" style="text-align:center;">
+
+        <%= render 'link', path: setup_path, text: 'Setup', glyph: 'open' %>
+        <%= render 'link', path: teardown_path, text: 'Teardown', glyph: 'save' %>
+        <hr/>
+        <%= render 'link', path: new_game_path, text: 'New Game', glyph: 'floppy-saved' %>
+        <%= render 'link', path: cull_path, text: 'Cull Game', glyph: 'floppy-remove' %>
+        <%= render 'link', path: purge_path, text: 'Games to Purge', glyph: 'list-alt' %>
+        <hr/>
+        <p>
+            <span class="glyphicon glyphicon-alert" style="color: #777;"></span>
+            Please do not use the below pages unless you are a deputy or manager.
+            <span class="glyphicon glyphicon-alert" style="color: #777;"></span>
+        </p>
+        <%= render 'link', path: events_path, text: 'Events', glyph: 'tasks' %>
+        <%= render 'link', path: titles_path, text: 'Edit Titles', glyph: 'edit' %>
+        <%= render 'link', path: publishers_path, text: 'Edit Publishers', glyph: 'edit' %>
         <!--
         <div class="form-group">
             <%= link_to 'Backup Database', admin_path, class: 'btn btn-default form-control' %>
         </div>
         -->
     </div>
-    <div class="col-xs-2"></div>
+    <div class="col-xs-1"></div>
 </div>
