@@ -45,6 +45,9 @@ Rails.application.routes.draw do
   get '/admin/titles/cancel', to: 'titles#cancel'
 
   get '/publishers', to: 'admin#publishers'
+  get '/admin/publishers/edit', to: 'publishers#edit'
+  put '/admin/publishers/:id', to: 'publishers#update'
+  get '/admin/publishers/cancel', to: 'publishers#cancel'
 
   get '/game/status', to: 'games#status'
   post '/game/new', to: 'games#new'

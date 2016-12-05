@@ -1,0 +1,3 @@
+$('[data-publisher-id="<%= @publisher.id %>"]').replaceWith(
+        '<%= escape_javascript(render partial: 'publisher', locals: { publisher: @publisher }) %>'
+);

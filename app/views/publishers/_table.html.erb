@@ -1,0 +1,15 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-4">
+            Publisher Name
+        </th>
+        <th class="col-xs-2">
+            Titles
+        </th>
+        <th class="col-xs-2"></th>
+    </tr>
+    <% @publishers.each do |publisher| %>
+        <%= render partial: 'publishers/publisher', locals: { publisher: publisher } %>
+    <% end %>
+</table>
+<%= will_paginate @publishers %>

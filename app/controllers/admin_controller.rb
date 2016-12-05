@@ -48,6 +48,11 @@ class AdminController < ApplicationController
   def publishers
     respond_to do |format|
       format.json { render json: Publisher.select(:name).distinct.order(:name).map(&:name) }
+
+      @publishers = Publisher.active.search(params[:search]).order('lower(name) asc').paginate(per_page: 10, page: params[:page])
+
+      format.html { }
+      format.js { render 'publishers/publishers' }
     end
   end
 
