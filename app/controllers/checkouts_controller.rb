@@ -14,6 +14,7 @@ class CheckoutsController < ApplicationController
 
     if checkout.errors.messages.blank?
       render json: {
+          approval: checkout.approval_tag,
           checkouts: checkout.attendee.open_co.order(check_out_time: :desc).map do |co|
             render_to_string('games/checked_out_template', locals: { checkout: co }, layout: false)
           end

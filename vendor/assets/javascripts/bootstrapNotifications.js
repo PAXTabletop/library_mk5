@@ -1,6 +1,13 @@
 (function($){
 
     var initialized = false,
+        /**
+         * success - green
+         * info - blue
+         * warning - yellow
+         * danger - red
+         * */
+        colors = ['success', 'info', 'warning', 'danger'],
         init = function() {
             if ($('#bootstrap-notification-bin').length == 0) {
                 $('head').append(
@@ -11,6 +18,7 @@
                     '    color: #666;' +
                     '    right: 25px;' +
                     '    top: 10px;' +
+                    '    z-index: 1000;' +
                     '}' +
                     '#bootstrap-notification-bin > .note {' +
                     '   position: relative;' +
@@ -53,12 +61,6 @@
         dismissNote($(this));
     });
 
-    /*
-     * success - green
-     * info - blue
-     * warning - yellow
-     * danger - red
-     * */
     $.notify = function(text, status, dismissTime){
         if(!initialized){
             init();
@@ -66,7 +68,7 @@
         if(!text){
             text = 'Boop.';
         }
-        if(!status){
+        if(!status || colors.indexOf(status) == -1){
             status = 'success';
         }
         if(!dismissTime){
@@ -80,9 +82,11 @@
             '</div>' +
             '</div>'
         );
-        setTimeout(function(){
-            dismissNote($('#' + token));
-        }, dismissTime);
+        if(dismissTime != 'sticky'){
+            setTimeout(function(){
+                dismissNote($('#' + token));
+            }, dismissTime);
+        }
         return this;
     };
 

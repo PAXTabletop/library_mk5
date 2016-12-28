@@ -84,6 +84,10 @@ class Event < ActiveRecord::Base
     self.update({ reset_setup: Time.now })
   end
 
+  def is_last_day?
+    self.end_date == Date.today
+  end
+
   def recent_event_summary
     Event.connection.execute(
       <<-SQL

@@ -101,6 +101,9 @@ $(document).ready(function(){
                 $.notify('Game successfully checked out!');
                 displayCheckouts(response.checkouts);
             }
+            if(response.approval){
+                $.notify(response.approval, 'success', 8000);
+            }
         }).error(function(){
             $.notify(DEFAULT_ERROR, 'danger');
         }).complete(function(){

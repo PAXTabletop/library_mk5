@@ -15,6 +15,28 @@ class Checkout < ActiveRecord::Base
     end
   end
 
+  APPROVAL_MAP = {
+    # 'normalizedtitle' => 'name',
+    'roborally' => {
+      handle: 'drain'
+    },
+    '' => {
+      handle: 'warp',
+      message: ''
+    },
+    'smashup' => {
+      handle: 'el_draco',
+      message: 'Robot/Zombies are OP. -El Draco'
+    },
+    'smallworld' => {
+      handle: 'gundabad'
+    },
+    'theduke' => {
+      handle: 'frisky',
+      message: 'Frisky watches this checkout with awe and reverence!'
+    }
+  }
+
   def self.longest_checkout_time_today(offset)
     start_time = (Time.now - 15.hours).strftime('%Y-%m-%d %H:%M:%S')
     minimum_time = self.where(closed: false)
@@ -45,6 +67,23 @@ class Checkout < ActiveRecord::Base
 
   def self.recent
     self.where(event: Event.current, return_time: nil).order(updated_at: :desc).limit(5)
+  end
+
+  def approval_tag
+    title_text = self.game.name
+    title_text = title_text.gsub(' ', '').downcase
+    if APPROVAL_MAP.key?(title_text)
+      approval = APPROVAL_MAP[title_text]
+      name = approval[:handle]
+      display_name = name.split('_').map(&:capitalize).join(' ')
+
+      message = approval[:message]
+      if message.nil? || message.size == 0
+        message = "#{display_name} approves of this checkout!"
+      end
+
+      "<img width=\"25px\" height=\"25px\" src=\"/pics/#{name}.jpg\"></img>&nbsp;#{message}"
+    end
   end
 
   def self.purge_recommendations(gradation = 0.5)

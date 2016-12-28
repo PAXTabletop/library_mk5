@@ -1,4 +1,13 @@
-<div class="row"><br/></div>
+<% if @current_event.is_last_day? %>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 alert alert-info" style="text-align: center; margin: 5px 0;">
+            Congratulations! You've made it to the last day of the show! Thank you for your hard work!
+        </div>
+    </div>
+<% else %>
+    <div class="row"><br/></div>
+<% end %>
 
 <nav class="row">
     <ul class="nav nav-tabs">
