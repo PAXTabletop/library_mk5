@@ -87,6 +87,13 @@ header[data-event="dev"] {
     }
 }
 
+header[data-event="setup"] {
+    background: asset-url("event_background_vert.png", image) 0 -450px repeat;
+    #logo {
+        background: asset-url("event_logos_bars_mk5.png", image) 0 -150px no-repeat;
+    }
+}
+
 footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
@@ -101,6 +108,9 @@ footer[data-event="aus"], .btn-default[data-event="aus"]  {
 }
 footer[data-event="dev"], .btn-default[data-event="dev"]  {
     background-color: #00A192;
+}
+footer[data-event="setup"], .btn-default[data-event="setup"]  {
+    background-color: #0D0D0D;
 }
 
 #notification-bin {
