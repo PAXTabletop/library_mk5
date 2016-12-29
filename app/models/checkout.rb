@@ -82,7 +82,7 @@ class Checkout < ActiveRecord::Base
         message = "#{display_name} approves of this checkout!"
       end
 
-      "<img width=\"25px\" height=\"25px\" src=\"/pics/#{name}.jpg\"></img>&nbsp;#{message}"
+      "<img width=\"25px\" height=\"25px\" src=\"/assets/images/#{name}.jpg\"></img>&nbsp;#{message}"
     end
   end
 
