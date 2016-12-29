@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PAX TT Library Mk5</title>
+    <link href="assets/stylesheets/bootstrap-3.3.4.css" media="all" rel="stylesheet" />
+    <style>
+        #body-wrapper {
+            width: 1050px;
+            margin: 0 auto 3em;
+        }
+        nav ul li {
+            text-align: center;
+        }
+        header[data-event="setup"] {
+            background: url("assets/images/event_background_vert.png") 0 -450px repeat;
+        }
+        #logo {
+            height: 30px;
+            width: 510px;
+            margin: 0 auto;
+            background: url("assets/images/event_logos_bars_mk5.png") 0 -150px no-repeat;
+        }
+        #tabletop-tag {
+            height: 60px;
+            width: 510px;
+            margin: 0 auto;
+            background: url("assets/images/pax_tabletop_tag_mk5.png") no-repeat;
+        }
+        footer[data-event="setup"] {
+            background-color: #0D0D0D;
+        }
+        footer {
+            background-color: #eee;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            height: 3em;
+            color: #fff;
+        }
+        footer div {
+            transform: translateX(0%) translateY(50%);
+        }
+    </style>
+</head>
+<body>
+
+<header data-event="setup" style="height: 90px;">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <div id="tabletop-tag"></div>
+        <div id="logo"></div>
+    </div>
+    <div class="col-xs-2"></div>
+</header>
+
+<div id="body-wrapper" class="container">
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="border: 1px solid #aaa; border-radius: 3px; background-color: #ddd; padding: 15px;">
+            <p style="border-bottom: 1px solid #bbb;">Table of Contents</p>
+            <h4>Steps for Setup</h4>
+            <ul>
+                <li>
+                    <a href="#starting-the-library">[required] Starting the PAX TT Library server</a>
+                </li>
+                <li>
+                    <a href="#linking-other-laptops">[required] Linking other laptops to the server for use</a>
+                </li>
+                <li>
+                    <a href="#creating-event">[required] Creating a new Event</a>
+                </li>
+                <li>
+                    <a href="#scan-through-setup">[optional] Scanning games through Setup</a>
+                </li>
+            </ul>
+            <h4>Steps for Teardown</h4>
+            <ul>
+                <li>
+                    <a href="#scan-through-teardown">[optional] Scanning games through Teardown</a>
+                </li>
+                <li>
+                    <a href="#stopping-the-library">[required] Stopping the Library server</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="starting-the-library">Starting the PAX TT Library server</h3>
+            <p>
+                Follow these steps to start the Tabletop Library server.
+            </p>
+            <ul>
+                <li>
+                    Copy the whole folder containing the Library, as is, to the desktop of a laptop running Windows 7 or later.
+                </li>
+                <li>
+                    Double click the "start.bat" file. (One console window will open.) The window will
+                    tell you about another window that's about to open.
+                </li>
+                <li>
+                    Press any key ONCE to continue. (The second console window will open.)
+                </li>
+                <li>
+                    Enter the two commands from the first console window into the second one as described.
+                    See below for examples of what you'll be entering.
+                    <p><em>Example commands to enter in the second console:</em></p>
+                    <pre>
+    cd "C:/Users/Intel/Desktop/paxTTlib/paxTTlib"
+    rails s</pre>
+                </li>
+                <li>
+                    After entering the second command, the server will start.
+                    Wait until you see the line below before trying to access anything:
+                    <pre>
+    [...]
+    Listening on 0.0.0.0:3000/, CTRL+C to stop</pre>
+                </li>
+            </ul>
+            <p>
+                Do <strong>NOT</strong> close either console window while the server is in use.<br/>
+                Closing these windows will stop part of or all of the library!
+            </p>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="linking-other-laptops">Linking other laptops to the server for use</h3>
+            <p>
+                Follow these steps to link one or more laptop computers to the server computer for use as a Checkout/Return station.
+            </p>
+            <ul>
+                <li>
+                    Setup a wireless router by plugging it into power.
+                </li>
+                <li>
+                    Connect the server and any computers you wish to connect to the router via an ethernet cable. Any ports work, so long as all computers are connected to the same router.
+                </li>
+                <li>
+                    Open a new command line terminal on the server computer.
+                </li>
+                <li>
+                    Type in the command "ipconfig" and hit "enter".
+                    <p><em>Example command entry:</em></p>
+                    <pre>
+    ipconfig</pre>
+                </li>
+                <li>
+                    Some output will appear. Look for the line labeled "IPv4 address".
+                    <p><em>Example output:</em></p>
+                    <pre>
+    IPv4 Address..............: 192.168.26.119</pre>
+                </li>
+                <li>
+                    Open Chrome on any of the connected computers.
+                </li>
+                <li>
+                    Copy the address ("192.168.26.119" in the example above) into the address bar of Chrome and append ":3000/" to the end of it.
+                    <p><em>Example copied address with ":3000/" appended:</em></p>
+                    <pre>
+    192.168.26.119:3000/</pre>
+                </li>
+                <li>
+                    Hit "enter". The main page of the library server should load in the connected computer's browser.
+                </li>
+                <li>
+                    Bookmark this page or set it as the home page on the connected computer.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="creating-event">Creating a new Event</h3>
+            <p>
+                Follow these steps to create a new Event and prepare the Library to be used at a new PAX.
+            </p>
+            <ul>
+                <li>
+                    Follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a>.
+                </li>
+                <li>
+                    Navigate to Admin > Events.
+                </li>
+                <li>
+                    Click on "Add Event".
+                </li>
+                <li>
+                    A row with inputs will appear. Enter the new PAX's name, city & state, start date, end date, and the hours offset from UTC of the city.<br/>(This is generally -5/-4 for Boston, -7/-8 for Seattle, and -6/-7 for San Antonio. If you're not sure what the offset is then google the city/state + a phrase like "utc offset".)
+                </li>
+                <li>
+                    Click "Add" on the row.
+                </li>
+                <li>
+                    Refresh the page. The colors and title of the page should update to reflect the new PAX.
+                </li>
+                <p><em>Note: event information is editable before or after a show, but not on or between the start/end dates listed!</em></p>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="scan-through-setup">Scanning games through Setup</h3>
+            <p>
+                Follow these steps to scan games through Setup. This step is optional, however, it helps the management team to check inventory and confirm all games are in the system prior to the start of the show.
+                <br/><br/>
+                <em>Note: The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a> to set it up.</em>
+            </p>
+            <ul>
+                <li>
+                    Navigate to Admin > Setup.
+                </li>
+                <li>
+                    Scan every game in the library, one at a time.
+                </li>
+                <li>
+                    The following message should appear on screen with the relevant game details after each game is scanned.
+                    <pre style="text-align: center;">
+Game successfully checked in!
+TTL0000TT
+Small Wonders
+Asmodic Games
+                    </pre>
+                </li>
+                <li>
+                    If system claims the game does not exist, then set it aside to be checked, re-added, or re-labeled.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="scan-through-teardown">Scanning games through Teardown</h3>
+            <p>
+                Follow these steps to scan games through Teardown. This step is optional, however, it helps the management team to check inventory and account for any missing games.
+                <br/><br/>
+                <em>Note: The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a> to set it up.</em>
+            </p>
+            <ul>
+                <li>
+                    Navigate to Admin > Teardown.
+                </li>
+                <li>
+                    Scan every game in the library, one at a time.
+                </li>
+                <li>
+                    The following message should appear on screen with the relevant game details after each game is scanned.
+                    <pre style="text-align: center;">
+Game successfully logged for storage!
+TTL0000TT
+Small Wonders
+Asmodic Games
+                    </pre>
+                </li>
+                <li>
+                    If system claims the game does not exist, then set it aside to be checked, re-added, or re-labeled.
+                </li>
+            </ul>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="stopping-the-library">Stopping/restarting the Library server</h3>
+            <p>
+                Follow these steps to stop/restart the Library server.
+            </p>
+            <ul>
+                <li>
+                    Bring up the terminal window belonging to the Rails server. This is the second window that opens and will be output continuous logs as the application is being used.
+                </li>
+                <li>
+                    Press ctrl + C. Output should stop immediately or within a few seconds.
+                </li>
+                <li>
+                    To restart the server, type "rails s" and hit enter. Wait until you see the line below before trying to access anything:
+                    <pre>
+    [...]
+    Listening on 0.0.0.0:3000/, CTRL+C to stop</pre>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div class="row"><br/></div>
+<div class="row"><br/></div>
+
+<footer data-event="setup">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4" style="text-align: center;">
+        Welcome to PAX Tabletop!
+    </div>
+</footer>
+
+</body>
+</html>
+
