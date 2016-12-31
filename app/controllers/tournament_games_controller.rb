@@ -16,7 +16,8 @@ class TournamentGamesController < ApplicationController
   end
 
   def cancel
-    @tournament_game = TournamentGame.find(params[:id])
+    @tournament_game = TournamentGame.find(params[:id]) unless params[:id].empty?
+    @tournament_game = TournamentGame.new if @tournament_game.nil?
   end
 
   def delete
