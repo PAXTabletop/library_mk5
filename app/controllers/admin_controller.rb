@@ -34,6 +34,10 @@ class AdminController < ApplicationController
     render json: :nothing
   end
 
+  def tournament_games
+    @tournament_games = TournamentGame.active.order(title: :asc).paginate(per_page: 10, page: params[:page])
+  end
+
   def titles
     respond_to do |format|
       format.json { render json: Title.select(:title).distinct.order(:title).map(&:title) }

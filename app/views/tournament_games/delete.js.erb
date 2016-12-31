@@ -1,0 +1,2 @@
+$('[data-tournament-game-id="<%= @tournament_game_id %>"]').remove();
+$('#tournament-games-table').html('<%= escape_javascript(render 'tournament_games/table') %>');

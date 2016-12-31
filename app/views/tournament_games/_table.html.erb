@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    <tr>
+        <th class="col-xs-3">
+            Title
+        </th>
+        <th class="col-xs-2">
+            Quantity
+        </th>
+        <th class="col-xs-1">
+            Expansion
+        </th>
+        <th class="col-xs-4">
+            Notes
+        </th>
+        <th class="col-xs-2"></th>
+    </tr>
+    <% @tournament_games.each do |tournament_game| %>
+        <%= render partial: 'tournament_games/tournament_game', locals: { tournament_game: tournament_game } %>
+    <% end %>
+</table>
+<%= will_paginate @tournament_games, params: { controller: 'admin', action: 'tournament_games' } %>

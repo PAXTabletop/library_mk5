@@ -1,0 +1,25 @@
+<tr class="edit-tournament-game-row" data-tournament-game-id="<%= @tournament_game.id %>">
+    <td class="col-xs-3">
+        <input type="text" class="form-control" name="title" placeholder="Game/Expansion Title" value="<%= @tournament_game.title %>" />
+    </td>
+    <td class="col-xs-2">
+        <input type="number" class="form-control" name="quantity" placeholder="Quantity" value="<%= @tournament_game.quantity %>" />
+    </td>
+    <td class="col-xs-1">
+        <select class="form-control" name="expansion">
+            <option <%= @tournament_game.expansion ? 'selected' : nil %> value="true">Yes</option>
+            <option <%= @tournament_game.expansion ? nil : 'selected' %> value="false">No</option>
+        </select>
+    </td>
+    <td class="col-xs-4">
+        <input type="text" class="form-control" name="notes" value="<%= @tournament_game.notes %>" />
+    </td>
+    <td class="col-xs-2">
+        <% if @tournament_game.new_record? %>
+            <input type="button" class="btn btn-primary new-tournament-game-btn" value="Add" />
+        <% else %>
+            <input type="button" class="btn btn-primary save-tournament-game-btn" value="Save" />
+        <% end %>
+        <input type="button" class="btn btn-default cancel-tournament-game-btn" value="Cancel" />
+    </td>
+</tr>

@@ -49,6 +49,16 @@ Rails.application.routes.draw do
   put '/admin/publishers/:id', to: 'publishers#update'
   get '/admin/publishers/cancel', to: 'publishers#cancel'
 
+  get '/tournament', to: 'admin#tournament_games'
+  post '/admin/tournament', to: 'tournament_games#create'
+  get '/admin/tournament/edit', to: 'tournament_games#edit'
+  put '/admin/tournament/:id', to: 'tournament_games#update'
+  get '/admin/tournament/cancel', to: 'tournament_games#cancel'
+  delete '/admin/tournament/:id', to: 'tournament_games#delete'
+
+  get '/tournament/recently_deleted', to: 'tournament_games#recently_deleted'
+  put '/admin/tournament/restore/:id', to: 'tournament_games#restore'
+
   get '/game/status', to: 'games#status'
   post '/game/new', to: 'games#new'
   get '/game/display', to: 'games#display'

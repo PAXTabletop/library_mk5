@@ -1,0 +1,1 @@
+$('[data-tournament-game-id="<%= @tournament_game.id %>"]').replaceWith('<%= escape_javascript(render partial: 'tournament_game', locals: { tournament_game: @tournament_game }) %>');

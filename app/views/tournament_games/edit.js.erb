@@ -1,0 +1,8 @@
+var originalRow = $('tr[data-tournament-game-id="<%= @tournament_game.id %>"]'),
+    html = '<%= escape_javascript(render 'form') %>';
+
+if(originalRow.length > 0){
+    originalRow.replaceWith(html);
+}else{
+    $('#tournament-games-table').find('tr').first().after(html);
+}

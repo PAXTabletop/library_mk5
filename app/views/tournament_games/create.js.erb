@@ -1,0 +1,2 @@
+$('[data-tournament-game-id=""]').replaceWith('<%= escape_javascript(render partial: 'tournament_game', locals: { tournament_game: @tournament_game }) %>');
+$('#tournament-games-table').html('<%= escape_javascript(render 'tournament_games/table') %>');

@@ -1,0 +1,20 @@
+<tr class="display-tournament-game-row" data-tournament-game-id="<%= tournament_game.id %>">
+    <td class="col-xs-3">
+        <%= tournament_game.title %>
+    </td>
+    <td class="col-xs-2">
+        <%= tournament_game.quantity %>
+    </td>
+    <td class="col-xs-1" style="text-align: center;">
+        <% if tournament_game.expansion %>
+            <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+        <% end %>
+    </td>
+    <td class="col-xs-4">
+        <%= tournament_game.notes %>
+    </td>
+    <td class="col-xs-2">
+        <input type="button" class="btn btn-default edit-tournament-game-btn" value="Edit" />
+        <input type="button" class="btn btn-danger delete-tournament-game-btn" value="Delete" />
+    </td>
+</tr>

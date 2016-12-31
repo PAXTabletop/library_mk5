@@ -1,0 +1,5 @@
+var html = '';
+<% unless @tournament_game.new_record? %>
+    html = '<%= escape_javascript(render partial: 'tournament_game', locals: { tournament_game: @tournament_game }) %>';
+<% end %>
+$('[data-tournament-game-id="<%= @tournament_game.id %>"]').replaceWith(html);

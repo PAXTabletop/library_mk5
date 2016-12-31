@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-xs-6">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        <%= link_to 'Tournament Games', tournament_path %>
+        &gt;
+        Recently Deleted Tournament Games
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div id="recently-deleted-table">
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-3">
+                Title
+            </th>
+            <th class="col-xs-2">
+                Quantity
+            </th>
+            <th class="col-xs-1">
+                Expansion
+            </th>
+            <th class="col-xs-4">
+                Notes
+            </th>
+            <th class="col-xs-2"></th>
+        </tr>
+        <% @tournament_games.each do |tournament_game| %>
+            <tr class="display-tournament-game-row" data-tournament-game-id="<%= tournament_game.id %>">
+                <td class="col-xs-3">
+                    <%= tournament_game.title %>
+                </td>
+                <td class="col-xs-2">
+                    <%= tournament_game.quantity %>
+                </td>
+                <td class="col-xs-1" style="text-align: center;">
+                    <% if tournament_game.expansion %>
+                        <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+                    <% end %>
+                </td>
+                <td class="col-xs-4">
+                    <%= tournament_game.notes %>
+                </td>
+                <td class="col-xs-2" style="text-align: center;">
+                    <input type="button" class="btn btn-default restore-game-btn" value="Restore" />
+                </td>
+            </tr>
+        <% end %>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#recently-deleted-table').delegate('.restore-game-btn', 'click', function(){
+            $.ajax({
+                url: '/admin/tournament/restore/' + $(this).parents('tr').data('tournament-game-id'),
+                method: 'put',
+                dataType: 'script'
+            });
+        });
+    });
+</script>
