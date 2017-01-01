@@ -13,4 +13,8 @@ class TitlesController < ApplicationController
     @title = Title.find(params[:id])
   end
 
+  def csv
+    render json: { csv: Title.copies_as_csv }
+  end
+
 end

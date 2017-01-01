@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-xs-6">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        Backup Features
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            The below buttons will download .csv files directly to your computer. The download should begin within a couple of seconds after clicking. All information is based on data at the time of download.
+        </p>
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            This file lists individual copies of all games including their title, publisher name, barcode, and whether they are tagged as "likely" for tournaments.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-2">
+        <input type="button" class="btn btn-primary" id="copies-btn" value="Download Library by Game Copy" />
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            This file lists the library by title. Fields included are title, publisher name, whether a title is tagged as "likely" for tournament, and the number of game copies per title. <br/><br/><em>This is the default library view posted after each show.</em>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-2">
+        <input type="button" class="btn btn-primary" id="titles-btn" value="Download Library by Title" />
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            This file lists individual checkouts for the current show only. This includes checkout time, return time, attendee barcode, game barcode, and game title. This can be used for further non-SQL analysis of the show's data not covered by the <a href="<%= metrics_path(event: Event.current) %>">Metrics</a> page or to backup a short form version of the checkout data.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-2">
+        <input type="button" class="btn btn-primary" id="checkouts-btn" value="Download Checkouts for <%= Event.current.formatted_name %>" />
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#copies-btn').click(function(){
+            getFileAt('/games/csv', 'PAXTTLibrary_Games.csv');
+        });
+
+        $('#titles-btn').click(function(){
+            getFileAt('/titles/csv', 'PAXTTLibrary_Titles.csv');
+        });
+
+        $('#checkouts-btn').click(function(){
+            getFileAt('/checkouts/csv', 'PAXTTLibrary_Checkouts_<%= Event.current.formatted_name %>.csv');
+        });
+    });
+
+    function getFileAt(url, fileName){
+        var anchor = document.createElement('a'),
+            handle;
+        if(typeof anchor.download != 'string'){
+            handle = window.open();
+        }
+        $.get(url, function(data){
+            var csv = 'data:attachment/csv;base64,' + btoa(data.csv);
+            if(typeof anchor.download === 'string'){
+                anchor.download = fileName;
+                anchor.href = csv;
+                anchor.click();
+            } else {
+                handle.location = csv;
+            }
+        });
+    }
+</script>

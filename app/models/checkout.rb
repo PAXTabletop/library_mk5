@@ -86,6 +86,17 @@ class Checkout < ActiveRecord::Base
     end
   end
 
+  def self.current_as_csv
+    csv = ['CheckedOut,Returned,AttendeeId,Title,GameBarcode']
+    checkouts = includes(:attendee, game: [:title]).joins(:attendee, game: [:title])
+                  .where(event: Event.current)
+                  .order(check_out_time: :asc).map do |checkout|
+      "\"#{checkout.check_out_time}\",\"#{checkout.return_time}\",#{checkout.attendee.barcode},\"#{checkout.game.name}\",#{checkout.game.barcode}"
+    end
+
+    csv.concat(checkouts).join("\n")
+  end
+
   def self.purge_recommendations(gradation = 0.5)
     Checkout.connection.execute(
       <<-SQL

@@ -21,4 +21,19 @@ class Title < ActiveRecord::Base
     result
   end
 
+  def self.copies_as_csv
+    csv = ['Title,Publisher,LikelyTournament,Count']
+    titles = joins(:games, :publisher).where(games: { culled: false })
+               .select('titles.title, publishers.name, titles.likely_tournament, games.id')
+               .group(:title, :name, :likely_tournament).order('lower(titles.title)').count('games.id').map do |title_map|
+      title = title_map.first.first
+      pub = title_map.first.second
+      likely = title_map.first.third
+      copies = title_map.second
+      "\"#{title}\",\"#{pub}\",#{likely},#{copies}"
+    end
+
+    csv.concat(titles).join("\n")
+  end
+
 end

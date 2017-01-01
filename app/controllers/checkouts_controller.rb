@@ -54,4 +54,8 @@ class CheckoutsController < ApplicationController
     @recent = Checkout.recent
   end
 
+  def csv
+    render json: { csv: Checkout.current_as_csv }
+  end
+
 end

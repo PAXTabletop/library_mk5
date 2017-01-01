@@ -116,4 +116,14 @@ class Game < ActiveRecord::Base
     str.strip.split(' ').map(&:capitalize).join(' ')
   end
 
+  def self.copies_as_csv
+    csv = ["Title,Publisher,Barcode,LikelyTournament"]
+    games = where(culled: false).includes(:title, title: [:publisher]).joins(:title).order('lower(titles.title)').map do |game|
+      info = game.info
+      "\"#{info[:name]}\",\"#{info[:publisher]}\",#{info[:barcode]},#{info[:likely_tournament]}"
+    end
+
+    csv.concat(games).join("\n")
+  end
+
 end

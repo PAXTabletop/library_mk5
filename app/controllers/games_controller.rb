@@ -36,4 +36,8 @@ class GamesController < ApplicationController
     @game = Game.get(params[:barcode])
   end
 
+  def csv
+    render json: { csv: Game.copies_as_csv }
+  end
+
 end

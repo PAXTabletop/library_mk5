@@ -60,4 +60,7 @@ class AdminController < ApplicationController
     end
   end
 
+  def backup
+  end
+
 end
