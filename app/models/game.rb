@@ -53,8 +53,7 @@ class Game < ActiveRecord::Base
     if Utilities.BARCODE_FORMAT.match(search)
       result = where(barcode: search.upcase)
     elsif search
-      search_str = search.size > 1 ? "%#{search}%" : "#{search}%"
-      result = where(title: Title.search(search_str))
+      result = where(title: Title.search(search))
     else
       result = where(nil)
     end
@@ -65,6 +64,8 @@ class Game < ActiveRecord::Base
           result = result.where(title: Title.where(likely_tournament: true))
         when /checkedout/
           result = result.where('games.id in (select distinct game_id from checkouts where closed = false)')
+        else
+          # do nothing
       end
     end
 

@@ -10,10 +10,11 @@ class Title < ActiveRecord::Base
   end
 
   def self.search(search)
-    search = search.strip.gsub(/\s/, '') if search
+    search_txt = nil
+    search_txt = search.strip.gsub(/\s/, '') if search
 
-    if search
-      search_str = search.size > 1 ? "%#{search}%" : "#{search}%"
+    if search_txt
+      search_str = search_txt.size > 1 ? "%#{search_txt}%" : "#{search_txt}%"
       result = where('lower(regexp_replace(title, \' \', \'\')) like lower(?)', search_str)
     else
       result = where(nil)
