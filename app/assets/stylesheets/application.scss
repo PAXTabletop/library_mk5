@@ -163,3 +163,11 @@ footer[data-event="setup"], .btn-default[data-event="setup"]  {
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #eeeeee;
 }
+
+.alert-text-box {
+    padding: 10px 40px;
+    background-color: #FFFF66;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
