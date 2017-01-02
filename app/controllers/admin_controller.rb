@@ -42,7 +42,7 @@ class AdminController < ApplicationController
     respond_to do |format|
       format.json { render json: Title.select(:title).distinct.order(:title).map(&:title) }
 
-      @titles = Title.active.search(params[:search]).order('lower(title) asc').paginate(per_page: 10, page: params[:page])
+      @titles = Title.active.search(params[:search]).paginate(per_page: 10, page: params[:page])
 
       format.html { }
       format.js { render 'titles/titles' }
@@ -53,7 +53,7 @@ class AdminController < ApplicationController
     respond_to do |format|
       format.json { render json: Publisher.select(:name).distinct.order(:name).map(&:name) }
 
-      @publishers = Publisher.active.search(params[:search]).order('lower(name) asc').paginate(per_page: 10, page: params[:page])
+      @publishers = Publisher.active.search(params[:search]).paginate(per_page: 10, page: params[:page])
 
       format.html { }
       format.js { render 'publishers/publishers' }

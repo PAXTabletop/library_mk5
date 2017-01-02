@@ -6,6 +6,7 @@ class Title < ActiveRecord::Base
 
   def self.active
     where('id in (select title_id from games where culled = false)')
+    .order('lower(title) asc')
   end
 
   def self.search(search)

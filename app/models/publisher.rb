@@ -4,6 +4,7 @@ class Publisher < ActiveRecord::Base
 
   def self.active
     where('id in (select publisher_id from titles where id in (select title_id from games where culled = false))')
+    .order('lower(name) asc')
   end
 
   def self.search(search)
