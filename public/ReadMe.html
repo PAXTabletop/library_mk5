@@ -88,6 +88,12 @@
                     <a href="#stopping-the-library">[required] Stopping the Library server</a>
                 </li>
             </ul>
+            <h4>FAQ</h4>
+            <ul>
+                <li>
+                    <a href="#server-wont-start">The Server Shows An Error On Startup</a>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -210,8 +216,8 @@
                 <li>
                     Refresh the page. The colors and title of the page should update to reflect the new PAX.
                 </li>
-                <p><em>Note: event information is editable before or after a show, but not on or between the start/end dates listed!</em></p>
             </ul>
+            <p><em>Note: event information is editable before or after a show, but not on or between the start/end dates listed!</em></p>
         </div>
     </div>
 
@@ -280,7 +286,6 @@ Asmodic Games
                     If system claims the game does not exist, then set it aside to be checked, re-added, or re-labeled.
                 </li>
             </ul>
-            </ul>
         </div>
     </div>
 
@@ -307,6 +312,24 @@ Asmodic Games
     Listening on 0.0.0.0:3000/, CTRL+C to stop</pre>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="server-wont-start">The Server Shows An Error On Startup</h3>
+            <p>
+                Q: I get some weird error message in the command line terminal when I try to <a href="#starting-the-library">start the server with the "rails s" command</a>. What am I doing wrong?
+                <br/><br/>
+                A: There can not be any spaces in the file path to the library package due to an issue with how some commands in the server environment are made. Check where the Library folder sits at by right-clicking on the folder and selecting "Properties". Usually this issue will occur when a username or some other path has a space in it. For example, the following path will cause an error to occur because there's a space between "Joe" and "Greathead" even though this is a valid folder/user name:
+                <pre>
+    C:\Users\Joe<span style="background-color: yellow;"> </span>Greathead\Desktop\tabletop_library_mk5</pre>
+                In order to fix this, you need to move the whole library folder to a location that does not have spaces in it. The easiest way to do this is to move the library to the root folder on the machine's drive.
+                <pre>
+    C:\tabletop_library_mk5</pre>
+                This will prevent the error from occuring and allow you to start the server. The location, with the exception of this issue, does not affect how the server runs.
+            </p>
         </div>
     </div>
 
