@@ -53,44 +53,44 @@ footer {
     height: 60px;
     width: 510px;
     margin: 0 auto;
-    background: asset-url("pax_tabletop_tag_mk5.png", image) no-repeat;
+    background: asset-url("pax_tabletop_tag_mk5.png") no-repeat;
 }
 
 header[data-event="prime"], header[data-event="west"] {
-    background: asset-url("event_background_vert.png", image) repeat;
+    background: asset-url("event_background_vert.png") repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") no-repeat;
     }
 }
 header[data-event="east"] {
-    background: asset-url("event_background_vert.png", image) 0 -90px repeat;
+    background: asset-url("event_background_vert.png") 0 -90px repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) 0 -30px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") 0 -30px no-repeat;
     }
 }
 header[data-event="south"] {
-    background: asset-url("event_background_vert.png", image) 0 -180px repeat;
+    background: asset-url("event_background_vert.png") 0 -180px repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) 0 -60px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") 0 -60px no-repeat;
     }
 }
 header[data-event="aus"] {
-    background: asset-url("event_background_vert.png", image) 0 -270px repeat;
+    background: asset-url("event_background_vert.png") 0 -270px repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) 0 -90px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") 0 -90px no-repeat;
     }
 }
 header[data-event="dev"] {
-    background: asset-url("event_background_vert.png", image) 0 -360px repeat;
+    background: asset-url("event_background_vert.png") 0 -360px repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) 0 -120px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") 0 -120px no-repeat;
     }
 }
 
 header[data-event="setup"] {
-    background: asset-url("event_background_vert.png", image) 0 -450px repeat;
+    background: asset-url("event_background_vert.png") 0 -450px repeat;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png", image) 0 -150px no-repeat;
+        background: asset-url("event_logos_bars_mk5.png") 0 -150px no-repeat;
     }
 }
 

@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   get '/tournament/recently_deleted', to: 'tournament_games#recently_deleted'
   put '/admin/tournament/restore/:id', to: 'tournament_games#restore'
 
-  get '/backup', to: 'admin#backup'
+  get '/reports', to: 'admin#reports'
   get '/games/csv', to: 'games#csv'
   get '/titles/csv', to: 'titles#csv'
   get '/checkouts/csv', to: 'checkouts#csv'
