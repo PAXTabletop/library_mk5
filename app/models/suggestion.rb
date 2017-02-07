@@ -1,5 +1,7 @@
 class Suggestion < ActiveRecord::Base
 
+  belongs_to :event
+
   before_create :format_val
 
   def format_val

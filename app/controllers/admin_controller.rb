@@ -63,4 +63,7 @@ class AdminController < ApplicationController
   def reports
   end
 
+  def backup
+  end
+
 end

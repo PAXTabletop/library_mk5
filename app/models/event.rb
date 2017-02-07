@@ -37,7 +37,11 @@ class Event < ActiveRecord::Base
   end
 
   def formatted_name
-    "PAX #{self.short_name.capitalize} #{self.start_date.strftime('%Y')}"
+    "PAX #{self.short_name.capitalize} #{self.year}"
+  end
+
+  def year
+    self.start_date.strftime('%Y')
   end
 
   def self.is_live
@@ -59,6 +63,10 @@ class Event < ActiveRecord::Base
 
   def self.four_events_ago
     self.all.order(id: :desc).fifth
+  end
+
+  def self.last_three_shows
+    self.all.where('id >= ?', self.two_events_ago.id)
   end
 
   def setup_complete?

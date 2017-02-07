@@ -31,6 +31,9 @@ gem 'bcrypt', '~> 3.1.7'
 # tzinfo added for windows environments
 gem 'tzinfo-data'
 
+# community gem for syncing data to dropbox, written by Jesus apparently: https://github.com/Jesus/dropbox_api
+gem 'dropbox_api'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
