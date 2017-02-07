@@ -1,24 +1,30 @@
 <table class="table table-striped">
     <tr>
-        <th class="col-xs-3"></th>
-        <th class="col-xs-3">
+        <th class="col-xs-1"></th>
+        <th class="col-xs-4">
             Title
         </th>
-        <th class="col-xs-3">
+        <th class="col-xs-4">
+            Publisher(s)
+        </th>
+        <th class="col-xs-2">
             Checkouts
         </th>
-        <th class="col-xs-3"></th>
+        <th class="col-xs-1"></th>
     </tr>
     <% @event.checkouts_by_title.each_with_index do |s_row, index| %>
         <tr data-event-id="<%= index %>">
-            <td class="col-xs-3"></td>
-            <td class="col-xs-3">
+            <td class="col-xs-1"></td>
+            <td class="col-xs-4">
                 <%= s_row['title'] %>
             </td>
-            <td class="col-xs-3">
+            <td class="col-xs-4">
+                <%= s_row['publisher'] %>
+            </td>
+            <td class="col-xs-2">
                 <%= s_row['checkouts'] %>
             </td>
-            <td class="col-xs-3"></td>
+            <td class="col-xs-1"></td>
         </tr>
     <% end %>
 </table>

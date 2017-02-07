@@ -135,14 +135,16 @@ class Event < ActiveRecord::Base
       <<-SQL
         select
           initcap(lower(t.title)) as title
+          ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
           ,count(distinct c.id) as checkouts
         from checkouts c
         inner join games g on g.id = c.game_id
         inner join titles t on t.id = g.title_id
+        inner join publishers p on p.id = t.publisher_id
         where
           c.event_id = #{self.id}
         group by 1
-        order by 2 desc, 1
+        order by 3 desc, 1, 2
       SQL
     )
   end
