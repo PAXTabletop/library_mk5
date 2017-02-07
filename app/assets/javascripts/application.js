@@ -40,20 +40,16 @@ $(document).ready(function(){
         hideSuggest();
     });
 
+    $('#suggest-title').keypress(function(e){
+        var _me = $(this);
+        _me.parent().removeClass('has-error');
+        if(e.which.toString() == "13"){
+            postSuggestion();
+        }
+    });
+
     $('#save-suggest').click(function(){
-        $.ajax({
-            url: '/suggest',
-            method: 'post',
-            data: { title: $('#suggest-title').val() },
-            success: function(response){
-                if(response.title){
-                    $.notify('Thanks for suggesting ' + response.title + '!');
-                }
-            },
-            complete: function(){
-                hideSuggest();
-            }
-        });
+        postSuggestion();
     });
 
 });
@@ -69,7 +65,7 @@ function pollStatus(){
 }
 
 function hideSuggest(){
-    $('#suggest-form').hide();
+    $('#suggest-form').hide().removeClass('has-error');
     $('#suggest-btn').show();
     $('#suggest-title').val('');
 }
@@ -95,4 +91,25 @@ function substringMatcher(strs) {
 
         cb(matches);
     };
+}
+
+function postSuggestion(){
+    var input = $('#suggest-title');
+    if(input.val().length > 0) {
+        $.ajax({
+            url: '/suggest',
+            method: 'post',
+            data: {title: input.val()},
+            success: function (response) {
+                if (response.title) {
+                    $.notify('Thanks for suggesting "' + response.title + '"!');
+                }
+            },
+            complete: function () {
+                hideSuggest();
+            }
+        });
+    } else {
+        input.parent().addClass('has-error');
+    }
 }

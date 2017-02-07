@@ -16,7 +16,7 @@ class Suggestion < ActiveRecord::Base
       suggestion = self.find_or_create_by(title: title, event_id: Event.current.id)
       suggestion.update(votes: suggestion.votes + 1)
 
-      title.split(' ').map(&:capitalize).join(' ')
+      title
     end
   end
 
