@@ -15,11 +15,12 @@
             Please do not use the below pages unless you are a manager.
             <span class="glyphicon glyphicon-alert" style="color: #777;"></span>
         </p>
+        <%= render 'link', path: metrics_path(event: Event.current), text: 'Post Show Metrics', glyph: 'stats' %>
         <%= render 'link', path: events_path, text: 'Events', glyph: 'tasks' %>
+        <%= render 'link', path: backup_path, text: 'Backup to Cloud', glyph: 'cloud' %>
         <%= render 'link', path: titles_path, text: 'Edit Titles', glyph: 'edit' %>
         <%= render 'link', path: publishers_path, text: 'Edit Publishers', glyph: 'edit' %>
         <%= render 'link', path: reports_path, text: 'Database Reports', glyph: 'floppy-save' %>
-        <%= render 'link', path: backup_path, text: 'Backup to Cloud', glyph: 'cloud' %>
 
     </div>
     <div class="col-xs-1"></div>

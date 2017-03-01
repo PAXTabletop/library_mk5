@@ -16,7 +16,7 @@
 //= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
-var bc_regex = /^[a-z]{3}[a-z0-9]{3,6}$/i;
+var bc_regex = /^[a-z0-9]{7,13}$/i;
 
 const DEFAULT_ERROR = 'Something nasty occurred. Write down what you did for Mojo Jojo and try again.';
 
