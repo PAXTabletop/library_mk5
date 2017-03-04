@@ -1,6 +1,6 @@
 module DropboxUtil
 
-  DROPBOX_ACCESS_KEY = '8E75q4xYpAAAAAAAAAAAE3YRo0Eg1IRD7U4KgjW3tvXJOZ1rCEvOAU82kc544yBT'
+  DROPBOX_ACCESS_KEY = ''
 
   def self.backup
     # fail out if dropbox key doesn't exist
