@@ -13,6 +13,8 @@ class Game < ActiveRecord::Base
   validates_format_of :barcode, with: Utilities.BARCODE_FORMAT
   validates :title, presence: true
 
+  ST_LIMIT_COUNT = 150
+
   def format_member_variables
     self.barcode.upcase!
   end
@@ -125,6 +127,40 @@ class Game < ActiveRecord::Base
     end
 
     csv.concat(games).join("\n")
+  end
+
+  def self.count_remaining_from(table)
+    connection.execute(<<-SQL
+        select count(*) as games_left from (#{sql_remaining_from(table)}) g
+      SQL
+    ).first['games_left'].to_i
+  end
+
+  def self.remaining_from(table)
+    games_count = count_remaining_from(table)
+    games_left = []
+    if games_count <= ST_LIMIT_COUNT
+      games_left = connection.execute(sql_remaining_from(table)).to_a
+    end
+
+    {
+      games_count: games_count,
+      games_left: games_left
+    }
+  end
+
+  def self.sql_remaining_from(table)
+    <<-SQL
+      select g.barcode, initcap(lower(t.title)) as title, initcap(lower(p.name)) as publisher
+      from games g
+      inner join titles t on t.id = g.title_id
+      inner join publishers p on p.id = t.publisher_id
+      left join (select game_id from #{table} where event_id = #{Event.current.id}) st on st.game_id = g.id
+      where
+        g.culled = false
+        and st.game_id is null
+      order by 2, 1
+    SQL
   end
 
 end

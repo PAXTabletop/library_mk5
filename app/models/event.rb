@@ -108,10 +108,10 @@ class Event < ActiveRecord::Base
         from events e
         inner join checkouts c on c.event_id = e.id
         where
-          e.id >= (#{Event.two_events_ago.id})
+          e.id >= (#{Event.three_events_ago.id})
         group by 1
-        order by 1 asc
-        limit 3
+        order by 1 desc
+        limit 4
       SQL
     )
   end
@@ -121,6 +121,8 @@ class Event < ActiveRecord::Base
       <<-SQL
         select
           count(distinct case when g.culled = false then g.id end) as active_games
+          ,count(distinct case when g.culled = true and g.updated_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as culled_during_show
+          ,count(distinct case when g.created_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as added_during_show
           ,count(distinct case when s.event_id = #{self.id} then g.id end) as games_at_setup
           ,count(distinct case when t.event_id = #{self.id} then g.id end) as games_at_teardown
         from games g

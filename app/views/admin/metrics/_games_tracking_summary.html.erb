@@ -1,31 +1,43 @@
 <div class="row">
-    <table class="table table-striped">
-        <tr>
-            <th class="col-xs-3"></th>
-            <th class="col-xs-2">
-                Active Games
-            </th>
-            <th class="col-xs-2">
-                Games At Setup
-            </th>
-            <th class="col-xs-2">
-                Games At Teardown
-            </th>
-            <th class="col-xs-3"></th>
-        </tr>
-        <% games_tracking_summary = @event.games_tracking_summary.first %>
-        <tr>
-            <th class="col-xs-3"></th>
-            <td class="col-xs-2">
-                <%= games_tracking_summary['active_games'] %>
-            </td>
-            <td class="col-xs-2">
-                <%= games_tracking_summary['games_at_setup'] %>
-            </td>
-            <td class="col-xs-2">
-                <%= games_tracking_summary['games_at_teardown'] %>
-            </td>
-            <th class="col-xs-3"></th>
-        </tr>
-    </table>
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+        <table class="table table-striped" style="border: 1px solid #ccc; border-radius: 4px; border-collapse: unset;">
+            <tr>
+                <th class="col-xs-2" style="text-align: center;">
+                    Active Games
+                </th>
+                <th class="col-xs-2" style="text-align: center;">
+                    Games At Setup
+                </th>
+                <th class="col-xs-2" style="text-align: center;">
+                    Games Culled
+                </th>
+                <th class="col-xs-2" style="text-align: center;">
+                    Games Added
+                </th>
+                <th class="col-xs-2" style="text-align: center;">
+                    Games At Teardown
+                </th>
+            </tr>
+            <% games_tracking_summary = @event.games_tracking_summary.first %>
+            <tr>
+                <td class="col-xs-2" style="text-align: center;">
+                    <%= games_tracking_summary['active_games'] %>
+                </td>
+                <td class="col-xs-2" style="text-align: center;">
+                    <%= games_tracking_summary['games_at_setup'] %>
+                </td>
+                <td class="col-xs-2" style="text-align: center;">
+                    <%= games_tracking_summary['culled_during_show'] %>
+                </td>
+                <td class="col-xs-2" style="text-align: center;">
+                    <%= games_tracking_summary['added_during_show'] %>
+                </td>
+                <td class="col-xs-2" style="text-align: center;">
+                    <%= games_tracking_summary['games_at_teardown'] %>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-1"></div>
 </div>

@@ -1,2 +1,3 @@
-$('#game-display').html('<%= escape_javascript(render 'game') %>');
+$('#game-display').hide().html('<%= escape_javascript(render 'game') %>').slideDown(250);
+$('#games-left-table').html('<%= escape_javascript(render 'games_left_table') %>');
 $('#teardown-barcode').val('');

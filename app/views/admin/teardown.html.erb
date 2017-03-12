@@ -10,9 +10,6 @@
 
 <div class="row">
     <div class="col-xs-12" style="text-align: center;">
-        <h3>
-            Teardown
-        </h3>
         <p>This will add an entry for the scanned game as being present at the end of <%= Event.current.formatted_name %>.</p>
     </div>
 </div>
@@ -20,18 +17,35 @@
 <div class="row">
     <div class="col-xs-2"></div>
     <div class="col-xs-8 glyphicon-custom-left" style="text-align:center;">
-        <input type="text" id="teardown-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode here." autofocus />
+        <input type="text" id="teardown-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode here." autocomplete="off" autofocus />
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
     </div>
     <div class="col-xs-2"></div>
 </div>
 
-<div id="game-display"></div>
+<div class="row" style="margin-top: 15px;">
+    <div class="col-xs-2"></div>
+    <div id="game-display" class="col-xs-8"></div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div id="games-left-table" class="col-xs-8">
+        <%= render 'games_left_table' %>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
 
 <script>
     $(document).ready(function(){
         $('#teardown-barcode').change(function(){
             $.get('/admin/teardown', $(this).serialize(), null, 'script');
-        });
+        }).blur(function(){
+            // set focus to occur 10 ms later because blur event does not complete yet
+            setTimeout(function() {
+                $('#teardown-barcode').focus();
+            }, 0);
+        }).focus();
     });
 </script>
