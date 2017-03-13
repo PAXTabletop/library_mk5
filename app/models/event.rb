@@ -66,7 +66,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.last_three_shows
-    self.all.where('id >= ?', self.two_events_ago.id)
+    self.all.where('id >= ?', self.two_events_ago.id).order(id: :desc)
   end
 
   def setup_complete?

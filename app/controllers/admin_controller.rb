@@ -45,6 +45,9 @@ class AdminController < ApplicationController
   def purge
   end
 
+  def missing
+  end
+
   def setup_tag
     Event.current.update_setup_tag(params[:tag])
     render json: :nothing

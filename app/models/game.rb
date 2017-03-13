@@ -163,4 +163,43 @@ class Game < ActiveRecord::Base
     SQL
   end
 
+  def self.missing_games
+    events = Event.last_three_shows
+    one_show = events.first
+    two_show = events.second
+    three_show = events.third
+
+    connection.execute(<<-SQL
+        select
+          g.*, initcap(lower(t.title)) as title, initcap(lower(p.name)) as publisher
+          from (
+            select distinct
+              g.barcode, g.title_id, g.created_at::date as created_at
+              ,case when count(case when s.event_id = #{three_show.id} and s.game_id is not null then 1 end) > 0 then 'x' end as three_show_setup
+              ,case when count(case when td.event_id = #{three_show.id} and td.game_id is not null then 1 end) > 0 then 'x' end as three_show_teardown
+              ,case when count(case when s.event_id = #{two_show.id} and s.game_id is not null then 1 end) > 0 then 'x' end as two_show_setup
+              ,case when count(case when td.event_id = #{two_show.id} and td.game_id is not null then 1 end) > 0 then 'x' end as two_show_teardown
+              ,case when count(case when s.event_id = #{one_show.id} and s.game_id is not null then 1 end) > 0 then 'x' end as one_show_setup
+              ,case when count(case when td.event_id = #{one_show.id} and td.game_id is not null then 1 end) > 0 then 'x' end as one_show_teardown
+              ,count(distinct case when s.event_id between #{three_show.id} and #{one_show.id} and s.game_id is not null then s.event_id else null end) as setups
+              ,count(distinct case when td.event_id between #{three_show.id} and #{one_show.id} and td.game_id is not null then td.event_id else null end) as teardowns
+            from
+              games g
+            left join setups s on s.game_id = g.id
+            left join teardowns td on td.game_id = g.id
+            where
+              g.culled = false
+              and g.created_at::date <= '#{three_show.start_date}'
+            group by 1, 2, 3
+          ) g
+          inner join titles t on t.id = g.title_id
+          inner join publishers p on p.id = t.publisher_id
+        where
+          setups + teardowns < 4
+          and (one_show_setup is null and one_show_teardown is null)
+        order by lower(t.title), lower(p.name)
+      SQL
+    )
+  end
+
 end
