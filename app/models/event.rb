@@ -139,12 +139,15 @@ class Event < ActiveRecord::Base
           initcap(lower(t.title)) as title
           ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
           ,count(distinct c.id) as checkouts
-        from checkouts c
-        inner join games g on g.id = c.game_id
+          ,count(distinct g.id) as copies_during_show
+          ,round(count(distinct c.id)::numeric / count(distinct g.id)::numeric, 1) as checkouts_per_copy
+        from games g
+        left join (select * from checkouts where event_id = #{self.id}) c on g.id = c.game_id
         inner join titles t on t.id = g.title_id
         inner join publishers p on p.id = t.publisher_id
         where
-          c.event_id = #{self.id}
+          g.culled = false
+          or (g.culled and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
         group by 1
         order by 3 desc, 1, 2
       SQL
