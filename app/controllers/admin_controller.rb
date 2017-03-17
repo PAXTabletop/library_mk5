@@ -85,4 +85,14 @@ class AdminController < ApplicationController
   def backup
   end
 
+  def added_games
+    @event = Event.current
+    @games = Game.added_during_show
+  end
+
+  def culled_games
+    @event = Event.current
+    @games = Game.culled_during_show
+  end
+
 end

@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-xs-12">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        <%= link_to 'Events', events_path %>
+        &gt;
+        <%= link_to "Library Stats for #{@event.name}", metrics_path(@event) %>
+        &gt;
+        Culled Games
+    </div>
+</div>
+
+<div class="row">
+    <h3>
+        Games Culled During <%= @event.name %>
+    </h3>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-4">
+                Barcode
+            </th>
+            <th class="col-xs-4">
+                Title
+            </th>
+            <th class="col-xs-4">
+                Publisher
+            </th>
+        </tr>
+        <% @games.each do |game| %>
+            <tr>
+                <td class="col-xs-4">
+                    <%= game.barcode %>
+                </td>
+                <td class="col-xs-4">
+                    <%= game.name %>
+                </td>
+                <td class="col-xs-4">
+                    <%= game.by %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+</div>

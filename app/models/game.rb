@@ -48,6 +48,14 @@ class Game < ActiveRecord::Base
     self.checkouts.where(event: Event.current, closed: false).size > 0
   end
 
+  def self.added_during_show
+    where('games.created_at::date between ? and ?', Event.current.start_date, Event.current.end_date).includes(:title, title: :publisher).order('titles.title asc')
+  end
+
+  def self.culled_during_show
+    where('culled = true and games.updated_at::date between ? and ?', Event.current.start_date, Event.current.end_date).includes(:title, title: :publisher).order('titles.title asc')
+  end
+
   def self.search(search)
     search_tags = search.to_s.scan(/tag:([^\s]{1,})[\s]?/i).flatten
     search = search.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if search
