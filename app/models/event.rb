@@ -183,6 +183,9 @@ class Event < ActiveRecord::Base
           ,coalesce(c.time, r.time) as time
           ,c.checkouts
           ,r.returns
+          ,case
+            when coalesce(co.checkouts, 0) - coalesce(rt.returns, 0) != 0
+            then coalesce(co.checkouts, 0) - coalesce(rt.returns, 0) end as outstanding_checkouts
         from
           (
           select
@@ -190,7 +193,7 @@ class Event < ActiveRecord::Base
             ,to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as checkouts
           from checkouts c
-          where event_id = #{self.id}
+          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) c
         full join
@@ -200,11 +203,29 @@ class Event < ActiveRecord::Base
             ,to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as returns
           from checkouts c
-          where event_id = #{self.id}
+          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) r
           on c.date = r.date
           and c.time = r.time
+        left join
+          (
+          select to_char(ts.datetime, 'YYYY-mm-DD') as date,to_char(ts.datetime, 'HH24:00:00') as time, count(*) as checkouts
+          from checkouts c
+          left join (SELECT distinct generate_series('#{self.start_date}'::timestamp, ('#{self.end_date}'::date + '1 day'::interval)::timestamp, interval '1 hour') as datetime) AS ts
+            on ts.datetime >= to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD HH24:00:00')::timestamp
+          where c.event_id = #{self.id}
+          group by 1,2
+          ) co on co.date = coalesce(c.date, r.date) and co.time = coalesce(c.time, r.time)
+        left join
+          (
+          select to_char(ts.datetime, 'YYYY-mm-DD') as date,to_char(ts.datetime, 'HH24:00:00') as time, count(*) as returns
+          from checkouts c
+          left join (SELECT distinct generate_series('#{self.start_date}'::timestamp, ('#{self.end_date}'::date + '1 day'::interval)::timestamp, interval '1 hour') as datetime) AS ts
+            on ts.datetime >= to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD HH24:00:00')::timestamp
+          where c.event_id = #{self.id}
+          group by 1,2
+          ) rt on rt.date = coalesce(c.date, r.date) and rt.time = coalesce(c.time, r.time)
         order by 1,2
       SQL
     )
