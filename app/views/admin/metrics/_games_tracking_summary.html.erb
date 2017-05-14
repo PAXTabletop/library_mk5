@@ -28,10 +28,10 @@
                     <%= games_tracking_summary['games_at_setup'] %>
                 </td>
                 <td class="col-xs-2" style="text-align: center;">
-                    <%= link_to games_tracking_summary['culled_during_show'], culled_path %>
+                    <%= link_to games_tracking_summary['culled_during_show'], culled_path(@event) %>
                 </td>
                 <td class="col-xs-2" style="text-align: center;">
-                    <%= link_to games_tracking_summary['added_during_show'], added_path %>
+                    <%= link_to games_tracking_summary['added_during_show'], added_path(@event) %>
                 </td>
                 <td class="col-xs-2" style="text-align: center;">
                     <%= games_tracking_summary['games_at_teardown'] %>

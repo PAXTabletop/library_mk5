@@ -86,13 +86,13 @@ class AdminController < ApplicationController
   end
 
   def added_games
-    @event = Event.current
-    @games = Game.added_during_show
+    @event = Event.find(params[:event]) if params[:event]
+    @games = Game.added_during_show(@event)
   end
 
   def culled_games
-    @event = Event.current
-    @games = Game.culled_during_show
+    @event = Event.find(params[:event]) if params[:event]
+    @games = Game.culled_during_show(@event)
   end
 
 end

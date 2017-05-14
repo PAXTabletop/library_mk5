@@ -29,7 +29,7 @@ class Game < ActiveRecord::Base
   end
 
   def name
-    self.title.title
+    self.title ? self.title.title : "Title(#{self.title_id}) Not Found"
   end
 
   def full_name
@@ -37,23 +37,23 @@ class Game < ActiveRecord::Base
   end
 
   def by
-    self.title.publisher.name
+    self.title ? self.title.publisher.name : "Publisher(Title: #{self.title_id}) Not Found"
   end
 
   def tourney?
-    self.title.likely_tournament
+    self.title ? self.title.likely_tournament : false
   end
 
   def checked_out?
     self.checkouts.where(event: Event.current, closed: false).size > 0
   end
 
-  def self.added_during_show
-    where('games.created_at::date between ? and ?', Event.current.start_date, Event.current.end_date).includes(:title, title: :publisher).order('titles.title asc')
+  def self.added_during_show(event)
+    where("games.created_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
-  def self.culled_during_show
-    where('culled = true and games.updated_at::date between ? and ?', Event.current.start_date, Event.current.end_date).includes(:title, title: :publisher).order('titles.title asc')
+  def self.culled_during_show(event)
+    where("culled = true and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
   def self.search(search)
