@@ -129,9 +129,11 @@ class Game < ActiveRecord::Base
 
   def self.copies_as_csv
     csv = ["Title,Publisher,Barcode,LikelyTournament"]
-    games = where(culled: false).includes(:title, title: [:publisher]).joins(:title).order('lower(titles.title)').map do |game|
-      info = game.info
-      "\"#{info[:name]}\",\"#{info[:publisher]}\",#{info[:barcode]},#{info[:likely_tournament]}"
+    games = where(culled: false)
+              .joins(:title, title: [:publisher])
+              .select('initcap(titles.title) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament')
+              .order('lower(titles.title)').map do |db_row|
+      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
     end
 
     csv.concat(games).join("\n")
