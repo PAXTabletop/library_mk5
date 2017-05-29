@@ -1,34 +1,47 @@
-<div class="row">
+<div class="row" style="text-align: center;">
     <div class="col-xs-1"></div>
-    <div class="col-xs-10" style="text-align:center;">
+    <div class="col-md-10">
+        <div class="col-md-12">
+            <h4>
+                Game Inventory Management
+            </h4>
+        </div>
 
-        <h4>
-            Game Inventory Management
-        </h4>
-        <%= render 'link', path: setup_path, text: 'Setup Scanning', type: nil %>
-        <%= render 'link', path: teardown_path, text: 'Teardown Scanning', type: nil %>
-        <%= render 'link', path: tournament_path, text: 'Tournament Games Interface', type: nil %>
-        <%= render 'link', path: new_game_path, text: 'Add New Game', type: nil %>
-        <%= render 'link', path: cull_path, text: 'Cull Existing Game', type: nil %>
-        <hr/>
-        <h4>
-            Automated Reporting
-        </h4>
-        <%= render 'link', path: purge_path, text: 'Games to Purge', type: nil %>
-        <%= render 'link', path: missing_path, text: 'Missing Games', type: nil %>
-        <hr/>
-        <h4>
-            Management Features
-        </h4>
-        <p class="alert alert-warning">
-            Please do not use the below pages unless you are a manager.
-        </p>
-        <%= render 'link', path: metrics_path(event: Event.current), text: 'Post Show Metrics', type: nil %>
-        <%= render 'link', path: events_path, text: 'Events Interface', type: nil %>
-        <%= render 'link', path: backup_path, text: 'Backup to Cloud', type: nil %>
-        <%= render 'link', path: titles_path, text: 'Edit Titles', type: nil %>
-        <%= render 'link', path: publishers_path, text: 'Edit Publishers', type: nil %>
-        <%= render 'link', path: reports_path, text: 'Download Database Reports', type: nil %>
+        <div class="col-xs-12 btn-admin-container">
+            <%= render 'link', path: setup_path, text: 'Setup Scanning', type: nil %>
+            <%= render 'link', path: teardown_path, text: 'Teardown Scanning', type: nil %>
+            <%= render 'link', path: tournament_path, text: 'Tournament Games Interface', type: nil %>
+            <%= render 'link', path: new_game_path, text: 'Add New Game', type: nil %>
+            <%= render 'link', path: cull_path, text: 'Cull Existing Game', type: nil %>
+        </div>
+
+        <div class="col-md-12">
+            <h4>
+                Automated Reporting
+            </h4>
+        </div>
+
+        <div class="col-xs-12 btn-admin-container">
+            <%= render 'link', path: purge_path, text: 'Games to Purge', type: nil %>
+            <%= render 'link', path: missing_path, text: 'Missing Games', type: nil %>
+        </div>
+
+        <div class="col-md-12">
+            <h4>
+                Management Features
+            </h4>
+        </div>
+
+        <div class="col-xs-12 btn-admin-container">
+            <p class="alert alert-warning">
+                Please only use the below pages if you are a manager.
+            </p>
+            <%= render 'link', path: metrics_path(event: Event.current), text: 'Post Show Metrics', type: nil %>
+            <%= render 'link', path: events_path, text: 'Events Interface', type: nil %>
+            <%= render 'link', path: backup_path, text: 'Backup to Cloud', type: nil %>
+            <%= render 'link', path: titles_path, text: 'Edit Titles', type: nil %>
+            <%= render 'link', path: publishers_path, text: 'Edit Publishers', type: nil %>
+            <%= render 'link', path: reports_path, text: 'Download Database Reports', type: nil %>
+        </div>
     </div>
-    <div class="col-xs-1"></div>
 </div>
