@@ -31,6 +31,8 @@ class Event < ActiveRecord::Base
         'aus'
       when /dev/i
         'dev'
+      when /unplugged/i
+        'unplugged'
       else
         'Unknown'
     end

@@ -44,9 +44,16 @@ footer {
 }
 
 #logo {
-    height: 30px;
+    height: 28px;
     width: 510px;
     margin: 0 auto;
+    background-color: #fff;
+    text-align: right;
+    line-height: 22px;
+    padding: 3px 9px;
+    letter-spacing: .04em;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
 }
 
 #tabletop-tag {
@@ -57,40 +64,45 @@ footer {
 }
 
 header[data-event="prime"], header[data-event="west"] {
-    background: asset-url("event_background_vert.png") repeat;
+    background-color: #009DDC;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") no-repeat;
+        color: #009DDC;
     }
 }
 header[data-event="east"] {
-    background: asset-url("event_background_vert.png") 0 -90px repeat;
+    background-color: #CE1D24;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") 0 -30px no-repeat;
+        color: #CE1D24;
     }
 }
 header[data-event="south"] {
-    background: asset-url("event_background_vert.png") 0 -180px repeat;
+    background-color: #CC5500;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") 0 -60px no-repeat;
+        color: #CC5500;
     }
 }
 header[data-event="aus"] {
-    background: asset-url("event_background_vert.png") 0 -270px repeat;
+    background-color: #FBB024;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") 0 -90px no-repeat;
+        color: #FBB024;
     }
 }
 header[data-event="dev"] {
-    background: asset-url("event_background_vert.png") 0 -360px repeat;
+    background-color: #00A192;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") 0 -120px no-repeat;
+        color: #00A192;
     }
 }
-
 header[data-event="setup"] {
-    background: asset-url("event_background_vert.png") 0 -450px repeat;
+    background-color: #0D0D0D;
     #logo {
-        background: asset-url("event_logos_bars_mk5.png") 0 -150px no-repeat;
+        color: #0D0D0D;
+    }
+}
+header[data-event="unplugged"] {
+    background-color: #91479a;
+    #logo {
+        color: #91479a;
     }
 }
 
@@ -112,6 +124,9 @@ footer[data-event="dev"], .btn-default[data-event="dev"]  {
 footer[data-event="setup"], .btn-default[data-event="setup"]  {
     background-color: #0D0D0D;
 }
+footer[data-event="unplugged"], .btn-default[data-event="unplugged"]  {
+    background-color: #91479a;
+}
 
 path[data-event="prime"], path[data-event="west"] {
     fill: #009DDC;
@@ -130,6 +145,9 @@ path[data-event="dev"] {
 }
 path[data-event="setup"] {
     fill: #0D0D0D;
+}
+path[data-event="unplugged"] {
+    fill: #91479a;
 }
 
 #notification-bin {
