@@ -1,0 +1,29 @@
+<p style="text-align: center;">
+    <%= @games_left[:games_count] %> games left to scan.
+</p>
+<% if @games_left[:games_left].size > 0 %>
+    <table class="table table-striped">
+        <tr>
+            <th class="col-xs-3">Barcode</th>
+            <th class="col-xs-4">Title</th>
+            <th class="col-xs-5">Publisher</th>
+        </tr>
+        <% @games_left[:games_left].each do |game| %>
+            <tr>
+                <td class="col-xs-3">
+                    <%= game['barcode'] %>
+                </td>
+                <td class="col-xs-4">
+                    <%= game['title'] %>
+                </td>
+                <td class="col-xs-5">
+                    <%= game['publisher'] %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+<% else %>
+    <p style="text-align: center;">
+        A list of games will appear when there are fewer than <%= Game::ST_LIMIT_COUNT %> games remaining.
+    </p>
+<% end %>

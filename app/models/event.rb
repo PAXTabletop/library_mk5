@@ -66,7 +66,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.last_three_shows
-    self.all.where('id >= ?', self.two_events_ago.id)
+    self.all.where('id >= ?', self.two_events_ago.id).order(id: :desc)
   end
 
   def setup_complete?
@@ -108,10 +108,10 @@ class Event < ActiveRecord::Base
         from events e
         inner join checkouts c on c.event_id = e.id
         where
-          e.id >= (#{Event.two_events_ago.id})
+          e.id >= (#{Event.three_events_ago.id})
         group by 1
-        order by 1 asc
-        limit 3
+        order by 1 desc
+        limit 4
       SQL
     )
   end
@@ -121,6 +121,8 @@ class Event < ActiveRecord::Base
       <<-SQL
         select
           count(distinct case when g.culled = false then g.id end) as active_games
+          ,count(distinct case when g.culled = true and g.updated_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as culled_during_show
+          ,count(distinct case when g.created_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as added_during_show
           ,count(distinct case when s.event_id = #{self.id} then g.id end) as games_at_setup
           ,count(distinct case when t.event_id = #{self.id} then g.id end) as games_at_teardown
         from games g
@@ -133,18 +135,24 @@ class Event < ActiveRecord::Base
   def checkouts_by_title
     Event.connection.execute(
       <<-SQL
-        select
-          initcap(lower(t.title)) as title
-          ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
-          ,count(distinct c.id) as checkouts
-        from checkouts c
-        inner join games g on g.id = c.game_id
-        inner join titles t on t.id = g.title_id
-        inner join publishers p on p.id = t.publisher_id
-        where
-          c.event_id = #{self.id}
-        group by 1
-        order by 3 desc, 1, 2
+        select * from (
+          select
+            initcap(lower(t.title)) as title
+            ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
+            ,count(distinct c.id) as checkouts
+            ,count(distinct g.id) as copies_during_show
+            ,round(count(distinct c.id)::numeric / count(distinct g.id)::numeric, 1) as checkouts_per_copy
+          from games g
+          left join (select * from checkouts where event_id = #{self.id}) c on g.id = c.game_id
+          inner join titles t on t.id = g.title_id
+          inner join publishers p on p.id = t.publisher_id
+          where
+            g.culled = false
+            or (g.culled and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+          group by 1
+          order by 3 desc, 1, 2
+        ) c
+        where checkouts > 0
       SQL
     )
   end
@@ -175,6 +183,9 @@ class Event < ActiveRecord::Base
           ,coalesce(c.time, r.time) as time
           ,c.checkouts
           ,r.returns
+          ,case
+            when coalesce(co.checkouts, 0) - coalesce(rt.returns, 0) != 0
+            then coalesce(co.checkouts, 0) - coalesce(rt.returns, 0) end as outstanding_checkouts
         from
           (
           select
@@ -182,7 +193,7 @@ class Event < ActiveRecord::Base
             ,to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as checkouts
           from checkouts c
-          where event_id = #{self.id}
+          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) c
         full join
@@ -192,11 +203,29 @@ class Event < ActiveRecord::Base
             ,to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as returns
           from checkouts c
-          where event_id = #{self.id}
+          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) r
           on c.date = r.date
           and c.time = r.time
+        left join
+          (
+          select to_char(ts.datetime, 'YYYY-mm-DD') as date,to_char(ts.datetime, 'HH24:00:00') as time, count(*) as checkouts
+          from checkouts c
+          left join (SELECT distinct generate_series('#{self.start_date}'::timestamp, ('#{self.end_date}'::date + '1 day'::interval)::timestamp, interval '1 hour') as datetime) AS ts
+            on ts.datetime >= to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD HH24:00:00')::timestamp
+          where c.event_id = #{self.id}
+          group by 1,2
+          ) co on co.date = coalesce(c.date, r.date) and co.time = coalesce(c.time, r.time)
+        left join
+          (
+          select to_char(ts.datetime, 'YYYY-mm-DD') as date,to_char(ts.datetime, 'HH24:00:00') as time, count(*) as returns
+          from checkouts c
+          left join (SELECT distinct generate_series('#{self.start_date}'::timestamp, ('#{self.end_date}'::date + '1 day'::interval)::timestamp, interval '1 hour') as datetime) AS ts
+            on ts.datetime >= to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'YYYY-mm-DD HH24:00:00')::timestamp
+          where c.event_id = #{self.id}
+          group by 1,2
+          ) rt on rt.date = coalesce(c.date, r.date) and rt.time = coalesce(c.time, r.time)
         order by 1,2
       SQL
     )

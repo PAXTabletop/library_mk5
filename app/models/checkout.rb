@@ -88,10 +88,11 @@ class Checkout < ActiveRecord::Base
 
   def self.current_as_csv
     csv = ['CheckedOut,Returned,AttendeeId,Title,Publisher,GameBarcode']
-    checkouts = includes(:attendee, game: [title: [:publisher]]).joins(:attendee, game: [:title])
+    checkouts = joins(:attendee, game: [title: [:publisher]])
+                  .select('checkouts.check_out_time', 'checkouts.return_time', 'attendees.barcode as a_barcode', 'initcap(titles.title) as title', 'initcap(publishers.name) as publisher', 'games.barcode as g_barcode')
                   .where(event: Event.current)
                   .order(check_out_time: :asc).map do |checkout|
-      "\"#{checkout.check_out_time}\",\"#{checkout.return_time}\",#{checkout.attendee.barcode},\"#{checkout.game.name}\",\"#{checkout.game.title.publisher.name}\",#{checkout.game.barcode}"
+      "\"#{checkout[:check_out_time]}\",\"#{checkout[:return_time]}\",#{checkout[:a_barcode]},\"#{checkout[:title]}\",\"#{checkout[:publisher]}\",#{checkout[:g_barcode]}"
     end
 
     csv.concat(checkouts).join("\n")

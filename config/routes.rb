@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   get '/admin/new_game', to: 'admin#new_game', as: :new_game
   get '/admin/metrics/:event', to: 'admin#metrics', as: :metrics
   get '/admin/purge', to: 'admin#purge', as: :purge
+  get '/admin/missing', to: 'admin#missing', as: :missing
+  get '/admin/added/:event', to: 'admin#added_games', as: :added
+  get '/admin/culled/:event', to: 'admin#culled_games', as: :culled
 
   put '/setup/tag', to: 'admin#setup_tag', as: :setup_tag
   put '/setup/reset', to: 'admin#reset_setup', as: :reset_setup

@@ -1,23 +1,20 @@
 <% if @game %>
-    <div class="row" style="text-align: center;">
-        <h4>
-            <%= @message || 'Game successfully logged!' %>
-        </h4>
-    </div>
-
-    <div class="row" style="text-align: center;">
-        <h3>
-            <%= @game.barcode %>
-        </h3>
-        <h3>
-            <%= @game.name %>
-        </h3>
-        <h3>
-            <%= @game.by %>
-        </h3>
+    <div class="row alert alert-success">
+        <div class="col-xs-6" style="text-align: center; font-size: 20px;">
+            <p>
+                <%= @message || 'Game successfully logged!' %>
+            </p>
+        </div>
+        <div class="col-xs-6">
+            <p style="font-size: 25px;">
+                <%= @game.barcode %> - <%= @game.name %>
+                <br/>
+                <small>by <%= @game.by %></small>
+            </p>
+        </div>
     </div>
 <% else %>
-    <div class="row" style="text-align: center;">
+    <div class="row alert alert-danger" style="text-align: center;">
         <h4>
             No game found!
         </h4>

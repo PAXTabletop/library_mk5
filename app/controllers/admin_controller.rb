@@ -4,13 +4,29 @@ class AdminController < ApplicationController
   end
 
   def setup
-    @game = Setup.add_game(params[:barcode]) if params[:barcode]
-    @message = 'Game successfully checked in!'
+    respond_to do |format|
+      format.js {
+        @game = Setup.add_game(params[:barcode]) if params[:barcode]
+        @message = 'Checked in game for setup:'
+        @games_left = Game.remaining_from('setups')
+      }
+      format.html {
+        @games_left = Game.remaining_from('setups')
+      }
+    end
   end
 
   def teardown
-    @game = Teardown.add_game(params[:barcode]) if params[:barcode]
-    @message = 'Game successfully logged for storage!'
+    respond_to do |format|
+      format.js {
+        @game = Teardown.add_game(params[:barcode]) if params[:barcode]
+        @message = 'Checked in game for teardown:'
+        @games_left = Game.remaining_from('teardowns')
+      }
+      format.html {
+        @games_left = Game.remaining_from('teardowns')
+      }
+    end
   end
 
   def events
@@ -27,6 +43,9 @@ class AdminController < ApplicationController
   end
 
   def purge
+  end
+
+  def missing
   end
 
   def setup_tag
@@ -64,6 +83,16 @@ class AdminController < ApplicationController
   end
 
   def backup
+  end
+
+  def added_games
+    @event = Event.find(params[:event]) if params[:event]
+    @games = Game.added_during_show(@event)
+  end
+
+  def culled_games
+    @event = Event.find(params[:event]) if params[:event]
+    @games = Game.culled_during_show(@event)
   end
 
 end
