@@ -20,3 +20,13 @@
     border-right: 1px solid #ccc;
     margin: 10px;
 }
+
+.tab-btn .report-tab-copy {
+    display: none;
+    float: right;
+    line-height: .8em;
+}
+
+.tab-btn.active .report-tab-copy {
+    display: block;
+}
