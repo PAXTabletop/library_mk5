@@ -10,7 +10,7 @@
         <div class="col-xs-12 btn-admin-container">
             <%= render 'link', path: setup_path, text: 'Setup Scanning', type: nil %>
             <%= render 'link', path: teardown_path, text: 'Teardown Scanning', type: nil %>
-            <%= render 'link', path: tournament_path, text: 'Tournament Games Interface', type: nil %>
+            <%= render 'link', path: tournament_path, text: 'Tournament Games Mgmt', type: nil %>
             <%= render 'link', path: new_game_path, text: 'Add New Game', type: nil %>
             <%= render 'link', path: cull_path, text: 'Cull Existing Game', type: nil %>
         </div>
@@ -37,11 +37,11 @@
                 Please only use the below pages if you are a manager.
             </p>
             <%= render 'link', path: metrics_path(event: Event.current), text: 'Post Show Metrics', type: nil %>
-            <%= render 'link', path: events_path, text: 'Events Interface', type: nil %>
+            <%= render 'link', path: events_path, text: 'Events Mgmt', type: nil %>
             <%= render 'link', path: backup_path, text: 'Backup to Cloud', type: nil %>
             <%= render 'link', path: titles_path, text: 'Edit Titles', type: nil %>
             <%= render 'link', path: publishers_path, text: 'Edit Publishers', type: nil %>
-            <%= render 'link', path: reports_path, text: 'Download Database Reports', type: nil %>
+            <%= render 'link', path: reports_path, text: 'Download Raw Reports', type: nil %>
         </div>
     </div>
 </div>
