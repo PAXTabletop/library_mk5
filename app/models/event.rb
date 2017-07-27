@@ -150,7 +150,7 @@ class Event < ActiveRecord::Base
           inner join publishers p on p.id = t.publisher_id
           where
             g.culled = false
-            or (g.culled and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+            or (g.culled = true and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1
           order by 3 desc, 1, 2
         ) c
@@ -171,6 +171,10 @@ class Event < ActiveRecord::Base
         inner join publishers p on p.id = t.publisher_id
         where
           c.event_id = #{self.id}
+          and (
+            g.culled = false
+            or (g.culled = true and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+          )
         group by 1
         order by 2 desc, 1
       SQL
