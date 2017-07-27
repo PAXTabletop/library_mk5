@@ -191,10 +191,14 @@ path[data-event="unplugged"] {
     position: fixed;
     bottom: 3em;
     right: 0;
-    input {
+    .member {
+        display: inline-block;
+    }
+    input, a {
         margin: 27px 10px;
         float: right;
     }
+    padding-right: 15px;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {

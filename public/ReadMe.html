@@ -83,29 +83,29 @@
         <div class="col-md-8" style="border: 1px solid #aaa; border-radius: 3px; background-color: #ddd; padding: 15px;">
             <p style="border-bottom: 1px solid #bbb;">Table of Contents</p>
             <h4>Steps for Setup</h4>
-            <ul>
+            <ol>
                 <li>
-                    <a href="#starting-the-library">[required] Starting the PAX TT Library server</a>
+                    <a href="#starting-the-library">Starting the PAX TT Library server</a>
                 </li>
                 <li>
-                    <a href="#linking-other-laptops">[required] Linking other laptops to the server for use</a>
+                    <a href="#linking-other-laptops">Linking other laptops to the server for use</a>
                 </li>
                 <li>
-                    <a href="#creating-event">[required] Creating a new Event</a>
+                    <a href="#creating-event">Creating a new Event</a>
                 </li>
                 <li>
-                    <a href="#scan-through-setup">[optional] Scanning games through Setup</a>
+                    <a href="#scan-through-setup">Scanning games through Setup (optional)</a>
                 </li>
-            </ul>
+            </ol>
             <h4>Steps for Teardown</h4>
-            <ul>
+            <ol>
                 <li>
-                    <a href="#scan-through-teardown">[optional] Scanning games through Teardown</a>
+                    <a href="#scan-through-teardown">Scanning games through Teardown (optional)</a>
                 </li>
                 <li>
-                    <a href="#stopping-the-library">[required] Stopping the Library server</a>
+                    <a href="#stopping-the-library">Stopping/restarting the Library server</a>
                 </li>
-            </ul>
+            </ol>
             <h4>FAQ</h4>
             <ul>
                 <li>
@@ -118,7 +118,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="starting-the-library">Starting the PAX TT Library server</h3>
+            <h3 id="starting-the-library">
+                Starting the PAX TT Library server
+                <small>[required]</small>
+            </h3>
             <p>
                 Follow these steps to start the Tabletop Library server.
             </p>
@@ -169,7 +172,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="linking-other-laptops">Linking other laptops to the server for use</h3>
+            <h3 id="linking-other-laptops">
+                Linking other laptops to the server for use
+                <small>[required]</small>
+            </h3>
             <p>
                 Follow these steps to link one or more laptop computers to the server computer for use as a Checkout/Return station.
             </p>
@@ -219,7 +225,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="creating-event">Creating a new Event</h3>
+            <h3 id="creating-event">
+                Creating a new Event
+                <small>[required]</small>
+            </h3>
             <p>
                 Follow these steps to create a new Event and prepare the Library to be used at a new PAX.
             </p>
@@ -254,7 +263,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="scan-through-setup">Scanning games through Setup</h3>
+            <h3 id="scan-through-setup">
+                Scanning games through Setup
+                <small>[optional]</small>
+            </h3>
             <p>
                 Follow these steps to scan games through Setup. This step is optional, however, it helps the management team to check inventory and confirm all games are in the system prior to the start of the show.
             </p>
@@ -263,24 +275,34 @@
             </p>
             <ul>
                 <li>
-                    Navigate to Admin > Setup.
+                    Navigate to <a href="/admin/setup">Setup Scanning</a> under the Admin tab.
                 </li>
                 <li>
                     Scan every game in the library, one at a time.
                 </li>
                 <li>
                     The following message should appear on screen with the relevant game details after each game is scanned.
-                    <pre style="text-align: center;">
-Game successfully checked in!
-TTL0000TT
-Small Wonders
-Asmodic Games
-                    </pre>
-                </li>
-                <li>
-                    If system claims the game does not exist, then set it aside to be checked, re-added, or re-labeled.
+                    <div class="row alert alert-success">
+                        <div class="col-xs-6" style="text-align-center;">
+                            <p>
+                                Checked in game for setup:
+                            </p>
+                        </div>
+                        <div class="col-xs-6" style="text-align-center;">
+                            <p>
+                                TTL0000TT - Test Game
+                                <br/>
+                                <small>by Test Publisher</small>
+                            </p>
+                        </div>
+                    </div>
                 </li>
             </ul>
+            <p>
+                <em>
+                If system claims "No game found!", then set the game aside to be checked, re-added, or re-labeled.
+                </em>
+            </p>
         </div>
     </div>
 
@@ -289,7 +311,10 @@ Asmodic Games
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="scan-through-teardown">Scanning games through Teardown</h3>
+            <h3 id="scan-through-teardown">
+                Scanning games through Teardown
+                <small>[optional]</small>
+            </h3>
             <p>
                 Follow these steps to scan games through Teardown. This step is optional, however, it helps the management team to check inventory and account for any missing games.
             </p>
@@ -298,24 +323,34 @@ Asmodic Games
             </p>
             <ul>
                 <li>
-                    Navigate to Admin > Teardown.
+                    Navigate to <a href="/admin/teardown">Teardown Scanning</a> under the Admin tab.
                 </li>
                 <li>
                     Scan every game in the library, one at a time.
                 </li>
                 <li>
                     The following message should appear on screen with the relevant game details after each game is scanned.
-                    <pre style="text-align: center;">
-Game successfully logged for storage!
-TTL0000TT
-Small Wonders
-Asmodic Games
-                    </pre>
-                </li>
-                <li>
-                    If system claims the game does not exist, then set it aside to be checked, re-added, or re-labeled.
+                    <div class="row alert alert-success">
+                        <div class="col-xs-6" style="text-align-center;">
+                            <p>
+                                Checked in game for teardown:
+                            </p>
+                        </div>
+                        <div class="col-xs-6" style="text-align-center;">
+                            <p>
+                                TTL0000TT - Test Game
+                                <br/>
+                                <small>by Test Publisher</small>
+                            </p>
+                        </div>
+                    </div>
                 </li>
             </ul>
+            <p>
+                <em>
+                    If system claims "No game found!", then set the game aside to be checked, re-added, or re-labeled.
+                </em>
+            </p>
         </div>
     </div>
 
@@ -324,7 +359,10 @@ Asmodic Games
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h3 id="stopping-the-library">Stopping/restarting the Library server</h3>
+            <h3 id="stopping-the-library">
+                Stopping/restarting the Library server
+                <small>[required]</small>
+            </h3>
             <p>
                 Follow these steps to stop/restart the Library server.
             </p>
