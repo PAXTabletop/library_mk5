@@ -60,6 +60,9 @@ footer {
     height: 60px;
     width: 510px;
     margin: 0 auto;
+}
+
+.pax-tag {
     background: asset-url("pax_tabletop_tag_mk5.png") no-repeat;
 }
 
@@ -106,6 +109,13 @@ header[data-event="unplugged"] {
     }
 }
 
+header[data-event="geek-girl-con"] {
+    background-color: #ffd35a;
+    #logo {
+        color: #ffd35a;
+    }
+}
+
 footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
@@ -128,6 +138,14 @@ footer[data-event="unplugged"], .btn-default[data-event="unplugged"]  {
     background-color: #91479a;
 }
 
+footer[data-event="geek-girl-con"], .btn-default[data-event="geek-girl-con"]  {
+    background-color: #ffd35a;
+    color: #000 !important;
+    button, a {
+        color: #000 !important;
+    }
+}
+
 path[data-event="prime"], path[data-event="west"] {
     fill: #009DDC;
 }
@@ -148,6 +166,9 @@ path[data-event="setup"] {
 }
 path[data-event="unplugged"] {
     fill: #91479a;
+}
+path[data-event="geek-girl-con"] {
+    fill: #ffd35a;
 }
 
 #notification-bin {

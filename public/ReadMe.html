@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PAX TT Library Mk5</title>
+    <title>TT Library Mk5</title>
     <link href="assets/stylesheets/bootstrap-3.3.4.css" media="all" rel="stylesheet" />
     <style>
         #body-wrapper {
@@ -31,7 +31,7 @@
             height: 60px;
             width: 510px;
             margin: 0 auto;
-            background: url("assets/images/pax_tabletop_tag_mk5.png") no-repeat;
+            background: url("assets/images/tabletop_tag_mk5.png") no-repeat;
         }
         footer[data-event="setup"] {
             background-color: #0D0D0D;
@@ -85,7 +85,7 @@
             <h4>Steps for Setup</h4>
             <ol>
                 <li>
-                    <a href="#starting-the-library">Starting the PAX TT Library server</a>
+                    <a href="#starting-the-library">Starting the TT Library server</a>
                 </li>
                 <li>
                     <a href="#linking-other-laptops">Linking other laptops to the server for use</a>
@@ -119,7 +119,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <h3 id="starting-the-library">
-                Starting the PAX TT Library server
+                Starting the TT Library server
                 <small>[required]</small>
             </h3>
             <p>
@@ -141,7 +141,7 @@
                     See below for examples of what you'll be entering.
                     <p><em>Example commands to enter in the second console:</em></p>
                     <pre>
-    cd "C:/Users/Intel/Desktop/paxTTlib/paxTTlib"
+    cd "C:/Users/Intel/Desktop/TTlib/TTlib"
     rails s</pre>
                 </li>
                 <li>
@@ -230,11 +230,11 @@
                 <small>[required]</small>
             </h3>
             <p>
-                Follow these steps to create a new Event and prepare the Library to be used at a new PAX.
+                Follow these steps to create a new Event and prepare the Library to be used at a new event.
             </p>
             <ul>
                 <li>
-                    Follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a>.
+                    Follow the steps in <a href="#starting-the-library">Starting the TT Library server</a>.
                 </li>
                 <li>
                     Navigate to Admin > Events.
@@ -243,13 +243,13 @@
                     Click on "Add Event".
                 </li>
                 <li>
-                    A row with inputs will appear. Enter the new PAX's name, city & state, start date, end date, and the hours offset from UTC of the city.<br/>(This is generally -5/-4 for Boston, -7/-8 for Seattle, and -6/-7 for San Antonio. If you're not sure what the offset is then google the city/state + a phrase like "utc offset".)
+                    A row with inputs will appear. Enter the new event's name, city & state, start date, end date, and the hours offset from UTC of the city.<br/>(This is generally -5/-4 for Boston, -7/-8 for Seattle, and -6/-7 for San Antonio. If you're not sure what the offset is then google the city/state + a phrase like "utc offset".)
                 </li>
                 <li>
                     Click "Add" on the row.
                 </li>
                 <li>
-                    Refresh the page. The colors and title of the page should update to reflect the new PAX.
+                    Refresh the page. The colors and title of the page should update to reflect the new event.
                 </li>
             </ul>
             <p class="alert-text-box alert-warning">
@@ -271,7 +271,7 @@
                 Follow these steps to scan games through Setup. This step is optional, however, it helps the management team to check inventory and confirm all games are in the system prior to the start of the show.
             </p>
             <p class="alert-text-box alert-warning">
-                The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a> to set it up.
+                The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the TT Library server</a> to set it up.
             </p>
             <ul>
                 <li>
@@ -283,12 +283,12 @@
                 <li>
                     The following message should appear on screen with the relevant game details after each game is scanned.
                     <div class="row alert alert-success">
-                        <div class="col-xs-6" style="text-align-center;">
+                        <div class="col-xs-6" style="text-align: center;">
                             <p>
                                 Checked in game for setup:
                             </p>
                         </div>
-                        <div class="col-xs-6" style="text-align-center;">
+                        <div class="col-xs-6" style="text-align: center;">
                             <p>
                                 TTL0000TT - Test Game
                                 <br/>
@@ -319,7 +319,7 @@
                 Follow these steps to scan games through Teardown. This step is optional, however, it helps the management team to check inventory and account for any missing games.
             </p>
             <p class="alert-text-box alert-warning">
-                The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the PAX TT Library server</a> to set it up.
+                The Library server must be running and used for this task. If it's not, then you can follow the steps in <a href="#starting-the-library">Starting the TT Library server</a> to set it up.
             </p>
             <ul>
                 <li>
@@ -331,12 +331,12 @@
                 <li>
                     The following message should appear on screen with the relevant game details after each game is scanned.
                     <div class="row alert alert-success">
-                        <div class="col-xs-6" style="text-align-center;">
+                        <div class="col-xs-6" style="text-align: center;">
                             <p>
                                 Checked in game for teardown:
                             </p>
                         </div>
-                        <div class="col-xs-6" style="text-align-center;">
+                        <div class="col-xs-6" style="text-align: center;">
                             <p>
                                 TTL0000TT - Test Game
                                 <br/>
@@ -409,7 +409,7 @@
 <footer data-event="setup">
     <div class="col-xs-4"></div>
     <div class="col-xs-4" style="text-align: center;">
-        Welcome to PAX Tabletop!
+        Welcome to Tabletop!
     </div>
 </footer>
 

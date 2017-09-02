@@ -1,10 +1,19 @@
 <header data-event="<%= @current_event.short_name %>" style="height: 90px;">
     <div class="col-xs-2"></div>
     <div class="col-xs-8">
-        <div id="tabletop-tag"></div>
-        <div id="logo">
-            <%= @current_event.short_name.upcase %>
-        </div>
+        <% if @current_event.is_pax %>
+            <div id="tabletop-tag" class="pax-tag"></div>
+            <div id="logo">
+                <%= @current_event.short_name.upcase %>
+            </div>
+        <% elsif @current_event.is_ggc %>
+            <div id="tabletop-tag" style="padding: 5px 0; width: 425px; height: 55px;">
+                <%= render '/layouts/ggc_logo' %>
+            </div>
+            <div id="logo" style="width: 425px; color: #fff; font-weight: normal; box-shadow: -3px 3px 0 #000; background-color: #2d87c1; text-align: center;">
+                TABLETOP
+            </div>
+        <% end %>
     </div>
     <div class="col-xs-2"></div>
 </header>

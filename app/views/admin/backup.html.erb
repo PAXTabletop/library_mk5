@@ -12,9 +12,13 @@
         <p>
             Please do not use this feature unless you're a manager.
         </p>
-        <input type="button" class="btn btn-primary" id="backup-btn" value="Sync Database to Dropbox" <%= Event.is_live ? 'disabled' : nil %> />
+        <input type="button" class="btn btn-primary" id="backup-btn" value="Sync Database to Dropbox" <%= (Event.is_live || !DropboxUtil.configured?) ? 'disabled' : nil %> />
         <br/>
-        <% if Event.is_live %>
+        <% if !DropboxUtil.configured? %>
+            <p>
+                <small class="alert-text-box alert-warning"><%= DropboxUtil::MSG_NO_CONFIG %></small>
+            </p>
+        <% elsif Event.is_live %>
             <p>
                 <small class="alert-text-box alert-warning">This action is disabled during a live event.</small>
             </p>
@@ -28,7 +32,7 @@
             <br/>
             Please do not reload or navigate to another page until complete.
         </p>
-        <p id="backup-result"></p>
+        <p id="backup-result" class="alert alert-danger" style="display: none;"></p>
     </div>
 </div>
 
@@ -61,7 +65,7 @@
             var _me = $(this);
             _me.attr('disabled', true);
 
-            $('#backup-result').text('');
+            $('#backup-result').text('').hide();
 
             $('.loading-animation').animate({ opacity: 1.0 }, 250);
             // post to backup endpoint
@@ -75,7 +79,7 @@
                 complete: function(data){
                     $('.loading-animation').animate({ opacity: 0.0 }, 250);
                     _me.removeAttr('disabled');
-                    $('#backup-result').text(data.responseJSON.message);
+                    $('#backup-result').text(data.responseJSON.message).show();
                 }
             });
             // hide animation on success or error

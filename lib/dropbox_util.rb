@@ -1,20 +1,25 @@
 module DropboxUtil
 
   DROPBOX_ACCESS_KEY = ''
+  MSG_NO_CONFIG = 'Dropbox access is not configured. This must be configured by a system admin.'
+
+  def self.configured?
+    !DROPBOX_ACCESS_KEY.empty?
+  end
 
   def self.backup
     # fail out if dropbox key doesn't exist
     if DROPBOX_ACCESS_KEY.size <= 0
       return {
         status: 500,
-        message: 'Dropbox access not initialized. A manager needs to enable this.'
+        message: MSG_NO_CONFIG
       }
     end
 
     client = DropboxApi::Client.new(DropboxUtil::DROPBOX_ACCESS_KEY)
     time = Time.now.to_i.to_s
 
-    base_folder = '/pax-tt-library-backups'
+    base_folder = '/tt-library-backups'
 
     non_show_models = [Event, Game, Publisher, Title, TournamentGame, User]
     non_show_models.each do |model_const|

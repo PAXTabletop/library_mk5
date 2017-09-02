@@ -33,13 +33,15 @@ class Event < ActiveRecord::Base
         'dev'
       when /unplugged/i
         'unplugged'
+      when /geek\s*girl\s*con|ggc/i
+        'geek-girl-con'
       else
-        'Unknown'
+        self.name
     end
   end
 
   def formatted_name
-    "PAX #{self.short_name.capitalize} #{self.year}"
+    "#{self.is_pax ? 'PAX ' : nil}#{self.short_name.split(/-/).map(&:capitalize).join(' ')} #{self.year}"
   end
 
   def year
@@ -49,6 +51,14 @@ class Event < ActiveRecord::Base
   def self.is_live
     current = self.current
     (current.start_date..current.end_date) === Date.today
+  end
+
+  def is_pax
+    /pax/i.match self.name
+  end
+
+  def is_ggc
+    /geek\s*girl\s*con|ggc/i.match self.name
   end
 
   def self.one_event_ago

@@ -74,15 +74,15 @@
 <script>
     $(document).ready(function(){
         $('#copies-btn').click(function(){
-            getFileAt('/games/csv', 'PAXTTLibrary_Games.csv');
+            getFileAt('/games/csv', 'TTLibrary_Games.csv');
         });
 
         $('#titles-btn').click(function(){
-            getFileAt('/titles/csv', 'PAXTTLibrary_Titles.csv');
+            getFileAt('/titles/csv', 'TTLibrary_Titles.csv');
         });
 
         $('#checkouts-btn').click(function(){
-            getFileAt('/checkouts/csv', 'PAXTTLibrary_Checkouts_<%= Event.current.formatted_name %>.csv');
+            getFileAt('/checkouts/csv', 'TTLibrary_Checkouts_<%= Event.current.formatted_name %>.csv');
         });
     });
 

@@ -72,7 +72,7 @@ class Checkout < ActiveRecord::Base
   def approval_tag
     title_text = self.game.name
     title_text = title_text.gsub(' ', '').downcase
-    if APPROVAL_MAP.key?(title_text)
+    if APPROVAL_MAP.key?(title_text) && Event.current.is_pax
       approval = APPROVAL_MAP[title_text]
       name = approval[:handle]
       display_name = name.split('_').map(&:capitalize).join(' ')

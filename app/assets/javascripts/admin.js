@@ -22,7 +22,7 @@ $(document).ready(function(){
         var barcode_val = $(this).val();
 
         if(!bc_regex.test(barcode_val)){
-            $.notify('Invalid barcode format! Format should be like TTL####TT.', 'warning', 3000);
+            $.notify('Invalid barcode format! Barcode should be at least 7 characters long and only contain alphanumeric characters.', 'warning', 5000);
             $(this).val('');
             return;
         }
