@@ -81,6 +81,11 @@ class Event < ActiveRecord::Base
     self.all.where('id >= ?', self.two_events_ago.id).order(id: :desc)
   end
 
+  def self.last_three_event_names
+    events = [Event.two_events_ago, Event.one_event_ago, Event.current]
+    events.compact.map { |e| e.formatted_name }.join(', ')
+  end
+
   def setup_complete?
     !self.setup_computer_tz.nil? &&
       !self.setup_add_new_games.nil? &&
@@ -109,6 +114,8 @@ class Event < ActiveRecord::Base
   end
 
   def recent_event_summary
+    where_clause = Event.three_events_ago ? "where e.id >= (#{Event.three_events_ago.id})" : ''
+
     Event.connection.execute(
       <<-SQL
         select
@@ -119,8 +126,7 @@ class Event < ActiveRecord::Base
           ,round(count(distinct c.id)::numeric / count(distinct c.attendee_id)::numeric, 5) as avg_co_per_attendee
         from events e
         inner join checkouts c on c.event_id = e.id
-        where
-          e.id >= (#{Event.three_events_ago.id})
+        #{where_clause}
         group by 1
         order by 1 desc
         limit 4

@@ -6,51 +6,63 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <p>Titles listed here had at least 50% of their copies added to the library prior to <%= Event.two_events_ago.formatted_name %> and have <em>0 checkouts across the last three events (<%= Event.two_events_ago.formatted_name %>, <%= Event.one_event_ago.formatted_name %>, <%= Event.current.formatted_name %>)</em>.</p>
+<% if Event.four_events_ago %>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p>Titles listed here had at least 50% of their copies added to the library prior to <%= Event.two_events_ago.formatted_name %> and have <em>0 checkouts across the last three events (<%= Event.last_three_event_names %>)</em>.</p>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
-</div>
 
-<div class="row">
-    <table class="table table-striped">
-        <tr>
-            <th class="col-xs-4">
-                Title
-            </th>
-            <th class="col-xs-2">
-                Total Copies
-            </th>
-            <th class="col-xs-2">
-                Last Copy Added On
-            </th>
-            <th class="col-xs-2">
-                C/O Last Four Shows
-            </th>
-            <th class="col-xs-2">
-                C/O Last Five Shows
-            </th>
-        </tr>
-        <% Checkout.purge_recommendations.each_with_index do |p_row, index| %>
-            <tr data-event-id="<%= index %>">
-                <td class="col-xs-4">
-                    <%= p_row['title'] %>
-                </td>
-                <td class="col-xs-2">
-                    <%= p_row['copies'] %>
-                </td>
-                <td class="col-xs-2">
-                    <%= p_row['latest_created_at'] %>
-                </td>
-                <td class="col-xs-2">
-                    <%= p_row['checkouts_from_four'] %>
-                </td>
-                <td class="col-xs-2">
-                    <%= p_row['checkouts_from_five'] %>
-                </td>
+    <div class="row">
+        <table class="table table-striped">
+            <tr>
+                <th class="col-xs-4">
+                    Title
+                </th>
+                <th class="col-xs-2">
+                    Total Copies
+                </th>
+                <th class="col-xs-2">
+                    Last Copy Added On
+                </th>
+                <th class="col-xs-2">
+                    C/O Last Four Shows
+                </th>
+                <th class="col-xs-2">
+                    C/O Last Five Shows
+                </th>
             </tr>
-        <% end %>
-    </table>
-</div>
+            <% Checkout.purge_recommendations.each_with_index do |p_row, index| %>
+                <tr data-event-id="<%= index %>">
+                    <td class="col-xs-4">
+                        <%= p_row['title'] %>
+                    </td>
+                    <td class="col-xs-2">
+                        <%= p_row['copies'] %>
+                    </td>
+                    <td class="col-xs-2">
+                        <%= p_row['latest_created_at'] %>
+                    </td>
+                    <td class="col-xs-2">
+                        <%= p_row['checkouts_from_four'] %>
+                    </td>
+                    <td class="col-xs-2">
+                        <%= p_row['checkouts_from_five'] %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    </div>
+<% else %>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p class="alert alert-warning" style="text-align: center;">
+                Data from four events or more is required in order to give purge recommendations.
+            </p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+<% end %>
