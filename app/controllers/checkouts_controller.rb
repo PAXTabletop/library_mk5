@@ -27,9 +27,14 @@ class CheckoutsController < ApplicationController
   end
 
   def return
-    Checkout.find(params[:co_id]).return
+    checkout = Checkout.find(params[:co_id])
+    checkout.return
 
-    render json: :nothing
+    render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P') }
+  end
+
+  def ct(datetime)
+    datetime - @offset.hours
   end
 
   def find

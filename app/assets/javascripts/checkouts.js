@@ -124,6 +124,18 @@ $(document).ready(function(){
         });
     });
 
+    $('#found-div').delegate('.return-game', 'click', function(){
+        var _me = $(this);
+        $.post('/return', { co_id: _me.data('checkout-id') }).success(function(response){
+            $.notify('Returned game successfully!');
+            var cell = _me.closest('.col-xs-2');
+            cell.html(response.time);
+            cell.next().html("RETURNED");
+        }).error(function(){
+            $.notify(DEFAULT_ERROR, 'danger');
+        });
+    });
+
     $('#find-barcode').change(function(){
         $.get('/find', $(this).serialize(), null, 'script');
     });

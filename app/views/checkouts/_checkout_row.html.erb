@@ -3,7 +3,11 @@
         <%= ct(checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
     </td>
     <td class="col-xs-2">
-        <%= checkout.return_time ? ct(checkout.return_time).strftime('%m/%d %I:%M%P') : nil %>
+        <% if checkout.return_time %>
+            <%= ct(checkout.return_time).strftime('%m/%d %I:%M%P') %>
+        <% else %>
+            <input type="button" data-checkout-id="<%= checkout.id %>" class="btn btn-danger return-game" value="Return Game" />
+        <% end %>
     </td>
     <td class="col-xs-2">
         <%= checkout.closed ? 'RETURNED' : 'CHECKED OUT' %>
