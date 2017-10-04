@@ -51,6 +51,24 @@ class Checkout < ActiveRecord::Base
     Time.at(difference).utc.strftime('%H:%M:%S')
   end
 
+  def self.longest_checkout_game_today(offset)
+    start_time = (Time.now - 15.hours).strftime('%Y-%m-%d %H:%M:%S')
+    min_checkout = self.where(closed: false).where(
+                       "(check_out_time - '#{offset} hours'::interval) > ?",
+                       start_time
+                     ).order(:check_out_time).first
+    if min_checkout
+      min_game = Game.find(min_checkout.game_id)
+      min_game_checkout = {
+        min_checkout: min_checkout,
+        min_game: min_game.name
+      }
+    else
+      min_game_checkout = nil
+    end
+    min_game_checkout
+  end
+
   def fill_in_fields
     self.event = Event.current
     self.check_out_time = Time.now.utc

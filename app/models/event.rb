@@ -279,4 +279,42 @@ class Event < ActiveRecord::Base
     )
   end
 
+  # Returns the most checked-out games for an event
+  #
+  # @note
+  #   This doesn't return fully-hydrated game objects. You'll need
+  #   to add extra data to the query inside of here if you need
+  #   all the data typically accessible on a game.
+  #
+  # @example Get the top games for the current event
+  #   Event.current.top_games(1) #=> [
+  #     Game<# id: 73, name: "Monopoly", times_checked_out: 20 >
+  #   ]
+  #
+  # @param limit [Integer] how many top games to return. Defaults to 10.
+  #
+  # @returns [Array<Game>] array of games with id, name, and times_checked_out
+  def top_games(limit=10)
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
+    Event.connection.execute(
+      <<-SQL
+        select * from (
+          select
+            regexp_replace(initcap(regexp_replace(lower(t.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title
+            ,count(distinct c.id) as checkouts
+          from games g
+          left join (select * from checkouts where event_id = #{self.id}) c on g.id = c.game_id
+          inner join titles t on t.id = g.title_id
+          where
+            g.culled = false
+            or (g.culled = true and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+          group by 1
+          order by 2 desc, 1
+        ) c
+        where checkouts > 0
+        limit '#{limit}'
+      SQL
+    )
+  end
+
 end

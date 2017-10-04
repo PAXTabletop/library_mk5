@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-xs-6">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        10ft Display
+    </div>
+</div>
+
+<% if Event.two_events_ago %>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p>Titles listed here were created before <%= Event.two_events_ago.formatted_name %>, have not been through setup and teardown for this show, and have been missed during setup or teardown during at least one other show since <%= Event.two_events_ago.formatted_name %>.</p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    <% if Setup.where(event: Event.current).size == 0 && Teardown.where(event: Event.current).size == 0 %>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8" style="text-align: center;">
+                <p>
+                    <span class="glyphicon glyphicon-alert" style="color: #777;"></span>
+                    Please process <%= link_to 'Setup', setup_path %> or <%= link_to 'Teardown', teardown_path %> for this show first before checking this list.
+                    <span class="glyphicon glyphicon-alert" style="color: #777;"></span>
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    <% else %>
+        <div class="row">
+            <table class="table table-striped">
+                <tr>
+                    <th class="col-xs-1">
+                        Barcode
+                    </th>
+                    <th class="col-xs-3">
+                        Title
+                    </th>
+                    <th class="col-xs-2">
+                        Added
+                    </th>
+                    <th class="col-xs-2">
+                        <%= Event.two_events_ago.formatted_name %>
+                    </th>
+                    <th class="col-xs-2">
+                        <%= Event.one_event_ago.formatted_name %>
+                    </th>
+                    <th class="col-xs-2">
+                        <%= Event.current.formatted_name %>
+                    </th>
+                </tr>
+                <% Game.missing_games.each do |g_row| %>
+                    <tr>
+                        <td class="col-xs-1">
+                            <%= g_row['barcode'] %>
+                        </td>
+                        <td class="col-xs-3">
+                            <%= g_row['title'] %>
+                        </td>
+                        <td class="col-xs-2">
+                            <%= g_row['created_at'] %>
+                        </td>
+                        <td class="col-xs-2">
+                            <div class="alert alert-<%= g_row['three_show_setup'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                S
+                            </div>
+                            <div class="alert alert-<%= g_row['three_show_teardown'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                T
+                            </div>
+                        </td>
+                        <td class="col-xs-2">
+                            <div class="alert alert-<%= g_row['two_show_setup'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                S
+                            </div>
+                            <div class="alert alert-<%= g_row['two_show_teardown'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                T
+                            </div>
+                        </td>
+                        <td class="col-xs-2">
+                            <div class="alert alert-<%= g_row['one_show_setup'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                S
+                            </div>
+                            <div class="alert alert-<%= g_row['one_show_teardown'].nil? ? 'danger' : 'success' %>" style="margin-bottom: 0; padding: 4px; width: 45%; display: inline-block; text-align: center;">
+                                T
+                            </div>
+                        </td>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
+    <% end %>
+<% else %>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p class="alert alert-warning" style="text-align: center;">
+                Data from three events or more is required in order to track missing games.
+            </p>
+            <br/>
+            <p class="alert alert-info" style="text-align: center;">
+                Please use the <%= link_to 'Teardown', teardown_path %> process in order to track inventory at the end of an event.
+            </p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+<% end %>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TT Library Mk5</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<header data-event="<%= @current_event.short_name %>" style="height: 90px;">
+<div class="col-xs-2"></div>
+<div class="col-xs-8">
+    <% if @current_event.is_pax %>
+        <div id="tabletop-tag" class="pax-fp-tag"></div>
+        <div id="logo">
+            <%= @current_event.short_name.upcase %>
+        </div>
+    <% elsif @current_event.is_ggc %>
+        <div id="tabletop-tag" style="padding: 5px 0; width: 425px; height: 55px;">
+            <%= render '/layouts/ggc_logo' %>
+        </div>
+        <div id="logo" style="width: 425px; color: #fff; font-weight: normal; box-shadow: -3px 3px 0 #000; background-color: #2d87c1; text-align: center;">
+            TABLETOP
+        </div>
+    <% end %>
+</div>
+<div class="col-xs-2"></div>
+</header>
+<div id="body-wrapper" class="container">
+<div class="col-xs-4">
+    Top 10 Titles Checked Out:<br>
+    <span id="top-games">X</span>
+</div>
+<div class="col-xs-4" style="text-align: center;">
+    Today's Longest Checkout:<br>
+    <span id="longest-checkout">X</span>
+</div>
+<div class="col-xs-4" style="text-align: right";>
+    Total Open Checkouts:<br>
+    <span id="open-checkouts">X</span>
+</div>
+<div class="col-xs-4">
+    Games in the Library:<br>
+    <span id="total-games">X</span>
+</div>
+<div class="col-xs-4" style="text-align: center;">
+    Total Checkouts:<br>
+    <span id="total-checkouts">X</span>
+</div>
+<div class="col-xs-4" style="text-align: right";>
+    Hottest Games:<br>
+    <span id="hot-games">X</span>
+</div>
+</div>
+<footer data-event="<%= @current_event.short_name %>">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4" style="text-align: center;">
+        Welcome to <%= @current_event.formatted_name %>
+    </div>
+    <div class="col-xs-4" style="text-align: right;"></div>
+</footer>
+</body>
+</html>

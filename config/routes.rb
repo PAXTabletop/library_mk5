@@ -48,6 +48,10 @@ Rails.application.routes.draw do
   get '/admin/added/:event', to: 'admin#added_games', as: :added
   get '/admin/culled/:event', to: 'admin#culled_games', as: :culled
 
+  # status display
+  get '/display', to: 'display#index', as: :display
+  get '/display/status', to: 'display#display_status', as: :display_status
+
   put '/setup/tag', to: 'admin#setup_tag', as: :setup_tag
   put '/setup/reset', to: 'admin#reset_setup', as: :reset_setup
 
