@@ -1,0 +1,1 @@
+$('[data-group-id="<%= @group.id %>"]').replaceWith('<%= escape_javascript(render partial: 'group', locals: { group: @group }) %>');

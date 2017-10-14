@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161231032853) do
+ActiveRecord::Schema.define(version: 20171014183217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,24 @@ ActiveRecord::Schema.define(version: 20161231032853) do
     t.string   "barcode",    limit: 20
     t.integer  "title_id"
     t.boolean  "culled",                default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups", force: true do |t|
+    t.text     "name"
+    t.text     "description"
+    t.boolean  "deleted",     default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "loans", force: true do |t|
+    t.integer  "game_id"
+    t.integer  "group_id"
+    t.datetime "check_out_time"
+    t.datetime "return_time"
+    t.boolean  "closed",         default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

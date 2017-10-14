@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/find', to: 'checkouts#find', as: :find
   get '/admin', to: 'admin#index', as: :admin
   get '/recent', to: 'checkouts#recent', as: :recent
+  get '/loaners', to: 'loaners#index', as: :loaners
 
   # to be sprockets
   get '/status', to: 'application#app_status', as: :status
@@ -21,6 +22,13 @@ Rails.application.routes.draw do
   post '/attendee/new', to: 'attendees#new'
   post '/checkout/new', to: 'checkouts#new'
   post '/return', to: 'checkouts#return'
+
+  # loaners & groups
+  post '/groups', to: 'loaners#create'
+  get '/groups/edit', to: 'loaners#edit'
+  put '/groups/:id', to: 'loaners#update'
+  get '/groups/cancel', to: 'loaners#cancel'
+  delete '/groups/:id', to: 'loaners#delete'
 
   # admin page
   get '/admin/setup', to: 'admin#setup', as: :setup

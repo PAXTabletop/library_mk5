@@ -1,0 +1,5 @@
+$('[data-group-id="<%= @group_id %>"]').remove();
+$('#groups-table').html('<%= escape_javascript(render 'loaners/groups_table') %>');
+<% if @message %>
+    $.notify('<%= @message %>', 'warning');
+<% end %>

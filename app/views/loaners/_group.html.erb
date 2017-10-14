@@ -1,0 +1,20 @@
+<tr class="display-group-row" data-group-id="<%= group.id %>">
+    <td class="col-xs-3">
+        <%= group.name %>
+    </td>
+    <td class="col-xs-6">
+        <%= group.description %>
+    </td>
+    <td class="col-xs-1">
+        <!--
+        TODO: change this into a link to the games page with a query that pulls the loaned games
+        -->
+        <%= group.checked_out_games.size %>
+    </td>
+    <td class="col-xs-2">
+        <input type="button" class="btn btn-default edit-group-btn" value="Edit" />
+        <% if group.checked_out_games.size <= 0 %>
+            <input type="button" class="btn btn-danger delete-group-btn" value="Delete" />
+        <% end %>
+    </td>
+</tr>
