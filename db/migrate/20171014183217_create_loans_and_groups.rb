@@ -6,6 +6,7 @@ class CreateLoansAndGroups < ActiveRecord::Migration
       t.timestamp :check_out_time
       t.timestamp :return_time
       t.boolean :closed, default: false
+      t.integer :event_id
 
       t.timestamps
     end

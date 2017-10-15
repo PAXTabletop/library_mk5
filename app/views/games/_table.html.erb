@@ -21,17 +21,20 @@
         <th class="col-xs-1">
             Barcode
         </th>
-        <th class="col-xs-4">
+        <th class="col-xs-3">
             Title
         </th>
         <th class="col-xs-3">
             Publisher
         </th>
-        <th class="col-xs-2">
+        <th class="col-xs-2" style="text-align: center;">
             Tourney Viable?
         </th>
-        <th class="col-xs-2">
+        <th class="col-xs-2" style="text-align: center;">
             Checked Out?
+        </th>
+        <th class="col-xs-1" style="text-align: center;">
+            Loaned?
         </th>
     </tr>
     <% @games.each do |game| %>
@@ -39,21 +42,25 @@
             <td class="col-xs-1">
                 <%= game.barcode %>
             </td>
-            <td class="col-xs-4">
+            <td class="col-xs-3">
                 <%= game.name %>
             </td>
             <td class="col-xs-3">
                 <%= game.by %>
             </td>
-            <td class="col-xs-2">
+            <td class="col-xs-2" style="text-align: center;">
                 <% if game.tourney? %>
-                    <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+                    <span>Yes</span>
                 <% end %>
             </td>
-            <!-- FIXME: Fix the appearence of this icon float to the top right of the screen. -->
-            <td class="col-xs-2">
+            <td class="col-xs-2" style="text-align: center;">
                 <% if game.checked_out? %>
-                    <span class="glyphicon glyphicon-share-alt glyphicon-table"></span>
+                    <%= ct(game.open_checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
+                <% end %>
+            </td>
+            <td class="col-xs-1" style="text-align: center;">
+                <% if game.loaned? %>
+                    <%= game.current_loan.group.name %>
                 <% end %>
             </td>
         </tr>

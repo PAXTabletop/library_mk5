@@ -2,7 +2,7 @@
 // All this logic will automatically be available in application.js.
 $(document).ready(function(){
 
-    $('#g-search').on('input', function(){
+    $('#g-search').on('change', function(){
         $.get('/games', $(this).serialize(), null, 'script');
     });
 

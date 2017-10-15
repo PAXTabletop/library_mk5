@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20171014183217) do
     t.datetime "check_out_time"
     t.datetime "return_time"
     t.boolean  "closed",         default: false
+    t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -11,7 +11,8 @@ class Checkout < ActiveRecord::Base
   validates_each :game, on: :create do |record, attr, value|
     if value
       record.errors.add(attr, 'Game is already checked out.') unless value.checked_in?
-      record.errors.add(attr, 'Game does not exist.') if value.culled
+      record.errors.add(attr, "Game is currently loaned out to a the group '#{value.current_loan.group.name}' Please return it via the Loaners tab first.") unless value.loaned_in?
+      record.errors.add(attr, 'Game does not exist.') if value.culled?
     end
   end
 

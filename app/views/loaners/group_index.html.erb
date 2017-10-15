@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-xs-12">
+        <%= link_to 'Loaner Groups', loaners_path %>
+        &gt;
+        Loan games to group "<%= @group.name %>"
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div class="row" id="l-row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6 glyphicon-custom-left">
+        <input type="text" id="l-barcode" class="form-control" placeholder="Enter GAME barcode to loan or return game to <%= @group.name %>." autofocus />
+        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+        <div id="loans-container" style="padding: 15px 15px;">
+            <% @group.active_loans.each do |loan| %>
+                <%= render partial: 'loaners/loaned_game', locals: { loan: loan }, layouts: false %>
+            <% end %>
+        </div>
+    </div>
+    <div class="col-xs-1"></div>
+    <div class="col-xs-2"></div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#l-barcode').change(function(){
+            var gBarcode = $(this).val();
+
+            if(!bc_regex.test(gBarcode)){
+                $.notify('Invalid barcode format! Barcode should be at least 7 characters long and only contain alphanumeric characters.', 'warning', 5000);
+                $(this).val('');
+                return;
+            }
+
+            loanOrReturnGame(gBarcode);
+        });
+
+        $('#loans-container').delegate('.return-loaner-btn', 'click', function(){
+            loanOrReturnGame($(this).data('game-barcode'));
+        });
+
+        function loanOrReturnGame(barcode){
+            $.post('/loan', { game_barcode: barcode, group_id: '<%= @group.id %>' }).success(function(response){
+                if(response.error){
+                    $.notify(response.message, 'danger');
+                } else {
+                    if(response && response.message){
+                        $.notify(response.message);
+                    }
+                    var container = $('#loans-container');
+                    container.html('');
+                    $.each(response.loans, function(o, v){
+                        container.append(v);
+                    });
+                }
+            }).error(function(){
+                $.notify(DEFAULT_ERROR, 'danger');
+            }).complete(function(){
+                $('#l-barcode').val('');
+            });
+        }
+    });
+</script>

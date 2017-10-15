@@ -3,13 +3,14 @@
         <th class="col-xs-3">
             Group
         </th>
-        <th class="col-xs-6">
+        <th class="col-xs-5">
             Description
         </th>
         <th class="col-xs-1">
             Games
         </th>
         <th class="col-xs-2"></th>
+        <th class="col-xs-1"></th>
     </tr>
     <% @groups.each do |group| %>
         <%= render partial: 'loaners/group', locals: { group: group } %>

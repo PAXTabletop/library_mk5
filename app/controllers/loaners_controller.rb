@@ -34,4 +34,21 @@ class LoanersController < ApplicationController
     @groups = Group.active.order(created_at: :desc)
   end
 
+  def group_index
+    @group = Group.find(params[:id])
+  end
+
+  def new
+    @group = Group.find(params[:group_id])
+    result = @group.loan_or_return_game(params[:game_barcode])
+
+    render json: {
+        error: result[:error],
+        message: result[:message],
+        loans: @group.active_loans.map do |loan|
+          render_to_string('loaners/_loaned_game', locals: { loan: loan }, layout: false )
+        end
+      }
+  end
+
 end
