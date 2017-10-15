@@ -51,4 +51,13 @@ class LoanersController < ApplicationController
       }
   end
 
+  def groups_deleted
+    @groups = Group.deleted
+  end
+
+  def restore
+    @group = Group.find(params[:id])
+    @group.update!(deleted: false)
+  end
+
 end

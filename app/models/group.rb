@@ -25,8 +25,8 @@ class Group < ActiveRecord::Base
     message
   end
 
-  def loan_or_return_game(game_id)
-    game = Game.find_by_barcode(game_id)
+  def loan_or_return_game(game_barcode)
+    game = Game.get(game_barcode)
     unless game
       return {
         error: true,
@@ -62,6 +62,10 @@ class Group < ActiveRecord::Base
       error: false,
       message: "Game successfully loaned to #{self.name}!"
     }
+  end
+
+  def self.deleted
+    where(deleted: true)
   end
 
 end

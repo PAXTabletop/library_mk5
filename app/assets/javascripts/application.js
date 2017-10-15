@@ -60,7 +60,7 @@ function pollStatus(){
         $('#open-checkouts').text(response.open_checkouts);
         $('#longest-open-checkout').text(response.longest_open_checkout);
 
-        setTimeout(pollStatus, 5000);
+        setTimeout(pollStatus, 15000);
     });
 }
 

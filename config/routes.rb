@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   get '/loaners/group/:id', to: 'loaners#group_index', as: :group
   post '/loan', to: 'loaners#new'
 
+  get '/groups/deleted', to: 'loaners#groups_deleted', as: :groups_deleted
+  put '/groups/restore/:id', to: 'loaners#restore'
+
   # admin page
   get '/admin/setup', to: 'admin#setup', as: :setup
   get '/admin/teardown', to: 'admin#teardown', as: :teardown

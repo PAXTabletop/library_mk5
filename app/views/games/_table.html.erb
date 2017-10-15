@@ -24,17 +24,17 @@
         <th class="col-xs-3">
             Title
         </th>
-        <th class="col-xs-3">
+        <th class="col-xs-2">
             Publisher
         </th>
         <th class="col-xs-2" style="text-align: center;">
-            Tourney Viable?
+            Tourney <span class="glyphicon glyphicon-question-sign" data-h-tip="This field is a marker of whether a game has<br/>potential for use in a tournament."></span>
         </th>
         <th class="col-xs-2" style="text-align: center;">
-            Checked Out?
+            Checked Out @
         </th>
-        <th class="col-xs-1" style="text-align: center;">
-            Loaned?
+        <th class="col-xs-2" style="text-align: center;">
+            Loaned To
         </th>
     </tr>
     <% @games.each do |game| %>
@@ -45,7 +45,7 @@
             <td class="col-xs-3">
                 <%= game.name %>
             </td>
-            <td class="col-xs-3">
+            <td class="col-xs-2">
                 <%= game.by %>
             </td>
             <td class="col-xs-2" style="text-align: center;">
@@ -58,12 +58,21 @@
                     <%= ct(game.open_checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
                 <% end %>
             </td>
-            <td class="col-xs-1" style="text-align: center;">
+            <td class="col-xs-2" style="text-align: center;">
                 <% if game.loaned? %>
-                    <%= game.current_loan.group.name %>
+                    <a href="<%= group_path(game.current_loan.group) %>">
+                        <%= game.current_loan.group.name %>
+                    </a>
                 <% end %>
             </td>
         </tr>
     <% end %>
 </table>
+
 <%= will_paginate @games %>
+
+<script>
+    $(document).ready(function(){
+        $('[data-h-tip]').pTip();
+    });
+</script>

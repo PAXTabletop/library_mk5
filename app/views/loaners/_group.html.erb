@@ -6,9 +6,6 @@
         <%= group.description %>
     </td>
     <td class="col-xs-1">
-        <!--
-        TODO: change this into a link to the games page with a query that pulls the loaned games
-        -->
         <% if group.checked_out_games.size > 0 %>
             <a href="<%= games_path(search: "tag:loaned:#{group.id}") %>">
                 <%= group.checked_out_games.size %>
