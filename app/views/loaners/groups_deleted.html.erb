@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-xs-12">
+        <%= link_to 'Loaner Groups', loaners_path %>
+        &gt;
+        Restore a Group
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<table class="table table-striped" id="deleted-groups-table">
+    <tr>
+        <th class="col-xs-3">
+            Group
+        </th>
+        <th class="col-xs-7">
+            Description
+        </th>
+        <th class="col-xs-2"></th>
+    </tr>
+    <% @groups.each do |group| %>
+        <tr data-group-id="<%= group.id %>">
+            <td class="col-xs-3">
+                <%= group.name %>
+            </td>
+            <td class="col-xs-7">
+                <%= group.description %>
+            </td>
+            <th class="col-xs-2">
+                <input type="button" class="btn btn-default restore-group-btn" value="Restore Group" />
+            </th>
+        </tr>
+    <% end %>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $('#deleted-groups-table').delegate('.restore-group-btn', 'click', function(){
+            $.ajax({
+                url: '/groups/restore/' + $(this).parents('tr').data('group-id'),
+                method: 'put',
+                dataType: 'script'
+            });
+        });
+    });
+</script>

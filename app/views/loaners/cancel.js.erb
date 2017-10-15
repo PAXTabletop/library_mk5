@@ -1,0 +1,5 @@
+var html = '';
+<% unless @group.new_record? %>
+    html = '<%= escape_javascript(render partial: 'group', locals: { group: @group }) %>';
+<% end %>
+$('[data-group-id="<%= @group.id %>"]').replaceWith(html);

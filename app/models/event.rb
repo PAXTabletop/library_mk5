@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
 
   has_many :attendees
   has_many :checkouts
+  has_many :loans
 
   SETUP_COMPUTER_TZ = :setup_computer_tz
   SETUP_ADD_NEW_GAMES = :setup_add_new_games

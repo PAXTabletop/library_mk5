@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-xs-10">
+        <input type="button" class="btn btn-primary" id="add-group-btn" value="Add Group" />
+    </div>
+    <div class="col-xs-2">
+        <a href="<%= groups_deleted_path %>">Restore a Group</a>
+    </div>
+</div>
+
+<div class="row"><br/></div>
+
+<div id="groups-table">
+    <%= render 'loaners/groups_table' %>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add-group-btn').click(function(){
+            if($('#groups-table').find('tr[data-group-id=""]').length <= 0){
+                $.get('/groups/edit', null, null, 'script');
+            }
+        });
+
+        $('#groups-table').delegate('.edit-group-btn', 'click', function(){
+            $.get('/groups/edit', { id: $(this).parents('tr').data('group-id') }, null, 'script');
+        }).delegate('.cancel-group-btn', 'click', function(){
+            $.get('/groups/cancel', { id: $(this).parents('tr').data('group-id') }, null, 'script');
+        }).delegate('.save-group-btn', 'click', function(){
+            var row = $(this).parents('tr'),
+                data = row.find('input').serializeArray();
+            $.ajax({
+                url: '/groups/' + row.data('group-id'),
+                data: data,
+                method: 'put',
+                dataType: 'script'
+            });
+        }).delegate('.new-group-btn', 'click', function(){
+            $.ajax({
+                url: '/groups',
+                data: $(this).parents('tr').find('input').serializeArray(),
+                method: 'post',
+                dataType: 'script'
+            });
+        }).delegate('.delete-group-btn', 'click', function(){
+            var row = $(this).parents('tr');
+            $.ajax({
+                url: '/groups/' + row.data('group-id'),
+                method: 'delete',
+                dataType: 'script'
+            });
+        });
+    });
+</script>

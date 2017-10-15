@@ -21,14 +21,14 @@ module DropboxUtil
 
     base_folder = '/tt-library-backups'
 
-    non_show_models = [Event, Game, Publisher, Title, TournamentGame, User]
+    non_show_models = [Event, Game, Publisher, Title, TournamentGame, User, Group]
     non_show_models.each do |model_const|
       folder_path = "#{base_folder}/general-data-backup"
 
       run_backup(time, client, model_const, folder_path)
     end
 
-    show_models = [Attendee, Checkout, Setup, Suggestion, Teardown]
+    show_models = [Attendee, Checkout, Setup, Suggestion, Teardown, Loan]
     Event.last_three_shows.each do |event|
       year = event.year
       show = event.short_name

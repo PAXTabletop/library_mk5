@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/find', to: 'checkouts#find', as: :find
   get '/admin', to: 'admin#index', as: :admin
   get '/recent', to: 'checkouts#recent', as: :recent
+  get '/loaners', to: 'loaners#index', as: :loaners
 
   # to be sprockets
   get '/status', to: 'application#app_status', as: :status
@@ -21,6 +22,19 @@ Rails.application.routes.draw do
   post '/attendee/new', to: 'attendees#new'
   post '/checkout/new', to: 'checkouts#new'
   post '/return', to: 'checkouts#return'
+
+  # loaners & groups
+  post '/groups', to: 'loaners#create'
+  get '/groups/edit', to: 'loaners#edit'
+  put '/groups/:id', to: 'loaners#update'
+  get '/groups/cancel', to: 'loaners#cancel'
+  delete '/groups/:id', to: 'loaners#delete'
+
+  get '/loaners/group/:id', to: 'loaners#group_index', as: :group
+  post '/loan', to: 'loaners#new'
+
+  get '/groups/deleted', to: 'loaners#groups_deleted', as: :groups_deleted
+  put '/groups/restore/:id', to: 'loaners#restore'
 
   # admin page
   get '/admin/setup', to: 'admin#setup', as: :setup
@@ -61,6 +75,8 @@ Rails.application.routes.draw do
 
   get '/tournament/recently_deleted', to: 'tournament_games#recently_deleted'
   put '/admin/tournament/restore/:id', to: 'tournament_games#restore'
+
+  get '/about', to: 'admin#about'
 
   get '/reports', to: 'admin#reports'
   get '/games/csv', to: 'games#csv'

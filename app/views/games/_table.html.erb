@@ -21,17 +21,20 @@
         <th class="col-xs-1">
             Barcode
         </th>
-        <th class="col-xs-4">
+        <th class="col-xs-3">
             Title
         </th>
-        <th class="col-xs-3">
+        <th class="col-xs-2">
             Publisher
         </th>
-        <th class="col-xs-2">
-            Tourney Viable?
+        <th class="col-xs-2" style="text-align: center;">
+            Tourney <span class="glyphicon glyphicon-question-sign" data-h-tip="This field is a marker of whether a game has<br/>potential for use in a tournament."></span>
         </th>
-        <th class="col-xs-2">
-            Checked Out?
+        <th class="col-xs-2" style="text-align: center;">
+            Checked Out @
+        </th>
+        <th class="col-xs-2" style="text-align: center;">
+            Loaned To
         </th>
     </tr>
     <% @games.each do |game| %>
@@ -39,24 +42,37 @@
             <td class="col-xs-1">
                 <%= game.barcode %>
             </td>
-            <td class="col-xs-4">
+            <td class="col-xs-3">
                 <%= game.name %>
             </td>
-            <td class="col-xs-3">
+            <td class="col-xs-2">
                 <%= game.by %>
             </td>
-            <td class="col-xs-2">
+            <td class="col-xs-2" style="text-align: center;">
                 <% if game.tourney? %>
-                    <span class="glyphicon glyphicon-ok glyphicon-table"></span>
+                    <span>Yes</span>
                 <% end %>
             </td>
-            <!-- FIXME: Fix the appearence of this icon float to the top right of the screen. -->
-            <td class="col-xs-2">
+            <td class="col-xs-2" style="text-align: center;">
                 <% if game.checked_out? %>
-                    <span class="glyphicon glyphicon-share-alt glyphicon-table"></span>
+                    <%= ct(game.open_checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
+                <% end %>
+            </td>
+            <td class="col-xs-2" style="text-align: center;">
+                <% if game.loaned? %>
+                    <a href="<%= group_path(game.current_loan.group) %>">
+                        <%= game.current_loan.group.name %>
+                    </a>
                 <% end %>
             </td>
         </tr>
     <% end %>
 </table>
+
 <%= will_paginate @games %>
+
+<script>
+    $(document).ready(function(){
+        $('[data-h-tip]').pTip();
+    });
+</script>

@@ -5,6 +5,7 @@ class Game < ActiveRecord::Base
   has_many :checkouts
   has_many :setups
   has_many :teardowns
+  has_many :loans
 
   belongs_to :title
 
@@ -28,6 +29,14 @@ class Game < ActiveRecord::Base
     self.checkouts.where(closed: false, event: Event.current).size == 0
   end
 
+  def loaned_in?
+    self.loans.where(closed: false, event: Event.current).size == 0
+  end
+
+  def culled?
+    culled ? true : false
+  end
+
   def name
     self.title ? self.title.title : "Title(#{self.title_id}) Not Found"
   end
@@ -46,6 +55,21 @@ class Game < ActiveRecord::Base
 
   def checked_out?
     self.checkouts.where(event: Event.current, closed: false).size > 0
+  end
+
+  def open_checkout
+    self.checkouts.where(event: Event.current, closed: false).limit(1).first
+  end
+
+  def loaned?
+    self.loans.where(event: Event.current, closed: false).size > 0
+  end
+
+  def current_loan
+    loans = self.loans.where(event: Event.current, closed: false)
+    if loans.size == 1
+      loans.first
+    end
   end
 
   def self.added_during_show(event)
@@ -68,12 +92,21 @@ class Game < ActiveRecord::Base
       result = where(nil)
     end
 
+    result = result.includes(title: :publisher)
+
     search_tags.each do |tag|
       case tag
-        when /tournament/
+        when /tourney|tournament/
           result = result.where(title: Title.where(likely_tournament: true))
-        when /checkedout/
-          result = result.where('games.id in (select distinct game_id from checkouts where closed = false)')
+        when /co|checkedout/
+          result = result.includes(:checkouts).references(:checkouts).merge(Checkout.where(closed: false, event: Event.current))
+        when /loaned/
+          tag_parts = tag.split(':')
+          if tag_parts.size == 2
+            result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current, group: Group.find(tag_parts.second.to_i)))
+          else
+            result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current))
+          end
         else
           # do nothing
       end

@@ -1,0 +1,18 @@
+<tr class="edit-group-row" data-group-id="<%= @group.id %>">
+    <td class="col-xs-3">
+        <input type="text" class="form-control" name="name" placeholder="Group Name" value="<%= @group.name %>" />
+    </td>
+    <td class="col-xs-4">
+        <input type="text" class="form-control" name="description" placeholder="Description" value="<%= @group.description %>" />
+    </td>
+    <td class="col-xs-1"></td>
+    <td class="col-xs-2">
+        <% if @group.new_record? %>
+            <input type="button" class="btn btn-primary new-group-btn" value="Add" />
+        <% else %>
+            <input type="button" class="btn btn-primary save-group-btn" value="Save" />
+        <% end %>
+        <input type="button" class="btn btn-default cancel-group-btn" value="Cancel" />
+    </td>
+    <th class="col-xs-2"></th>
+</tr>

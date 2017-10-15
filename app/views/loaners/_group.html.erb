@@ -1,0 +1,28 @@
+<tr class="display-group-row" data-group-id="<%= group.id %>">
+    <td class="col-xs-3">
+        <%= group.name %>
+    </td>
+    <td class="col-xs-4">
+        <%= group.description %>
+    </td>
+    <td class="col-xs-1">
+        <% if group.checked_out_games.size > 0 %>
+            <a href="<%= games_path(search: "tag:loaned:#{group.id}") %>">
+                <%= group.checked_out_games.size %>
+            </a>
+        <% else %>
+            <%= group.checked_out_games.size %>
+        <% end %>
+    </td>
+    <td class="col-xs-2">
+        <input type="button" class="btn btn-default edit-group-btn" value="Edit" />
+        <% if group.checked_out_games.size <= 0 %>
+            <input type="button" class="btn btn-danger delete-group-btn" value="Delete" />
+        <% end %>
+    </td>
+    <th class="col-xs-2">
+        <a href="<%= group_path(group) %>">
+            <input type="button" class="btn btn-primary loan-group-btn" value="Loan/Return >" />
+        </a>
+    </th>
+</tr>
