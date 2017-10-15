@@ -18,7 +18,7 @@
 
 var bc_regex = /^[a-z0-9]{7,13}$/i;
 
-const DEFAULT_ERROR = 'Something nasty occurred. Write down what you did for Mojo Jojo and try again.';
+const DEFAULT_ERROR = 'Something went wrong. Please submit a suggestion with a description of what you were trying to do, so our dev team can look into it.';
 
 $(document).ready(function(){
 

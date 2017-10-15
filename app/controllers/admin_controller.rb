@@ -95,4 +95,7 @@ class AdminController < ApplicationController
     @games = Game.culled_during_show(@event)
   end
 
+  def about
+  end
+
 end
