@@ -12,22 +12,23 @@
         <p>
             Please do not use this feature unless you're a manager.
         </p>
-        <input type="button" class="btn btn-primary" id="backup-btn" value="Sync Database to Dropbox" <%= (Event.is_live || !DropboxUtil.configured?) ? 'disabled' : nil %> />
+        <input type="button" class="btn btn-primary" id="backup-btn" value="Sync Database to Dropbox" <%= ((Event.is_live && !Event.current.is_last_day?) || !DropboxUtil.configured?) ? 'disabled' : nil %> />
         <br/>
         <% if !DropboxUtil.configured? %>
             <p>
                 <small class="alert-text-box alert-warning"><%= DropboxUtil::MSG_NO_CONFIG %></small>
             </p>
-        <% elsif Event.is_live %>
+        <% elsif Event.is_live && !Event.current.is_last_day? %>
             <p>
                 <small class="alert-text-box alert-warning">This action is disabled during a live event.</small>
             </p>
         <% end %>
         <p>
-            <small>
-                This action requires internet connection!
+            <small class="alert-text-box alert-warning">
+                This action requires internet connection and will block all other transactions!!!
             </small>
-            <br/>
+        </p>
+        <p>
             Syncing the database to Dropbox can take a few minutes.
             <br/>
             Please do not reload or navigate to another page until complete.
