@@ -32,11 +32,12 @@
         display: flex;
         padding: 0 5px;
         text-align: center;
-        width: 20%;
+        min-width: 20%;
         & > a {
             align-items: center;
             display: flex;
-            justify-content: center;
+            flex-flow: row wrap;
+            justify-content: space-around;
             padding: 10px 5px;
             width: 100%;
         }
