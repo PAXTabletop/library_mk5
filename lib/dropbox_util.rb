@@ -19,7 +19,7 @@ module DropboxUtil
     client = DropboxApi::Client.new(DropboxUtil::DROPBOX_ACCESS_KEY)
     time = Time.now.to_i.to_s
 
-    base_folder = '/tt-library-backups'
+    base_folder = '/pax-tt-library-backups'
 
     non_show_models = [Event, Game, Publisher, Title, TournamentGame, User, Group]
     non_show_models.each do |model_const|
