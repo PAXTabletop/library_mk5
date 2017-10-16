@@ -1,17 +1,13 @@
 <div class="col-xs-12" style="margin-bottom: 6em;"></div>
 
 <div id="suggest-row">
-    <div class="member">
-        <input id="suggest-btn" type="button" class="btn btn-default" value="Suggestion Box" />
-        <div id="suggest-form" style="display: none;">
-            <input id="cancel-suggest" type="button" class="btn btn-default" value="X" />
-            <input id="save-suggest" type="button" class="btn btn-primary" value=">>" />
-            <input id="suggest-title" placeholder="Suggest a game title or a library improvement idea here!" type="text" class="form-control" style="width: 35em;"/>
-        </div>
+    <input id="suggest-btn" type="button" class="btn btn-default" value="Suggestion Box" />
+    <div id="suggest-form" style="display: none;">
+        <input id="suggest-title" placeholder="Suggest a game title or a library improvement idea here!" type="text" class="form-control"/>
+        <input id="save-suggest" type="button" class="btn btn-primary" value=">>" />
+        <input id="cancel-suggest" type="button" class="btn btn-default" value="X" />
     </div>
-    <div class="member">
-        <a href="/ReadMe.html" target="_blank" class="btn btn-default">Read the docs >></a>
-    </div>
+    <a href="/ReadMe.html" target="_blank" class="btn btn-default">Read the docs >></a>
 </div>
 
 <footer data-event="<%= @current_event.short_name %>">
