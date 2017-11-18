@@ -84,7 +84,7 @@ class Game < ActiveRecord::Base
     search_tags = search.to_s.scan(/tag:([^\s]{1,})[\s]?/i).flatten
     search = search.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if search
 
-    if Utilities.BARCODE_FORMAT.match(search)
+    if Utilities.BARCODE_FORMAT.match(search) && !/[a-z]+/.match(search) && /\d+/.match(search)
       result = where(barcode: search.upcase)
     elsif search
       result = where(title: Title.search(search))
