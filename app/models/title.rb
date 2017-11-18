@@ -15,7 +15,7 @@ class Title < ActiveRecord::Base
 
     if search_txt
       search_str = search_txt.size > 1 ? "%#{search_txt}%" : "#{search_txt}%"
-      result = where('lower(regexp_replace(title, \' \', \'\')) like lower(?)', search_str)
+      result = where('lower(regexp_replace(title, \' \', \'\', \'g\')) like lower(?)', search_str)
     else
       result = where(nil)
     end
