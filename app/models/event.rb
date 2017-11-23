@@ -152,11 +152,12 @@ class Event < ActiveRecord::Base
   end
 
   def checkouts_by_title
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     Event.connection.execute(
       <<-SQL
         select * from (
           select
-            initcap(lower(t.title)) as title
+            regexp_replace(initcap(regexp_replace(lower(t.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title
             ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
             ,count(distinct c.id) as checkouts
             ,count(distinct g.id) as copies_during_show

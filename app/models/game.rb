@@ -161,10 +161,11 @@ class Game < ActiveRecord::Base
   end
 
   def self.copies_as_csv
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ["Title,Publisher,Barcode,LikelyTournament"]
     games = where(culled: false)
               .joins(:title, title: [:publisher])
-              .select('initcap(titles.title) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament')
+              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
               .order('lower(titles.title)').map do |db_row|
       "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
     end

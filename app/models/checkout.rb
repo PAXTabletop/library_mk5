@@ -88,10 +88,17 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.current_as_csv
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ['CheckedOut,Returned,AttendeeId,Title,Publisher,GameBarcode']
     checkouts = joins(:attendee, game: [title: [:publisher]])
-                  .select('checkouts.check_out_time', 'checkouts.return_time', 'attendees.barcode as a_barcode', 'initcap(titles.title) as title', 'initcap(publishers.name) as publisher', 'games.barcode as g_barcode')
-                  .where(event: Event.current)
+                  .select(
+                    'checkouts.check_out_time',
+                    'checkouts.return_time',
+                    'attendees.barcode as a_barcode',
+                    "regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title",
+                    'initcap(publishers.name) as publisher',
+                    'games.barcode as g_barcode'
+                  ).where(event: Event.current)
                   .order(check_out_time: :asc).map do |checkout|
       "\"#{checkout[:check_out_time]}\",\"#{checkout[:return_time]}\",#{checkout[:a_barcode]},\"#{checkout[:title]}\",\"#{checkout[:publisher]}\",#{checkout[:g_barcode]}"
     end
