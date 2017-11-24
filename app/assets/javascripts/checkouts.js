@@ -91,14 +91,13 @@ $(document).ready(function(){
         $.post('checkout/new', { g_barcode: barcode_val, a_barcode: $('#a-barcode').val() }).success(function(response){
             if(response.errors){
                 $.each(response.errors, function(k, v){
-                    // FIXME: Weird error of "can't be blank" comes back when entering a non-existant game barcode
                     $.notify(v, 'danger');
                 });
-            }else if(response.checkouts.length == 1){
-                $.notify('Game successfully checked out!');
+            }else if(response.checkouts.length <= 1){
+                $.notify(response.message);
                 resetCheckout();
             }else{
-                $.notify('Game successfully checked out!');
+                $.notify(response.message);
                 displayCheckouts(response.checkouts);
             }
             if(response.approval){

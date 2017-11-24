@@ -7,7 +7,7 @@ class Checkout < ActiveRecord::Base
   before_create :fill_in_fields
 
   validates :attendee, presence: true
-  validates :game, presence: true
+  validates :game, :presence => {:message => 'Game does not exist.'}
   validates_each :game, on: :create do |record, attr, value|
     if value
       record.errors.add(attr, 'Game is already checked out.') unless value.checked_in?
@@ -58,6 +58,32 @@ class Checkout < ActiveRecord::Base
 
   def self.new_checkout(params)
     Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
+  end
+
+  def self.checkout_or_return_game(params)
+    checkout = Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
+
+    if checkout.errors.messages.blank?
+      return {
+        message: 'Game successfully checked out!',
+        checkout: checkout
+      }
+    else
+      if !checkout.game.nil? && checkout.game.checked_out?
+        check = checkout.game.open_checkout
+        if check.attendee.barcode == params[:a_barcode]
+          check.return
+          return {
+            message: 'Game successfully returned!',
+            checkout: check
+          }
+        end
+      end
+    end
+
+    return {
+      checkout: checkout
+    }
   end
 
   def return
