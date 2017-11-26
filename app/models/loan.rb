@@ -11,4 +11,7 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  scope :active, -> { where(closed: false) }
+  scope :current, -> { where(event: Event.current) }
+  scope :by_check_out_time, -> (direction = :desc) { order(check_out_time: direction) }
 end

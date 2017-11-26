@@ -36,6 +36,18 @@ class LoanersController < ApplicationController
 
   def group_index
     @group = Group.find(params[:id])
+    @loans_by_title_id = @group.active_loans.includes(:game).group_by{ |loan| loan.game.title_id }
+
+    if order = params[:order]&.split(',')&.map(&:to_i)
+      new_keys = @loans_by_title_id.keys - order
+      new_keys += order
+      @loans_by_title_id = new_keys.each_with_object({}) do |key, obj|
+        temp = @loans_by_title_id[key]
+        if temp
+          obj[key] = temp
+        end
+      end
+    end
   end
 
   def new
@@ -47,7 +59,8 @@ class LoanersController < ApplicationController
         message: result[:message],
         loans: @group.active_loans.map do |loan|
           render_to_string('loaners/_loaned_game', locals: { loan: loan }, layout: false )
-        end
+        end,
+        removed: result[:removed]
       }
   end
 
