@@ -153,6 +153,12 @@ class Game < ActiveRecord::Base
       game.update(params)
     end
 
+    if !game.errors || game.errors.messages.blank? 
+      if !Event.current.setup_complete?
+        Setup.where(event: Event.current).add_new_game(game)
+      end
+    end
+
     game
   end
 

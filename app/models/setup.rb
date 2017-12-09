@@ -9,4 +9,8 @@ class Setup < ActiveRecord::Base
     game
   end
 
+  def self.add_new_game(game)
+    self.find_or_create_by(game: game, event: Event.current) if game
+  end
+
 end
