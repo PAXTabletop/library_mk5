@@ -38,7 +38,8 @@ class LoanersController < ApplicationController
     @group = Group.find(params[:id])
     @loans_by_title_id = @group.active_loans.includes(:game).group_by{ |loan| loan.game.title_id }
 
-    if order = params[:order]&.split(',')&.map(&:to_i)
+    if order = params[:order]
+      order = order.split(',').map(&:to_i)
       new_keys = @loans_by_title_id.keys - order
       new_keys += order
       @loans_by_title_id = new_keys.each_with_object({}) do |key, obj|
