@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   post '/game/new', to: 'games#new'
   get '/game/display', to: 'games#display'
 
+  get '/suggestions/:event', to: 'admin#suggestions', as: :suggestions
   post '/suggest', to: 'application#suggest_a_title'
 
   # Example of regular route:

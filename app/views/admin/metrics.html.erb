@@ -23,6 +23,12 @@
 
 <%= render 'admin/metrics/games_tracking_summary' %>
 
+<div class="row" style="text-align: center;">
+    <div class="col-xs-12">
+        <%= render 'link', path: suggestions_path(event: @event), text: 'Suggestions', type: nil %>
+    </div>
+</div>
+
 <div class="row">
     <ul class="nav nav-tabs tab-btns">
         <li class="col-xs-4 tab-btn tab-1-btn active" style="cursor: pointer;">

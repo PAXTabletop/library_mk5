@@ -71,8 +71,32 @@
 
 <%= will_paginate @games %>
 
+<% if @games.empty? %>
+<div class="row" style="text-align: center;">
+    <b>No games found!</b>
+    <div class="col-xs-12">
+        <a id="suggestBtn" class="btn btn-default" style="margin: 5px;">
+            Suggest adding this title to the library?
+        </a>
+    </div>
+</div>
+<% end %>
+
 <script>
     $(document).ready(function(){
         $('[data-h-tip]').pTip();
+
+        $('#suggestBtn').click(function() {
+            $.ajax({
+                url: '/suggest',
+                method: 'post',
+                data: {title: "<%= @search %>"},
+                success: function (response) {
+                    if (response.title) {
+                        $.notify('Thanks for suggesting "' + response.title + '"!');
+                    }
+                }
+            })
+        });
     });
 </script>
