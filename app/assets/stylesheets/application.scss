@@ -48,6 +48,7 @@ footer {
     align-items: center;
     background-color: #eee;
     display: flex;
+    height: auto;
     justify-content: space-around;
     width: 100%;
     position: fixed;
@@ -56,6 +57,10 @@ footer {
     a {
         color: #fff;
         text-decoration: underline;
+    }
+
+    @media (min-width: 500px) {
+        height: 3em;
     }
 }
 
