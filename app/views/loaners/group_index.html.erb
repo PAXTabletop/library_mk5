@@ -13,10 +13,27 @@
     <div class="col-xs-6 glyphicon-custom-left">
         <input type="text" id="l-barcode" class="form-control" placeholder="Enter GAME barcode to loan or return game to <%= @group.name %>." autofocus />
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
-        <div id="loans-container" style="padding: 15px 15px;">
-            <% @group.active_loans.each do |loan| %>
-                <%= render partial: 'loaners/loaned_game', locals: { loan: loan }, layouts: false %>
-            <% end %>
+        <div id="loans-container-container">
+            <div id="loans-container" class="panel-group" style="padding: 15px 15px;" role="tablist" aria-multiselectable="true">
+                <% @loans_by_title_id.each do |title_id, loans| %>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" href="#<%= title_id %>" aria-expanded="true" aria-controls="collapseOne">
+                                    <%= "#{loans.first.game.name} (#{pluralize(loans.length, 'copy')})" %>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="<%= title_id %>" class="panel-collapse collapse <%= loans.length > 1 ? '' : 'in' %>" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="list-group">
+                                <% loans.each do |loan| %>
+                                    <%= render partial: 'loaners/loaned_game', locals: { loan: loan }, layouts: false %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
         </div>
     </div>
     <div class="col-xs-1"></div>
@@ -37,7 +54,7 @@
             loanOrReturnGame(gBarcode);
         });
 
-        $('#loans-container').delegate('.return-loaner-btn', 'click', function(){
+        $('#loans-container-container').delegate('.return-loaner-btn', 'click', function(){
             loanOrReturnGame($(this).data('game-barcode'));
         });
 
@@ -46,13 +63,30 @@
                 if(response.error){
                     $.notify(response.message, 'danger');
                 } else {
-                    if(response && response.message){
+                    if (response && response.message){
                         $.notify(response.message);
                     }
-                    var container = $('#loans-container');
-                    container.html('');
-                    $.each(response.loans, function(o, v){
-                        container.append(v);
+
+                    var reduceFunc = function(obj, element) {
+                      if (element.classList.contains("in")) {
+                        obj["#" + element.id] = true;
+                      }
+                      return obj;
+                    };
+
+                    var mapFunc = function(element) {
+                        return element.id;
+                    }
+
+                    var openSelector = Object.keys($(".panel-collapse").get().reduce(reduceFunc, {})).join(",");
+                    var order = "";
+
+                    if (response.removed) {
+                        order = "?order=" + $(".panel-collapse").get().map(mapFunc).join(",");
+                    }
+                    
+                    $("#loans-container-container").load(window.location.href + order + " #loans-container", function() {
+                        $(openSelector).addClass('in');
                     });
                 }
             }).error(function(){

@@ -6,17 +6,17 @@
         <%= group.description %>
     </td>
     <td class="col-xs-1">
-        <% if group.checked_out_games.size > 0 %>
+        <% if group.active_loans.size > 0 %>
             <a href="<%= games_path(search: "tag:loaned:#{group.id}") %>">
-                <%= group.checked_out_games.size %>
+                <%= group.active_loans.size %>
             </a>
         <% else %>
-            <%= group.checked_out_games.size %>
+            <%= group.active_loans.size %>
         <% end %>
     </td>
     <td class="col-xs-2">
         <input type="button" class="btn btn-default edit-group-btn" value="Edit" />
-        <% if group.checked_out_games.size <= 0 %>
+        <% if group.active_loans.size <= 0 %>
             <input type="button" class="btn btn-danger delete-group-btn" value="Delete" />
         <% end %>
     </td>

@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-xs-12">
+        <%= link_to 'Admin', admin_path %>
+        &gt;
+        <%= link_to 'Events', events_path %>
+        &gt;
+        <%= link_to 'Metrics', metrics_path(@event) %>
+        &gt;
+        Suggestions for <%= @event.name %>
+    </div>
+</div>
+
+<div class="row">
+    <h3>
+        Suggestions for <%= @event.name %>
+        <span style="float: right; font-size: 16px;">
+            <%= @event.start_date %> to <%= @event.end_date %>
+        </span>
+    </h3>
+</div>
+
+<table class="table">
+    <tr>
+        <th class="col-xs-1" style="text-align: center;">
+            Votes
+        </th>
+        <th class="col-xs-12">
+            Title
+        </th>
+    </tr>
+    <% @event.suggestions.by_votes.each do |s| %>
+        <tr>
+            <td class="col-xs-1" style="text-align: center;">
+                <%= s.votes %>
+            </td>
+            <td class="col-xs-12">
+                <%= s.title %>
+            </td>
+        </tr>
+    <% end %>
+</table>

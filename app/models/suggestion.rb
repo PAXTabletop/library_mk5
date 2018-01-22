@@ -20,4 +20,7 @@ class Suggestion < ActiveRecord::Base
     end
   end
 
+  scope :current, -> { for_event(Event.current) }
+  scope :for_event, ->(event) { where(event: event) }
+  scope :by_votes, ->(direction=:desc) { order(votes: direction) }
 end

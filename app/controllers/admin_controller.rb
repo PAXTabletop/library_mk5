@@ -42,6 +42,10 @@ class AdminController < ApplicationController
     @event = Event.find(params[:event]) if params[:event] # && params[:event].is_a?(Integer)
   end
 
+  def suggestions
+    @event = Event.find(params[:event]) if params[:event] # && params[:event].is_a?(Integer)
+  end
+
   def purge
   end
 

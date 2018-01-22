@@ -10,18 +10,19 @@ class CheckoutsController < ApplicationController
   end
 
   def new
-    checkout = Checkout.new_checkout(params.permit(:a_barcode, :g_barcode))
+    result = Checkout.checkout_or_return_game(params.permit(:a_barcode, :g_barcode))
 
-    if checkout.errors.messages.blank?
+    if result[:checkout].errors.messages.blank?
       render json: {
-          approval: checkout.approval_tag,
-          checkouts: checkout.attendee.open_co.order(check_out_time: :desc).map do |co|
+          approval: result[:checkout].approval_tag,
+          checkouts: result[:checkout].attendee.open_co.order(check_out_time: :desc).map do |co|
             render_to_string('games/checked_out_template', locals: { checkout: co }, layout: false)
-          end
+          end,
+          message: result[:message]
         }
     else
       render json: {
-          errors: checkout.errors.messages
+          errors: result[:checkout].errors
         }
     end
   end

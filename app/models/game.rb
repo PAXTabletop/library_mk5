@@ -84,7 +84,7 @@ class Game < ActiveRecord::Base
     search_tags = search.to_s.scan(/tag:([^\s]{1,})[\s]?/i).flatten
     search = search.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if search
 
-    if Utilities.BARCODE_FORMAT.match(search)
+    if Utilities.BARCODE_FORMAT.match(search) && !/[a-z]+/.match(search) && /\d+/.match(search)
       result = where(barcode: search.upcase)
     elsif search
       result = where(title: Title.search(search))
@@ -153,6 +153,12 @@ class Game < ActiveRecord::Base
       game.update(params)
     end
 
+    if !game.errors || game.errors.messages.blank? 
+      if !Event.current.setup_complete?
+        Setup.where(event: Event.current).add_new_game(game)
+      end
+    end
+
     game
   end
 
@@ -161,10 +167,11 @@ class Game < ActiveRecord::Base
   end
 
   def self.copies_as_csv
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ["Title,Publisher,Barcode,LikelyTournament"]
     games = where(culled: false)
               .joins(:title, title: [:publisher])
-              .select('initcap(titles.title) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament')
+              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
               .order('lower(titles.title)').map do |db_row|
       "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
     end

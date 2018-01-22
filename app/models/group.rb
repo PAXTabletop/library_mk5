@@ -2,24 +2,20 @@ class Group < ActiveRecord::Base
 
   has_many :loans
 
-  def checked_out_games
-    self.loans.where(loans: { closed: false })
-  end
-
   def self.active
     where(deleted: false)
   end
 
   def active_loans
-    self.loans.where(closed: false)
+    loans.current.active.by_check_out_time
   end
 
   def soft_delete
     message = nil
-    if checked_out_games.size <= 0
+    if active_loans.size <= 0
       self.update(deleted: true)
     else
-      message = "Can not delete #{name}. #{checked_out_games.size} games still loaned to group!"
+      message = "Can not delete #{name}. #{pluralize(active_loans.size, game)} still loaned to group!"
     end
 
     message
@@ -46,7 +42,8 @@ class Group < ActiveRecord::Base
         game.current_loan.update!(closed: true, return_time: Time.now)
         return {
           error: false,
-          message: "Game successfully returned from #{self.name}!"
+          message: "Game successfully returned from #{self.name}!",
+          removed: true
         }
       else
         return {

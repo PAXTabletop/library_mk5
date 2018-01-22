@@ -7,7 +7,7 @@ class Checkout < ActiveRecord::Base
   before_create :fill_in_fields
 
   validates :attendee, presence: true
-  validates :game, presence: true
+  validates :game, :presence => {:message => 'Game does not exist.'}
   validates_each :game, on: :create do |record, attr, value|
     if value
       record.errors.add(attr, 'Game is already checked out.') unless value.checked_in?
@@ -60,6 +60,32 @@ class Checkout < ActiveRecord::Base
     Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
   end
 
+  def self.checkout_or_return_game(params)
+    checkout = Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
+
+    if checkout.errors.messages.blank?
+      return {
+        message: 'Game successfully checked out!',
+        checkout: checkout
+      }
+    else
+      if !checkout.game.nil? && checkout.game.checked_out?
+        check = checkout.game.open_checkout
+        if check.attendee.barcode == params[:a_barcode]
+          check.return
+          return {
+            message: 'Game successfully returned!',
+            checkout: check
+          }
+        end
+      end
+    end
+
+    return {
+      checkout: checkout
+    }
+  end
+
   def return
     self.return_time = Time.now.utc
     self.closed = true
@@ -88,10 +114,17 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.current_as_csv
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ['CheckedOut,Returned,AttendeeId,Title,Publisher,GameBarcode']
     checkouts = joins(:attendee, game: [title: [:publisher]])
-                  .select('checkouts.check_out_time', 'checkouts.return_time', 'attendees.barcode as a_barcode', 'initcap(titles.title) as title', 'initcap(publishers.name) as publisher', 'games.barcode as g_barcode')
-                  .where(event: Event.current)
+                  .select(
+                    'checkouts.check_out_time',
+                    'checkouts.return_time',
+                    'attendees.barcode as a_barcode',
+                    "regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title",
+                    'initcap(publishers.name) as publisher',
+                    'games.barcode as g_barcode'
+                  ).where(event: Event.current)
                   .order(check_out_time: :asc).map do |checkout|
       "\"#{checkout[:check_out_time]}\",\"#{checkout[:return_time]}\",#{checkout[:a_barcode]},\"#{checkout[:title]}\",\"#{checkout[:publisher]}\",#{checkout[:g_barcode]}"
     end
