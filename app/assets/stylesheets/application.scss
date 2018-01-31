@@ -19,33 +19,55 @@
 @import "bootstrap";
 
 #body-wrapper {
-    width: 1050px;
+    max-width: 1050px;
     margin: 0 auto 3em;
 }
 
-nav ul li {
-    text-align: center;
+.nav-tabs {
+    align-items: stretch;
+    display: flex;
+    justify-content: space-between;
+
+    & > li {
+        display: flex;
+        padding: 0 5px;
+        text-align: center;
+        min-width: 20%;
+        & > a {
+            align-items: center;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            padding: 10px 5px;
+            width: 100%;
+        }
+    }
 }
 
 footer {
+    align-items: center;
     background-color: #eee;
+    display: flex;
+    height: auto;
+    justify-content: space-around;
     width: 100%;
     position: fixed;
     bottom: 0;
-    height: 3em;
     color: #fff;
-    div {
-        transform: translateX(0%) translateY(50%);
-    }
     a {
         color: #fff;
         text-decoration: underline;
+    }
+
+    @media (min-width: 500px) {
+        height: 3em;
     }
 }
 
 #logo {
     height: 28px;
-    width: 510px;
+    max-width: 510px;
+    width: auto;
     margin: 0 auto;
     background-color: #fff;
     text-align: right;
@@ -58,12 +80,14 @@ footer {
 
 #tabletop-tag {
     height: 60px;
-    width: 510px;
+    max-width: 510px;
+    width: auto;
     margin: 0 auto;
 }
 
 .pax-tag {
-    background: asset-url("pax_tabletop_tag_mk5.png") no-repeat;
+    background: center asset-url("pax_tabletop_tag_mk5.png") no-repeat;
+    background-size: contain;
 }
 
 header[data-event="prime"], header[data-event="west"] {
@@ -187,6 +211,13 @@ path[data-event="geek-girl-con"] {
 .row p {
     padding: 10px 0;
     margin: 0;
+
+    .alert,
+    &.alert {
+        display: block;
+        margin: 0 auto;
+        padding: 10px;
+    }
 }
 
 #a-form, #g-form {
@@ -208,18 +239,35 @@ path[data-event="geek-girl-con"] {
     padding-left: 34px;
 }
 
+#suggest-form {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 5px;
+    padding: 0;
+    width: 100%;
+
+    input {
+        margin-right: 3px;
+    }
+}
+
+#suggest-title {
+    max-width: 35em;
+}
+
 #suggest-row {
-    position: fixed;
+    align-items: center;
     bottom: 3em;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
     right: 0;
-    .member {
-        display: inline-block;
+    width: 100%;
+
+    a {
+        margin: 27px 5px;
     }
-    input, a {
-        margin: 27px 10px;
-        float: right;
-    }
-    padding-right: 15px;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {

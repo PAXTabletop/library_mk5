@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-8">
         <%= link_to 'Admin', admin_path %>
         &gt;
         Backup to Cloud
@@ -16,15 +16,15 @@
         <br/>
         <% if !DropboxUtil.configured? %>
             <p>
-                <small class="alert-text-box alert-warning"><%= DropboxUtil::MSG_NO_CONFIG %></small>
+                <small class="alert alert-text-box alert-warning"><%= DropboxUtil::MSG_NO_CONFIG %></small>
             </p>
         <% elsif Event.is_live && !Event.current.is_last_day? %>
             <p>
-                <small class="alert-text-box alert-warning">This action is disabled during a live event.</small>
+                <small class="alert alert-text-box alert-warning">This action is disabled during a live event.</small>
             </p>
         <% end %>
         <p>
-            <small class="alert-text-box alert-warning">
+            <small class="alert alert-text-box alert-warning">
                 This action requires internet connection and will block all other transactions!!!
             </small>
         </p>
