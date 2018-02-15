@@ -37,6 +37,8 @@ class Event < ActiveRecord::Base
         'unplugged'
       when /geek\s*girl\s*con|ggc/i
         'geek-girl-con'
+      when /emerald\s*city\s*comic\s*con|eccc/i
+        'emerald-city-comic-con'
       else
         self.name
     end
@@ -61,6 +63,10 @@ class Event < ActiveRecord::Base
 
   def is_ggc
     /geek\s*girl\s*con|ggc/i.match self.name
+  end
+
+  def is_eccc
+    /emerald\s*city\s*comic\s*con|eccc/i.match self.name
   end
 
   def self.one_event_ago

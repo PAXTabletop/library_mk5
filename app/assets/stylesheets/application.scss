@@ -90,6 +90,11 @@ footer {
     background-size: contain;
 }
 
+.eccc-tag {
+    background: center asset-url("eccc_logo_horizontal_hi.png") no-repeat;
+    background-size: contain;
+}
+
 header[data-event="prime"], header[data-event="west"] {
     background-color: #009DDC;
     #logo {
@@ -140,6 +145,13 @@ header[data-event="geek-girl-con"] {
     }
 }
 
+header[data-event="emerald-city-comic-con"] {
+    background-color: #76b143;
+    #logo {
+        color: #76b143;
+    }
+}
+
 footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
@@ -161,13 +173,15 @@ footer[data-event="setup"], .btn-default[data-event="setup"]  {
 footer[data-event="unplugged"], .btn-default[data-event="unplugged"]  {
     background-color: #91479a;
 }
-
 footer[data-event="geek-girl-con"], .btn-default[data-event="geek-girl-con"]  {
     background-color: #ffd35a;
     color: #000 !important;
     button, a {
         color: #000 !important;
     }
+}
+footer[data-event="emerald-city-comic-con"], .btn-default[data-event="emerald-city-comic-con"]  {
+    background-color: #76b143;
 }
 
 path[data-event="prime"], path[data-event="west"] {

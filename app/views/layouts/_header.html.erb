@@ -13,6 +13,8 @@
             <div id="logo" style="width: 425px; color: #fff; font-weight: normal; box-shadow: -3px 3px 0 #000; background-color: #2d87c1; text-align: center;">
                 TABLETOP
             </div>
+        <% elsif @current_event.is_eccc %>
+            <div id="tabletop-tag" class="eccc-tag" style="height: 90px;"></div>
         <% end %>
     </div>
     <div class="col-xs-1"></div>
