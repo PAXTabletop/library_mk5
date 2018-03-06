@@ -95,6 +95,11 @@ footer {
     background-size: contain;
 }
 
+.c2e2-tag {
+    background: center asset-url("c2e2_logo_horizontal.jpg") no-repeat;
+    background-size: contain;
+}
+
 header[data-event="prime"], header[data-event="west"] {
     background-color: #009DDC;
     #logo {
@@ -152,6 +157,13 @@ header[data-event="emerald-city-comic-con"] {
     }
 }
 
+header[data-event="chicago-comic-&-entertainment-expo"] {
+    background-color: #ed1c24;
+    #logo {
+        color: #ed1c24;
+    }
+}
+
 footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
@@ -182,6 +194,9 @@ footer[data-event="geek-girl-con"], .btn-default[data-event="geek-girl-con"]  {
 }
 footer[data-event="emerald-city-comic-con"], .btn-default[data-event="emerald-city-comic-con"]  {
     background-color: #76b143;
+}
+footer[data-event="chicago-comic-&-entertainment-expo"], .btn-default[data-event="chicago-comic-&-entertainment-expo"]  {
+    background-color: #ed1c24;
 }
 
 path[data-event="prime"], path[data-event="west"] {

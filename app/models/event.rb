@@ -39,6 +39,8 @@ class Event < ActiveRecord::Base
         'geek-girl-con'
       when /emerald\s*city\s*comic\s*con|eccc/i
         'emerald-city-comic-con'
+      when /chicago\s*comic\s*entertainment\s*expo|c2e2/i
+        'chicago-comic-&-entertainment-expo'
       else
         self.name
     end
@@ -67,6 +69,10 @@ class Event < ActiveRecord::Base
 
   def is_eccc
     /emerald\s*city\s*comic\s*con|eccc/i.match self.name
+  end
+
+  def is_c2e2
+    /chicago\s*comic\s*entertainment\s*expo|c2e2/i.match self.name
   end
 
   def self.one_event_ago
