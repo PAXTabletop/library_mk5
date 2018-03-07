@@ -260,10 +260,7 @@ path[data-event="geek-girl-con"] {
     margin: 0 5px;
     padding: 0;
     width: 100%;
-
-    input {
-        margin-right: 3px;
-    }
+    pointer-events: all
 }
 
 #suggest-title {
@@ -278,9 +275,16 @@ path[data-event="geek-girl-con"] {
     position: fixed;
     right: 0;
     width: 100%;
+    pointer-events: none;
 
     a {
         margin: 27px 5px;
+        pointer-events: all;
+    }
+
+    input {
+        margin-right: 3px;
+        pointer-events: all;
     }
 }
 
