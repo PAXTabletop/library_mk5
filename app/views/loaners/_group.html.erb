@@ -7,7 +7,7 @@
     </td>
     <td class="col-xs-1">
         <% if group.active_loans.size > 0 %>
-            <a href="<%= games_path(search: "tag:loaned:#{group.id}") %>">
+            <a href="<%= games_path(group: "#{group.id}") %>">
                 <%= group.active_loans.size %>
             </a>
         <% else %>

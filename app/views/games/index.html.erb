@@ -1,10 +1,33 @@
-<div class="row">
-    <div class="col-xs-12 glyphicon-custom-left">
-        <input type="text" id="g-search" class="form-control" name="search" placeholder="Enter search terms here. Use tags like 'tag:tourney', 'tag:co', and 'tag:loaned' to filter your results."
-               value="<%= @search %>" autofocus />
+<form id="g-search">
+    <div class="col-xs-6 glyphicon-custom-left">
+        <input type="text" id="g-search-title" class="form-control" name="title" placeholder="Title or Barcode"
+               value="<%= @searchTitle %>" autofocus />
         <span class="glyphicon glyphicon-search form-control-feedback"></span>
     </div>
-</div>
+    <div class="col-xs-4 glyphicon-custom-left">
+        <input type="text" id="g-search-publisher" class="form-control" name="publisher" placeholder="Publisher"
+               value="<%= @searchPublisher %>" />
+        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+    </div>
+    <div class="col-xs-2">
+        <input type="submit" class="form-control" value="Search" />
+    </div>
+    <div class="col-xs-3" style="text-align: center; padding-top: 5px;">
+        <label class="checkbox-inline"><input type="checkbox" id="g-search-tourney" name="tourney" <%= @searchTourney ? "checked" : "" %>>Tourney?</label>
+    </div>
+    <div class="col-xs-3" style="text-align: center; padding-top: 5px;">
+        <label class="checkbox-inline"><input type="checkbox" id="g-search-checked" name="checked" <%= @searchChecked ? "checked" : "" %>>Checked out?</label>
+    </div>
+    <div class="col-xs-3" style="text-align: center; padding-top: 5px;">
+        <label class="checkbox-inline"><input type="checkbox" id="g-search-loaned" name="loaned" <%= @searchLoaned ? "checked" : "" %>>Loaned out?</label>
+    </div>
+    <div class="col-xs-3" style="text-align: center; padding-top: 5px;">
+        <label class="checkbox-inline">Loaned To: </label>
+        <% options = options_from_collection_for_select(Group.all, 'id', 'name', @searchGroup) %>
+        <%= select_tag(:group, options, { :prompt => 'No Group' }) %>
+    </div>
+</form>
+
 
 <div id="games-table">
     <%= render 'table' %>
