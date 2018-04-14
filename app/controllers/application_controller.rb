@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :global_val
 
   def app_status
-    open_checkouts = Checkout.where(closed: false).size
+    open_checkouts = Checkout.where(closed: false, event: Event.current).size
     longest_open_checkout = Checkout.longest_checkout_time_today(@offset)
     total_games = Game.where(culled: false).size
 

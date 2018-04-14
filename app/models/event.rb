@@ -39,13 +39,20 @@ class Event < ActiveRecord::Base
         'geek-girl-con'
       when /emerald\s*city\s*comic\s*con|eccc/i
         'emerald-city-comic-con'
+      when /shux|shut\sup|sit\sdown/i
+        'shux'
       else
         self.name
     end
   end
 
   def formatted_name
-    "#{self.is_pax ? 'PAX ' : nil}#{self.short_name.split(/-/).map(&:capitalize).join(' ')} #{self.year}"
+    str = "#{self.is_pax ? 'PAX ' : nil}#{self.short_name.split(/-/).map(&:capitalize).join(' ')} #{self.year}"
+    if self.is_shux
+      str = str.upcase
+    end
+    
+    str
   end
 
   def year
@@ -67,6 +74,10 @@ class Event < ActiveRecord::Base
 
   def is_eccc
     /emerald\s*city\s*comic\s*con|eccc/i.match self.name
+  end
+  
+  def is_shux
+    /shux|shut\sup|sit\sdown/i.match self.name
   end
 
   def self.one_event_ago

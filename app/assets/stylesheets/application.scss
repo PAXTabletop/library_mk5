@@ -95,6 +95,11 @@ footer {
     background-size: contain;
 }
 
+.shux-tag {
+    background: center url("/assets/shux_logo.png") no-repeat;
+    background-size: contain;
+}
+
 header[data-event="prime"], header[data-event="west"] {
     background-color: #009DDC;
     #logo {
@@ -152,6 +157,13 @@ header[data-event="emerald-city-comic-con"] {
     }
 }
 
+header[data-event="shux"] {
+    background-color: #eb6d1c;
+    #logo {
+        color: #eb6d1c;
+    }
+}
+
 footer[data-event="prime"], footer[data-event="west"], .btn-default[data-event="west"] {
     background-color: #009DDC;
 }
@@ -183,6 +195,9 @@ footer[data-event="geek-girl-con"], .btn-default[data-event="geek-girl-con"]  {
 footer[data-event="emerald-city-comic-con"], .btn-default[data-event="emerald-city-comic-con"]  {
     background-color: #76b143;
 }
+footer[data-event="shux"], .btn-default[data-event="shux"]  {
+    background-color: #eb6d1c;
+}
 
 path[data-event="prime"], path[data-event="west"] {
     fill: #009DDC;
@@ -207,6 +222,9 @@ path[data-event="unplugged"] {
 }
 path[data-event="geek-girl-con"] {
     fill: #ffd35a;
+}
+path[data-event="shux"] {
+    fill: #eb6d1c;
 }
 
 #notification-bin {
