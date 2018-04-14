@@ -95,6 +95,11 @@ footer {
     background-size: contain;
 }
 
+.c2e2-tag {
+    background: center asset-url("c2e2_logo_horizontal.jpg") no-repeat;
+    background-size: contain;
+}
+
 .shux-tag {
     background: center url("/assets/shux_logo.png") no-repeat;
     background-size: contain;
@@ -157,6 +162,13 @@ header[data-event="emerald-city-comic-con"] {
     }
 }
 
+header[data-event="chicago-comic-&-entertainment-expo"] {
+    background-color: #ed1c24;
+    #logo {
+        color: #ed1c24;
+    }
+}
+
 header[data-event="shux"] {
     background-color: #eb6d1c;
     #logo {
@@ -194,6 +206,9 @@ footer[data-event="geek-girl-con"], .btn-default[data-event="geek-girl-con"]  {
 }
 footer[data-event="emerald-city-comic-con"], .btn-default[data-event="emerald-city-comic-con"]  {
     background-color: #76b143;
+}
+footer[data-event="chicago-comic-&-entertainment-expo"], .btn-default[data-event="chicago-comic-&-entertainment-expo"]  {
+    background-color: #ed1c24;
 }
 footer[data-event="shux"], .btn-default[data-event="shux"]  {
     background-color: #eb6d1c;
@@ -278,10 +293,7 @@ path[data-event="shux"] {
     margin: 0 5px;
     padding: 0;
     width: 100%;
-
-    input {
-        margin-right: 3px;
-    }
+    pointer-events: all
 }
 
 #suggest-title {
@@ -296,9 +308,16 @@ path[data-event="shux"] {
     position: fixed;
     right: 0;
     width: 100%;
+    pointer-events: none;
 
     a {
         margin: 27px 5px;
+        pointer-events: all;
+    }
+
+    input {
+        margin-right: 3px;
+        pointer-events: all;
     }
 }
 

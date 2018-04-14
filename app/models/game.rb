@@ -8,6 +8,7 @@ class Game < ActiveRecord::Base
   has_many :loans
 
   belongs_to :title
+  has_one :publisher, :through => :title
 
   before_create :format_member_variables
 
@@ -80,36 +81,35 @@ class Game < ActiveRecord::Base
     where("culled = true and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
-  def self.search(search)
-    search_tags = search.to_s.scan(/tag:([^\s]{1,})[\s]?/i).flatten
-    search = search.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if search
+  def self.search(title, publisher, tourney, checked, loaned, group)
+    title = title.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if title
+    publisher = publisher.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if publisher
 
-    if Utilities.BARCODE_FORMAT.match(search) && !/[a-z]+/.match(search) && /\d+/.match(search)
-      result = where(barcode: search.upcase)
-    elsif search
-      result = where(title: Title.search(search))
+    if Utilities.BARCODE_FORMAT.match(title) && !/[a-z]+/.match(title) && /\d+/.match(title)
+      result = where(barcode: title.upcase)
     else
-      result = where(nil)
+      result = self
+      if title.present?
+        result = result.where(title: Title.search(title))
+      end
+      if publisher.present?
+        result = result.joins(:title).where("titles.publisher_id IN (?)", Publisher.search(publisher).select(:id))
+      end
     end
 
     result = result.includes(title: :publisher)
 
-    search_tags.each do |tag|
-      case tag
-        when /tourney|tournament/
-          result = result.where(title: Title.where(likely_tournament: true))
-        when /co|checkedout/
-          result = result.includes(:checkouts).references(:checkouts).merge(Checkout.where(closed: false, event: Event.current))
-        when /loaned/
-          tag_parts = tag.split(':')
-          if tag_parts.size == 2
-            result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current, group: Group.find(tag_parts.second.to_i)))
-          else
-            result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current))
-          end
-        else
-          # do nothing
-      end
+    if tourney
+      result = result.where(title: Title.where(likely_tournament: true))
+    end
+    if checked
+      result = result.includes(:checkouts).references(:checkouts).merge(Checkout.where(closed: false, event: Event.current))
+    end
+    if loaned
+      result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current))
+    end
+    if group.present?
+      result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, group: group, event: Event.current))
     end
 
     result.where(culled: false)

@@ -12,7 +12,8 @@ class Publisher < ActiveRecord::Base
 
     if search
       search_str = search.size > 1 ? "%#{search}%" : "#{search}%"
-      result = where('lower(regexp_replace(name, \' \', \'\')) like lower(?)', search_str)
+      result = where('lower(regexp_replace(name, \' \', \'\', \'g\')) like lower(?)', search_str)
+
     else
       result = where(nil)
     end

@@ -1,8 +1,13 @@
 class GamesController < ApplicationController
 
   def index
-    @search = nil || params[:search]
-    @games = Game.search(@search).joins(:title).order('lower(titles.title), games.barcode').paginate(per_page: 10, page: params[:page])
+    @searchTitle = nil || params[:title]
+    @searchPublisher = nil || params[:publisher]
+    @searchTourney = nil || params[:tourney].present?
+    @searchChecked = nil || params[:checked].present?
+    @searchLoaned = nil || params[:loaned].present?
+    @searchGroup = nil || params[:group]
+    @games = Game.search(@searchTitle, @searchPublisher, @searchTourney, @searchChecked, @searchLoaned, @searchGroup).joins(:title).order('lower(titles.title), games.barcode').paginate(per_page: 10, page: params[:page])
   end
 
   def status
