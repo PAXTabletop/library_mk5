@@ -192,7 +192,7 @@ class Event < ActiveRecord::Base
           inner join publishers p on p.id = t.publisher_id
           where
             g.culled = false
-            or (g.culled = true and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+            or (g.culled = true and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
           group by 1
           order by 3 desc, 1, 2
         ) c

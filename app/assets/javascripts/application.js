@@ -16,7 +16,7 @@
 //= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
-var bc_regex = /^[a-z0-9]{7,13}$/i;
+var bc_regex = /^[a-z0-9]{3,13}$/i;
 
 const DEFAULT_ERROR = 'Something went wrong. Please submit a suggestion with a description of what you were trying to do, so our dev team can look into it.';
 

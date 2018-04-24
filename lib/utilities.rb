@@ -5,7 +5,7 @@ module Utilities
   end
 
   def self.BARCODE_FORMAT
-    /\A[a-z0-9]{7,13}\Z/i
+    /\A[a-z0-9]{3,13}\Z/i
   end
 
 end
