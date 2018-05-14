@@ -60,32 +60,6 @@ class Checkout < ActiveRecord::Base
     Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
   end
 
-  def self.checkout_or_return_game(params)
-    checkout = Checkout.create(game: Game.get(params[:g_barcode]), attendee: Attendee.get(params[:a_barcode]))
-
-    if checkout.errors.messages.blank?
-      return {
-        message: 'Game successfully checked out!',
-        checkout: checkout
-      }
-    else
-      if !checkout.game.nil? && checkout.game.checked_out?
-        check = checkout.game.open_checkout
-        if check.attendee.barcode == params[:a_barcode]
-          check.return
-          return {
-            message: 'Game successfully returned!',
-            checkout: check
-          }
-        end
-      end
-    end
-
-    return {
-      checkout: checkout
-    }
-  end
-
   def return
     self.return_time = Time.now.utc
     self.closed = true

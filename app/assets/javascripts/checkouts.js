@@ -1,21 +1,65 @@
 $(document).ready(function(){
 
+    // Make a call to /return when a new barcode is entered.
+    $('#g-barcode').change(function(){
+        var barcode_val = $(this).val();
+
+        if(!bc_regex.test(barcode_val)){
+            $.notify('Invalid barcode format! Barcode should be at least 3 characters long and only contain alphanumeric characters.', 'warning', 5000);
+            $(this).val('');
+            return;
+        }
+        gameBarcode(false);
+
+        $.post('/return', { barcode: barcode_val }).success(function(response){
+            if(response.errors){
+                $.each(response.errors, function(k, v){
+                    $.notify(v, 'danger');
+                });
+                gameBarcode(true);
+            }else if(response.time){
+                $.notify('Successfully returned ' + response.game + '!', 5000);
+                resetCheckout();
+            }else{
+                $('#g-name').text('Checking out: ' + response.game)
+                $('#a-row').show();
+                $('#a-barcode').focus();
+            }
+        }).error(function(){
+            $.notify(DEFAULT_ERROR, 'danger');
+            gameBarcode(true);
+        });
+    });
+
     // Make a call to /attendee/status when a new barcode is entered.
     $('#a-barcode').change(function(){
         var barcode_val = $(this).val();
 
         if(!bc_regex.test(barcode_val)){
-            $.notify('Invalid barcode format! Barcode should be at least 7 characters long and only contain alphanumeric characters.', 'warning', 5000);
+            $.notify('Invalid barcode format! Barcode should be at least 3 characters long and only contain alphanumeric characters.', 'warning', 5000);
             $(this).val('');
             return;
         }
         attendeeBarcode(false);
 
         $.get('attendee/status', { barcode: barcode_val }).success(function(response){
-            $('#a-name').text(response.attendee.name);
-            $('#g-row').show();
-            $('#g-barcode').focus();
-            displayCheckouts(response.checkouts);
+            $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: barcode_val }).success(function(response){
+                if(response.errors){
+                    $.each(response.errors, function(k, v){
+                        $.notify(v, 'danger');
+                    });
+                }else{
+                    $.notify('Successfully checked out ' + response.game + '!');
+                    resetCheckout();
+                }
+                if(response.approval){
+                    $.notify(response.approval, 'success', 8000);
+                }
+            }).error(function(){
+                $.notify(DEFAULT_ERROR, 'danger');
+            }).complete(function(){
+                attendeeBarcode(true);
+            });
         }).error(function(response){
             if(response.status == 400){
                 $('#a-form').modal();
@@ -55,10 +99,24 @@ $(document).ready(function(){
             $.post('attendee/new', data).success(function(response){
                 if(response.attendee){
                     $('#a-form').modal('hide');
-                    $('#a-name').text(response.attendee.name);
-                    $('#g-row').show();
-                    $('#g-barcode').focus();
-                }else{
+                    $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: $('#a-barcode').val() }).success(function(response){
+                        if(response.errors){
+                            $.each(response.errors, function(k, v){
+                                $.notify(v, 'danger');
+                            });
+                        }else{
+                            $.notify('Successfully checked out ' + response.game + '!');
+                            resetCheckout();
+                        }
+                        if(response.approval){
+                            $.notify(response.approval, 'success', 8000);
+                        }
+                    }).error(function(){
+                        $.notify(DEFAULT_ERROR, 'danger');
+                    }).complete(function(){
+                        attendeeBarcode(true);
+                    });
+                } else {
                     // got errors
                     $.each(response.errors, function(k, v){
                         var input = $('[name="' + k + '"]');
@@ -79,54 +137,14 @@ $(document).ready(function(){
     $('#a-form-save').click(saveAttendee);
     $('#a-form').find('input[type="text"]').keypress(saveAttendeeByEnter);
 
-    $('#g-barcode').change(function(){
-        var barcode_val = $(this).val();
-
-        if(!bc_regex.test(barcode_val)){
-            $.notify('Invalid barcode format! Barcode should be at least 7 characters long and only contain alphanumeric characters.', 'warning', 5000);
-            $(this).val('');
-            return;
-        }
-
-        $.post('checkout/new', { g_barcode: barcode_val, a_barcode: $('#a-barcode').val() }).success(function(response){
-            if(response.errors){
-                $.each(response.errors, function(k, v){
-                    $.notify(v, 'danger');
-                });
-            }else if(response.checkouts.length <= 1){
-                $.notify(response.message);
-                resetCheckout();
-            }else{
-                $.notify(response.message);
-                displayCheckouts(response.checkouts);
-            }
-            if(response.approval){
-                $.notify(response.approval, 'success', 8000);
-            }
-        }).error(function(){
-            $.notify(DEFAULT_ERROR, 'danger');
-        }).complete(function(){
-            $('#g-barcode').val('');
-        });
-    });
-
-    $('#games-container').delegate('.return-game', 'click', function(){
-        var _me = $(this);
-        $.post('/return', { co_id: _me.data('checkout-id') }).success(function(){
-            $.notify('Returned game successfully!');
-            _me.closest('.row').remove();
-            if($('#games-container').children().length <= 0){
-                resetCheckout();
-            }
-        }).error(function(){
-            $.notify(DEFAULT_ERROR, 'danger');
-        });
+    $('#find-barcode').change(function(){
+        $.get('/find', $(this).serialize(), null, 'script');
     });
 
     $('#found-div').delegate('.return-game', 'click', function(){
         var _me = $(this);
         $.post('/return', { co_id: _me.data('checkout-id') }).success(function(response){
-            $.notify('Returned game successfully!');
+            $.notify('Successfully returned ' + response.game + '!', 5000);
             var cell = _me.closest('.col-xs-2');
             cell.html(response.time);
             cell.next().html("RETURNED");
@@ -134,15 +152,9 @@ $(document).ready(function(){
             $.notify(DEFAULT_ERROR, 'danger');
         });
     });
-
-    $('#find-barcode').change(function(){
-        $.get('/find', $(this).serialize(), null, 'script');
-    });
-
 });
-
-function attendeeBarcode(bool){
-    var barcode = $('#a-barcode');
+function gameBarcode(bool){
+    var barcode = $('#g-barcode');
 
     barcode.prop('disabled', !bool);
     if(bool){
@@ -151,18 +163,18 @@ function attendeeBarcode(bool){
     $('#checkouts-x-btn').toggle(!bool);
 }
 
-function resetCheckout(){
-    attendeeBarcode(true);
-    $('#a-name').text('');
-    $('#g-barcode').val('');
-    $('#g-row').hide();
-    $('#games-container').html('');
+function attendeeBarcode(bool){
+    var barcode = $('#a-barcode');
+
+    barcode.prop('disabled', !bool);
+    if(bool){
+        barcode.val('').focus();
+    }
 }
 
-function displayCheckouts(checkouts){
-    var container = $('#games-container');
-    container.html('');
-    $.each(checkouts, function(o, v){
-        container.append(v);
-    });
+function resetCheckout(){
+    gameBarcode(true);
+    $('#g-name').text('');
+    $('#g-barcode').val('');
+    $('#a-row').hide();
 }

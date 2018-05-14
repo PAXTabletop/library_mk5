@@ -10,28 +10,40 @@ class CheckoutsController < ApplicationController
   end
 
   def new
-    result = Checkout.checkout_or_return_game(params.permit(:a_barcode, :g_barcode))
+    checkout = Checkout.new_checkout(params.permit(:a_barcode, :g_barcode))
 
-    if result[:checkout].errors.messages.blank?
+    if checkout.errors.messages.blank?
       render json: {
-          approval: result[:checkout].approval_tag,
-          checkouts: result[:checkout].attendee.open_co.order(check_out_time: :desc).map do |co|
-            render_to_string('games/checked_out_template', locals: { checkout: co }, layout: false)
-          end,
-          message: result[:message]
+          approval: checkout.approval_tag,
+          game: checkout.game.name
         }
     else
       render json: {
-          errors: result[:checkout].errors
+          errors: checkout.errors.messages
         }
     end
   end
 
   def return
-    checkout = Checkout.find(params[:co_id])
-    checkout.return
+    if params[:barcode]
+      game = Game.get(params[:barcode])
+      if !game
+        render json: { errors: ['Game not found!'] }
+        return
+      end
+      checkout = game.open_checkout
+      if checkout
+        checkout.return
+        render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: game.name }
+      else
+        render json: { game: game.name }
+      end
+    elsif params[:co_id]
+      checkout = Checkout.find(params[:co_id])
+      checkout.return
 
-    render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P') }
+      render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: checkout.game.name }
+    end
   end
 
   def ct(datetime)
