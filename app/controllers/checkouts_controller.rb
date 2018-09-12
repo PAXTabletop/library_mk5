@@ -46,10 +46,6 @@ class CheckoutsController < ApplicationController
     end
   end
 
-  def ct(datetime)
-    datetime - @offset.hours
-  end
-
   def find
     if params[:barcode]
       # check for games
@@ -64,12 +60,16 @@ class CheckoutsController < ApplicationController
       # if both exist, set attendee to nil
       @object = game || attendee
       # return latest checkouts for game/attendee
-      @checkouts = @object ? @object.checkouts.order(id: :desc).limit(5) : []
+      @checkouts = @object ? @object.checkouts.where(event: Event.current).order(id: :desc).limit(5) : []
     end
   end
 
   def recent
     @recent = Checkout.recent
+  end
+
+  def longest
+    @longest = Checkout.longest
   end
 
   def csv

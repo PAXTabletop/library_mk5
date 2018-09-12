@@ -14,7 +14,7 @@ $(document).ready(function(){
     // Hide form, clear game barcode field on cancel click.
     $('#g-form-cancel').click(function(){
         $('#g-form').modal('hide');
-        gameBarcode(true);
+        adminBarcode(true);
     });
 
     // Make a call to /attendee/status when a new barcode is entered.
@@ -26,17 +26,17 @@ $(document).ready(function(){
             $(this).val('');
             return;
         }
-        gameBarcode(false);
+        adminBarcode(false);
 
         $.get('/game/status', { barcode: barcode_val }).success(function(response){
             $.get('/game/display', { barcode: barcode_val, message: 'Game already exists!' }, null, 'script');
-            gameBarcode(true);
+            adminBarcode(true);
         }).error(function(response){
             if(response.status == 400){
                 $('#g-form').modal();
             }else{
                 $.notify(DEFAULT_ERROR, 'danger');
-                gameBarcode(true);
+                adminBarcode(true);
             }
         });
     }).on('input', function(){
@@ -56,7 +56,7 @@ $(document).ready(function(){
                 if(response.game){
                     $('#g-form').modal('hide');
                     $.get('/game/display', { barcode: barcode_val, message: 'Game successfully added!' }, null, 'script');
-                    gameBarcode(true);
+                    adminBarcode(true);
 
                     titleDataSource.clearPrefetchCache();
                     titleDataSource.initialize(true);
@@ -106,7 +106,7 @@ $(document).ready(function(){
 
 });
 
-function gameBarcode(bool){
+function adminBarcode(bool){
     var barcode = $('#new-g-barcode');
 
     barcode.prop('disabled', !bool);

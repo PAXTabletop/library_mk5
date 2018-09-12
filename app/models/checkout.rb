@@ -70,6 +70,10 @@ class Checkout < ActiveRecord::Base
     self.where(event: Event.current, return_time: nil).order(updated_at: :desc).limit(5)
   end
 
+  def self.longest
+    self.where(event: Event.current, return_time: nil).order(:updated_at).limit(5)
+  end
+
   def approval_tag
     title_text = self.game.name
     title_text = title_text.gsub(' ', '').downcase

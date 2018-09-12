@@ -1,0 +1,15 @@
+<% if @longest.present? %>
+    <div class="row">
+        <div class="col-xs-12" style="text-align: center;">
+            <h3>
+                <%= @longest.size %> Longest Open Checkouts
+            </h3>
+        </div>
+    </div>
+<% else %>
+    <div class="row" style="text-align: center;">
+        <p>No open checkouts.</p>
+    </div>
+<% end %>
+
+<%= render 'checkout_table', checkouts: @longest %>

@@ -1,11 +1,11 @@
 <div class="row"><br/></div>
-
 <div class="row">
     <div class="col-xs-6">
-        <% unless @search.blank? %>
+        <% unless @searchTitle.blank? and @searchPublisher.blank? %>
             <div>
                 <span>
-                    <%= @search %>
+                    <%= (@searchTitle.blank? ? "Games" : @searchTitle) +
+                        (@searchPublisher.blank? ? "" : " by " + @searchPublisher) %>
                 </span>
                 <a href="<%= games_path %>" class="glyphicon glyphicon-remove"></a>
             </div>
@@ -90,7 +90,8 @@
             $.ajax({
                 url: '/suggest',
                 method: 'post',
-                data: {title: "<%= @search %>"},
+                data: {title: "<%= (@searchTitle.blank? ? "Games" : @searchTitle) +
+                        (@searchPublisher.blank? ? "" : " by " + @searchPublisher) %>"},
                 success: function (response) {
                     if (response.title) {
                         $.notify('Thanks for suggesting "' + response.title + '"!');

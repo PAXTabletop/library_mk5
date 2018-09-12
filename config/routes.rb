@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/find', to: 'checkouts#find', as: :find
   get '/admin', to: 'admin#index', as: :admin
   get '/recent', to: 'checkouts#recent', as: :recent
+  get '/longest', to: 'checkouts#longest', as: :longest
   get '/loaners', to: 'loaners#index', as: :loaners
 
   # to be sprockets

@@ -23,7 +23,7 @@
     </div>
     <div class="col-xs-3" style="text-align: center; padding-top: 5px;">
         <label class="checkbox-inline">Loaned To: </label>
-        <% options = options_from_collection_for_select(Group.all, 'id', 'name', @searchGroup) %>
+        <% options = options_from_collection_for_select(Group.active, 'id', 'name', @searchGroup) %>
         <%= select_tag(:group, options, { :prompt => 'No Group' }) %>
     </div>
 </form>

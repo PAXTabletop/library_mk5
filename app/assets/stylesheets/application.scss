@@ -23,7 +23,7 @@
     margin: 0 auto 3em;
 }
 
-.nav-tabs {
+.nav-tabs.tt-nav-tabs {
     align-items: stretch;
     display: flex;
     justify-content: space-between;
@@ -44,7 +44,7 @@
     }
 }
 
-footer {
+footer.tt-footer {
     align-items: center;
     background-color: #eee;
     display: flex;
