@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   def app_status
     open_checkouts = Checkout.where(closed: false, event: Event.current).size
     longest_open_checkout = Checkout.longest_checkout_time_today(@offset)
-    total_games = Game.where(culled: false).size
+    total_games = Game.active.size
 
     render json: {
         open_checkouts: open_checkouts,

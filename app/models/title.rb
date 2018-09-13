@@ -5,7 +5,7 @@ class Title < ActiveRecord::Base
   belongs_to :publisher
 
   def self.active
-    where('id in (select title_id from games where culled = false)')
+    where('id in (select title_id from games where status = ?)', Game::STATUS[:active])
     .order('lower(title) asc')
   end
 
@@ -27,7 +27,7 @@ class Title < ActiveRecord::Base
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ['Title,Publisher,LikelyTournament,Count']
     titles = joins(:games, :publisher)
-               .where(games: { culled: false })
+               .where(games: { status: Game::STATUS[:active] })
                .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title, initcap(publishers.name) as name, titles.likely_tournament, games.id")
                .group("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' )", 'initcap(publishers.name)', :likely_tournament)
                .count('games.id')

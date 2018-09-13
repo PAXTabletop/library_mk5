@@ -163,8 +163,8 @@ class Event < ActiveRecord::Base
     Event.connection.execute(
       <<-SQL
         select
-          count(distinct case when g.culled = false then g.id end) as active_games
-          ,count(distinct case when g.culled = true and g.updated_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as culled_during_show
+          count(distinct case when g.status = #{Game::STATUS[:active]} then g.id end) as active_games
+          ,count(distinct case when g.status = #{Game::STATUS[:culled]} and g.updated_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as culled_during_show
           ,count(distinct case when g.created_at::date between ('#{self.start_date}'::date - '2 day'::interval) and ('#{self.end_date}'::date + '2 day'::interval) then g.id end) as added_during_show
           ,count(distinct case when s.event_id = #{self.id} then g.id end) as games_at_setup
           ,count(distinct case when t.event_id = #{self.id} then g.id end) as games_at_teardown
@@ -191,8 +191,9 @@ class Event < ActiveRecord::Base
           inner join titles t on t.id = g.title_id
           inner join publishers p on p.id = t.publisher_id
           where
-            g.culled = false
-            or (g.culled = true and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
+            g.status = #{Game::STATUS[:active]}
+            or (g.status = #{Game::STATUS[:culled]} and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
+            or (g.status = #{Game::STATUS[:stored]} and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
           group by 1
           order by 3 desc, 1, 2
         ) c
@@ -214,8 +215,9 @@ class Event < ActiveRecord::Base
         where
           c.event_id = #{self.id}
           and (
-            g.culled = false
-            or (g.culled = true and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+            g.status = #{Game::STATUS[:active]}
+            or (g.status = #{Game::STATUS[:culled]} and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
+            or (g.status = #{Game::STATUS[:stored]} and g.updated_at::date between '#{self.start_date}' and '#{self.end_date}')
           )
         group by 1
         order by 2 desc, 1

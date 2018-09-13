@@ -34,7 +34,7 @@ class AdminController < ApplicationController
   end
 
   def cull
-    @game = Game.get(params[:barcode]) if params[:barcode]
+    @game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]]) if params[:barcode]
     @message = @game.cull_game if @game
   end
 
@@ -50,6 +50,32 @@ class AdminController < ApplicationController
   end
 
   def missing
+  end
+
+  def storage
+    @storage_by_title_id = Game.stored.group_by{ |game| game.title_id }
+  end
+
+  def store_game
+    @game = Game.get(params[:game_barcode], [Game::STATUS[:active], Game::STATUS[:stored]]) if params[:game_barcode]
+    result = @game.toggle_storage_status if @game
+
+    if !result
+      render json: {
+        error: true,
+        message: "Game does not exist."
+      }
+    else
+      render json: {
+        error: result[:error],
+        message: result[:message],
+        removed: result[:removed]
+      }
+    end
+  end
+
+  def csv
+    render json: { csv: Game.storage_copies_as_csv }
   end
 
   def setup_tag

@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get '/admin/metrics/:event', to: 'admin#metrics', as: :metrics
   get '/admin/purge', to: 'admin#purge', as: :purge
   get '/admin/missing', to: 'admin#missing', as: :missing
+  get '/admin/storage', to: 'admin#storage', as: :storage
   get '/admin/added/:event', to: 'admin#added_games', as: :added
   get '/admin/culled/:event', to: 'admin#culled_games', as: :culled
 
@@ -83,6 +84,7 @@ Rails.application.routes.draw do
   get '/games/csv', to: 'games#csv'
   get '/titles/csv', to: 'titles#csv'
   get '/checkouts/csv', to: 'checkouts#csv'
+  get '/storage/csv', to: 'admin#csv'
 
   get '/admin/backup', to: 'admin#backup', as: :backup
   post '/backup', to: 'backup#initiate'
@@ -93,6 +95,8 @@ Rails.application.routes.draw do
 
   get '/suggestions/:event', to: 'admin#suggestions', as: :suggestions
   post '/suggest', to: 'application#suggest_a_title'
+
+  post '/store', to: 'admin#store_game'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -26,15 +26,21 @@ class CheckoutsController < ApplicationController
 
   def return
     if params[:barcode]
-      game = Game.get(params[:barcode])
+      game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]])
       if !game
         render json: { errors: ['Game not found!'] }
         return
+      elsif game.status == Game::STATUS[:stored]
+        render json: { errors: ['Game is currently in storage. Please remove it via the <a href="/admin/storage">storage page</a> first.']}
+        return
       end
       checkout = game.open_checkout
+      loan = game.current_loan
       if checkout
         checkout.return
         render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: game.name }
+      elsif loan
+        render json: { errors: ["Game is currently loaned out to the group '#{loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{loan.group.id}'>Loaners page</a> tab first."]}
       else
         render json: { game: game.name }
       end
@@ -74,6 +80,10 @@ class CheckoutsController < ApplicationController
 
   def csv
     render json: { csv: Checkout.current_as_csv }
+  end
+
+  def ct(datetime)
+    datetime + Event.current.utc_offset.hours
   end
 
 end

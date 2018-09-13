@@ -12,7 +12,7 @@
     <td class="col-xs-2">
         <%= checkout.closed ? 'RETURNED' : 'CHECKED OUT' %>
     </td>
-    <td class="col-xs-3" style="<%= 'text-decoration:line-through;' if checkout.game.culled %>">
+    <td class="col-xs-3" style="<%= 'text-decoration:line-through;' if checkout.game.culled? %>">
         <%= checkout.game.full_name %>
     </td>
     <td class="col-xs-3">

@@ -17,13 +17,19 @@ class Game < ActiveRecord::Base
 
   ST_LIMIT_COUNT = 150
 
+  STATUS = { :active => 0, :culled => 1, :stored => 2 }
+
+  scope :active, -> { where(:status => Game::STATUS[:active]) }
+  scope :culled, -> { where(:status => Game::STATUS[:culled]) }
+  scope :stored, -> { where(:status => Game::STATUS[:stored]) }
+
   def format_member_variables
     self.barcode.upcase!
   end
 
-  def self.get(barcode)
+  def self.get(barcode, statuses = [Game::STATUS[:active]])
     # search for game based on barcode and event
-    where(barcode: barcode.upcase, culled: false).first
+    where(barcode: barcode.upcase, status: statuses).first
   end
 
   def checked_in?
@@ -34,8 +40,16 @@ class Game < ActiveRecord::Base
     self.loans.where(closed: false, event: Event.current).size == 0
   end
 
+  def active?
+    self.status == Game::STATUS[:active]
+  end
+
   def culled?
-    culled ? true : false
+    self.status == Game::STATUS[:culled]
+  end
+
+  def stored?
+    self.status == Game::STATUS[:stored]
   end
 
   def name
@@ -78,7 +92,7 @@ class Game < ActiveRecord::Base
   end
 
   def self.culled_during_show(event)
-    where("culled = true and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
+    where("status = ? and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", Game::STATUS[:culled], event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
   def self.search(title, publisher, tourney, checked, loaned, group)
@@ -111,17 +125,44 @@ class Game < ActiveRecord::Base
     if group.present?
       result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, group: group, event: Event.current))
     end
-
-    result.where(culled: false)
+    result.where(status: Game::STATUS[:active])
   end
 
   def cull_game
     if self.checkouts.where(closed: false).size == 0
-      self.update(culled: true)
+      self.update(status: Game::STATUS[:culled])
       'Game successfully culled!'
     else
       'Game is still checked out! Please return game before culling it.'
     end
+  end
+
+  def toggle_storage_status
+    if self.checked_out?
+      return {
+        error: true,
+        message: 'Game is currently checked out by an attendee and can not be stored!'
+      }
+    end
+
+    # If already stored, switch to active
+    if self.status == Game::STATUS[:stored]
+      self.update(status: Game::STATUS[:active])
+      return {
+        error: false,
+        message: "Game successfully removed from storage!",
+        removed: true
+      }
+    end
+
+    # Otherwise, mark as stored and add to Teardown list
+    Teardown.add_game(self.barcode)
+    self.update(status: Game::STATUS[:stored])
+
+    return {
+      error: false,
+      message: "Game successfully stored!"
+    }
   end
 
   def info
@@ -169,7 +210,20 @@ class Game < ActiveRecord::Base
   def self.copies_as_csv
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ["Title,Publisher,Barcode,LikelyTournament"]
-    games = where(culled: false)
+    games = where(status: Game::STATUS[:active])
+              .joins(:title, title: [:publisher])
+              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
+              .order('lower(titles.title)').map do |db_row|
+      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
+    end
+
+    csv.concat(games).join("\n")
+  end
+
+  def self.storage_copies_as_csv
+    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
+    csv = ["Title,Publisher,Barcode,LikelyTournament"]
+    games = where(status: Game::STATUS[:stored])
               .joins(:title, title: [:publisher])
               .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
               .order('lower(titles.title)').map do |db_row|
@@ -207,7 +261,7 @@ class Game < ActiveRecord::Base
       inner join publishers p on p.id = t.publisher_id
       left join (select game_id from #{table} where event_id = #{Event.current.id}) st on st.game_id = g.id
       where
-        g.culled = false
+        g.status = #{Game::STATUS[:active]}
         and st.game_id is null
       order by 2, 1
     SQL
@@ -238,7 +292,7 @@ class Game < ActiveRecord::Base
             left join setups s on s.game_id = g.id
             left join teardowns td on td.game_id = g.id
             where
-              g.culled = false
+              g.status = #{Game::STATUS[:active]}
               and g.created_at::date <= '#{three_show.start_date}'
             group by 1, 2, 3
           ) g
@@ -251,5 +305,4 @@ class Game < ActiveRecord::Base
       SQL
     )
   end
-
 end

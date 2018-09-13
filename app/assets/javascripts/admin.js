@@ -29,7 +29,7 @@ $(document).ready(function(){
         adminBarcode(false);
 
         $.get('/game/status', { barcode: barcode_val }).success(function(response){
-            $.get('/game/display', { barcode: barcode_val, message: 'Game already exists!' }, null, 'script');
+            $.get('/game/display', { barcode: barcode_val, message: response.message }, null, 'script');
             adminBarcode(true);
         }).error(function(response){
             if(response.status == 400){
