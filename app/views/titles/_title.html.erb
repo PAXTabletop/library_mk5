@@ -6,7 +6,7 @@
         <%= title.publisher.name %>
     </td>
     <td class="col-xs-1">
-        <%= title.games.where(culled: false).size %>
+        <%= title.games.active.size %>
     </td>
     <td class="col-xs-2">
         <% if title.likely_tournament %>

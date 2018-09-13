@@ -22,7 +22,7 @@ class Group < ActiveRecord::Base
   end
 
   def loan_or_return_game(game_barcode)
-    game = Game.get(game_barcode)
+    game = Game.get(game_barcode, [Game::STATUS[:active], Game::STATUS[:stored]])
     unless game
       return {
         error: true,
@@ -34,6 +34,11 @@ class Group < ActiveRecord::Base
       return {
         error: true,
         message: 'Game is currently checked out by an attendee and can not be loaned!'
+      }
+    elsif game.status == Game::STATUS[:stored]
+      return {
+        error: true,
+        message: 'Game is currently in storage. Please remove it via the <a href="/admin/storage">storage page</a> first.'
       }
     end
 

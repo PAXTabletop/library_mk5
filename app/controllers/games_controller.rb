@@ -11,12 +11,16 @@ class GamesController < ApplicationController
   end
 
   def status
-    game = Game.get(params[:barcode])
+    game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]])
     if game
+      if game.stored?
+        game.toggle_storage_status
+      end
       @message = 'This game already exists in the system.'
       render json: {
-          game: game.info
-        }
+        game: game.info,
+        message: @message
+      }
     else
       render json: nil, status: 400
     end

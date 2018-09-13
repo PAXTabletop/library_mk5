@@ -3,7 +3,7 @@ class Publisher < ActiveRecord::Base
   has_many :titles
 
   def self.active
-    where('id in (select publisher_id from titles where id in (select title_id from games where culled = false))')
+    where('id in (select publisher_id from titles where id in (select title_id from games where status = ?))', Game::STATUS[:active])
     .order('lower(name) asc')
   end
 
@@ -22,7 +22,7 @@ class Publisher < ActiveRecord::Base
   end
 
   def active_titles
-    self.titles.joins(:games).where(games: { culled: false }).distinct('lower(regexp_replace(title, \' \', \'\'))')
+    self.titles.joins(:games).where(games: { status: Game::STATUS[:active] }).distinct('lower(regexp_replace(title, \' \', \'\'))')
   end
 
 end

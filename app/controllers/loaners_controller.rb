@@ -58,9 +58,6 @@ class LoanersController < ApplicationController
     render json: {
         error: result[:error],
         message: result[:message],
-        loans: @group.active_loans.map do |loan|
-          render_to_string('loaners/_loaned_game', locals: { loan: loan }, layout: false )
-        end,
         removed: result[:removed]
       }
   end
