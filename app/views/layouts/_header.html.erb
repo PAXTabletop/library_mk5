@@ -1,6 +1,7 @@
-<header data-event="<%= @current_event.short_name %>" style="height: 90px;">
+<header data-event="<%= @current_event.try(:short_name) %>" style="height: 90px;">
     <div class="col-xs-1"></div>
     <div class="col-xs-10">
+      <% if @current_event %>
         <% if @current_event.is_pax %>
             <div id="tabletop-tag" class="pax-tag"></div>
             <div id="logo">
@@ -20,6 +21,7 @@
         <% elsif @current_event.is_shux %>
             <div id="tabletop-tag" class="shux-tag" style="height: 90px;"></div>
         <% end %>
+      <% end %>
     </div>
     <div class="col-xs-1"></div>
 </header>

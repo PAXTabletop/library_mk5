@@ -1,4 +1,4 @@
-<% if @current_event.is_last_day? %>
+<% if @current_event.try(:is_last_day?) %>
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 alert alert-info" style="text-align: center; margin: 5px 0;">
