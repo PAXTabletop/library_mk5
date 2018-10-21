@@ -17,6 +17,10 @@ class Checkout < ActiveRecord::Base
     end
   end
 
+  scope :for_current_event, -> { where(event: Event.current) }
+  scope :closed, -> { where(closed: true) }
+  scope :active, -> { where(closed: false) }
+
   APPROVAL_MAP = {
     # 'normalizedtitle' => 'name',
     'roborally' => {
@@ -39,17 +43,34 @@ class Checkout < ActiveRecord::Base
     }
   }
 
+  HALF_DAY = 15.hours
+
   def self.longest_checkout_time_today(offset)
-    start_time = (Time.now - 15.hours).strftime('%Y-%m-%d %H:%M:%S')
+    start_time = (Time.now - HALF_DAY).strftime('%Y-%m-%d %H:%M:%S')
     minimum_time = self.where(closed: false)
                      .where(
-                       "(check_out_time - '#{offset} hours'::interval) > ?",
+                       "(check_out_time - '#{Checkout.connection.quote(offset)} hours'::interval) > ?",
                        start_time
                      ).minimum(:check_out_time).to_i
 
     difference = minimum_time == 0 ? 0 : Time.now - minimum_time
 
     Time.at(difference).utc.strftime('%H:%M:%S')
+  end
+
+  def self.longest_checkout_game_today(offset)
+    start_time = (Time.now - HALF_DAY).strftime('%Y-%m-%d %H:%M:%S')
+    min_checkout = self.where(closed: false).where(
+                       "(check_out_time - '#{Checkout.connection.quote(offset)} hours'::interval) > ?",
+                       start_time
+                     ).order(:check_out_time).first
+    if min_checkout
+      min_game = Game.find(min_checkout.game_id)
+      min_game_checkout = {
+        min_checkout: min_checkout,
+        min_game: min_game.name
+      }
+    end
   end
 
   def fill_in_fields
@@ -89,6 +110,14 @@ class Checkout < ActiveRecord::Base
       end
 
       "<img width=\"25px\" height=\"25px\" src=\"/assets/images/#{name}.jpg\"></img>&nbsp;#{message}"
+    end
+  end
+
+  def hours_played
+    if return_time
+      (return_time - check_out_time).to_i
+    else
+      DateTime.now.to_i - check_out_time.to_i
     end
   end
 

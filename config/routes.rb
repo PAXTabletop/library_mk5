@@ -98,6 +98,8 @@ Rails.application.routes.draw do
 
   post '/store', to: 'admin#store_game'
 
+  get '/admin/stats', to: 'admin#stats'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
