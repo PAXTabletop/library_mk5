@@ -1,3 +1,5 @@
+include ActionView::Helpers::NumberHelper
+
 class AdminController < ApplicationController
 
   def index
@@ -126,6 +128,35 @@ class AdminController < ApplicationController
   end
 
   def about
+  end
+
+  def stats
+    curr_event = Event.current
+    games = curr_event.top_games()
+    titles_count = Game.active.count
+    active_checkouts_count = Checkout.for_current_event.active.count
+    checked_out = number_to_percentage(active_checkouts_count.to_f / titles_count, precision: 0)
+    titles_played_count = Checkout.for_current_event.joins(game: [:title]).group(:title).count.size
+    total_checkouts_count = Checkout.for_current_event.count
+    longest_checkout = Checkout.longest_checkout_game_today(curr_event.utc_offset)
+    total_hours_played = Checkout.for_current_event.to_a.sum(&:hours_played) / 1.hour
+    random_game = Game.random_game()
+
+    render json: {
+      current_event: curr_event.short_name,
+      games: games,
+      random_game: random_game,
+      stats: {
+        titles: titles_count,
+        active_checkouts: active_checkouts_count,
+        checked_out: checked_out,
+        titles_played: titles_played_count,
+        total_checkouts: total_checkouts_count,
+        longest_checkout: longest_checkout,
+        hours_played: total_hours_played,
+      },
+      current_offset: curr_event.utc_offset
+    }
   end
 
 end

@@ -233,6 +233,20 @@ class Game < ActiveRecord::Base
     csv.concat(games).join("\n")
   end
 
+  def self.copy_available(title)
+    self.where(title: title).any?(&:checked_in?)
+  end
+
+  def self.random_game()
+    game = self.active.order("RANDOM()").first
+
+    {
+      title: game.name,
+      available: self.copy_available(game.title.id),
+      checkouts: game.checkouts.for_current_event.count
+    }
+  end
+
   def self.count_remaining_from(table)
     connection.execute(<<-SQL
         select count(*) as games_left from (#{sql_remaining_from(table)}) g
@@ -305,4 +319,5 @@ class Game < ActiveRecord::Base
       SQL
     )
   end
+
 end
