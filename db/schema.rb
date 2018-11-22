@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180913215015) do
+ActiveRecord::Schema.define(version: 20181122033935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.string   "id_state",   limit: 30
   end
 
+  add_index "attendees", ["barcode"], name: "index_attendees_on_barcode", using: :btree
+  add_index "attendees", ["event_id"], name: "index_attendees_on_event_id", using: :btree
+
   create_table "checkouts", force: true do |t|
     t.integer  "game_id"
     t.integer  "attendee_id"
@@ -38,6 +41,10 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "checkouts", ["attendee_id"], name: "index_checkouts_on_attendee_id", using: :btree
+  add_index "checkouts", ["event_id"], name: "index_checkouts_on_event_id", using: :btree
+  add_index "checkouts", ["game_id"], name: "index_checkouts_on_game_id", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -55,6 +62,8 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "reset_setup"
   end
 
+  add_index "events", ["start_date"], name: "index_events_on_start_date", using: :btree
+
   create_table "games", force: true do |t|
     t.string   "barcode",    limit: 20
     t.integer  "title_id"
@@ -62,6 +71,9 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "games", ["barcode"], name: "index_games_on_barcode", using: :btree
+  add_index "games", ["title_id"], name: "index_games_on_title_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.text     "name"
@@ -82,6 +94,9 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "updated_at"
   end
 
+  add_index "loans", ["game_id"], name: "index_loans_on_game_id", using: :btree
+  add_index "loans", ["group_id"], name: "index_loans_on_group_id", using: :btree
+
   create_table "publishers", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -95,6 +110,9 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "updated_at"
   end
 
+  add_index "setups", ["event_id"], name: "index_setups_on_event_id", using: :btree
+  add_index "setups", ["game_id"], name: "index_setups_on_game_id", using: :btree
+
   create_table "suggestions", force: true do |t|
     t.text     "title"
     t.integer  "votes",      default: 0
@@ -103,12 +121,17 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "updated_at"
   end
 
+  add_index "suggestions", ["event_id"], name: "index_suggestions_on_event_id", using: :btree
+
   create_table "teardowns", force: true do |t|
     t.integer  "game_id"
     t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "teardowns", ["event_id"], name: "index_teardowns_on_event_id", using: :btree
+  add_index "teardowns", ["game_id"], name: "index_teardowns_on_game_id", using: :btree
 
   create_table "titles", force: true do |t|
     t.string   "title"
@@ -117,6 +140,8 @@ ActiveRecord::Schema.define(version: 20180913215015) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "titles", ["publisher_id"], name: "index_titles_on_publisher_id", using: :btree
 
   create_table "tournament_games", force: true do |t|
     t.text     "title"
