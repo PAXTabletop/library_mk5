@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -43,3 +43,4 @@ gem 'dropbox_api'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'puma', '~> 2.16.0'

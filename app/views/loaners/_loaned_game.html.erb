@@ -1,8 +1,0 @@
-<div class="list-group-item">
-    <div class="row" style="padding-left: 15px; padding-right: 15px;">
-        <p class="col-xs-8">
-            <%= "#{loan.game.barcode} @ #{ct(loan.check_out_time).strftime('%m/%d %I:%M%P')}" %>
-        </p>
-        <input type="button" data-game-barcode="<%= loan.game.barcode %>" class="btn btn-danger col-xs-4 return-loaner-btn" value="Return Game" />
-    </div>
-</div>

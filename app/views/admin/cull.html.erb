@@ -1,3 +1,5 @@
+<% content_for :title, 'Cull Game' %>
+
 <div class="row">
     <div class="col-xs-8">
         <%= link_to 'Admin', admin_path %>
@@ -30,7 +32,11 @@
 <script>
     $(document).ready(function(){
         $('#cull-barcode').change(function(){
-            $.get('/admin/cull', $(this).serialize(), null, 'script');
+            $.get('/admin/cull', {"barcode": $(this).val()}, null, 'script');
         });
     });
+
+    function cull_valuable(barcode) {
+        $.get('/admin/cull', {"barcode": barcode, approve: true}, null, 'script');
+    }
 </script>

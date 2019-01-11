@@ -139,7 +139,7 @@ class Event < ActiveRecord::Base
   end
 
   def recent_event_summary
-    where_clause = Event.three_events_ago ? "where e.id >= (#{Event.three_events_ago.id})" : ''
+    where_clause = Event.four_events_ago ? "where e.id >= (#{Event.four_events_ago.id})" : ''
 
     Event.connection.execute(
       <<-SQL
@@ -154,7 +154,7 @@ class Event < ActiveRecord::Base
         #{where_clause}
         group by 1
         order by 1 desc
-        limit 4
+        limit 5
       SQL
     )
   end

@@ -6,7 +6,7 @@ class TitlesController < ApplicationController
 
   def update
     @title = Title.find(params[:id])
-    @title.update(params.permit(:title, :likely_tournament, :publisher_id))
+    @title.update(params.permit(:title, :valuable, :publisher_id))
   end
 
   def cancel

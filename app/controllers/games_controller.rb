@@ -3,11 +3,11 @@ class GamesController < ApplicationController
   def index
     @searchTitle = nil || params[:title]
     @searchPublisher = nil || params[:publisher]
-    @searchTourney = nil || params[:tourney].present?
+    @searchValuable = nil || params[:valuable].present?
     @searchChecked = nil || params[:checked].present?
     @searchLoaned = nil || params[:loaned].present?
     @searchGroup = nil || params[:group]
-    @games = Game.search(@searchTitle, @searchPublisher, @searchTourney, @searchChecked, @searchLoaned, @searchGroup).joins(:title).order('lower(titles.title), games.barcode').paginate(per_page: 10, page: params[:page])
+    @games = Game.search(@searchTitle, @searchPublisher, @searchValuable, @searchChecked, @searchLoaned, @searchGroup).joins(:title).order('lower(titles.title), games.barcode').paginate(per_page: 10, page: params[:page])
   end
 
   def status
@@ -27,7 +27,7 @@ class GamesController < ApplicationController
   end
 
   def new
-    game = Game.generate(params.permit(:barcode, :title, :publisher, :likely_tournament))
+    game = Game.generate(params.permit(:barcode, :title, :publisher, :valuable))
 
     if game.errors && !game.errors.messages.blank?
       render json: {

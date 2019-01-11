@@ -55,7 +55,7 @@ $(document).ready(function(){
             $.post('/game/new', data).success(function(response){
                 if(response.game){
                     $('#g-form').modal('hide');
-                    $.get('/game/display', { barcode: barcode_val, message: 'Game successfully added!' }, null, 'script');
+                    $.get('/game/display', { barcode: barcode_val, message: response.game.name + ' successfully added!' }, null, 'script');
                     adminBarcode(true);
 
                     titleDataSource.clearPrefetchCache();
@@ -92,14 +92,16 @@ $(document).ready(function(){
 
     $('[name="title"]').typeahead({
         minLength: 1,
-        highlight: true
+        highlight: true,
+        hint: false
     },{
         source: titleDataSource
     });
 
     $('[name="publisher"]').typeahead({
         minLength: 1,
-        highlight: true
+        highlight: true,
+        hint: false
     },{
         source: publisherDataSource
     });

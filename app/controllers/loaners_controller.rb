@@ -36,7 +36,7 @@ class LoanersController < ApplicationController
 
   def group_index
     @group = Group.find(params[:id])
-    @loans_by_title_id = @group.active_loans.includes(:game).group_by{ |loan| loan.game.title_id }
+    @loans_by_title_id = @group.active_loans.joins(game: :title).select('loans.id AS id', 'loans.check_out_time AS check_out_time', 'games.barcode AS barcode', 'games.title_id AS title_id', 'titles.title AS name').group_by{ |loan| loan.title_id }
 
     if order = params[:order]
       order = order.split(',').map(&:to_i)
