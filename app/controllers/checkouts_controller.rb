@@ -31,7 +31,7 @@ class CheckoutsController < ApplicationController
         render json: { errors: ['Game not found!'] }
         return
       elsif game.status == Game::STATUS[:stored]
-        render json: { errors: ['Game is currently in storage. Please remove it via the <a href="/admin/storage">storage page</a> first.']}
+        render json: { errors: ["#{game.name} is currently in storage. Please remove it via the <a href='/admin/storage'>storage page</a> first."]}
         return
       end
       checkout = game.open_checkout
@@ -40,7 +40,7 @@ class CheckoutsController < ApplicationController
         checkout.return
         render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: game.name }
       elsif loan
-        render json: { errors: ["Game is currently loaned out to the group '#{loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{loan.group.id}'>Loaners page</a> tab first."]}
+        render json: { errors: ["#{game.name} is currently loaned out to the group '#{loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{loan.group.id}'>Loaners page</a> tab first."]}
       else
         render json: { game: game.name }
       end
@@ -83,7 +83,8 @@ class CheckoutsController < ApplicationController
   end
 
   def ct(datetime)
-    datetime + Event.current.utc_offset.hours
+    @_ct_current_event ||= Event.current
+    datetime + @_ct_current_event.utc_offset.hours
   end
 
 end

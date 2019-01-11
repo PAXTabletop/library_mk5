@@ -28,7 +28,8 @@
             Publisher
         </th>
         <th class="col-xs-2" style="text-align: center;">
-            Tourney <span class="glyphicon glyphicon-question-sign" data-h-tip="This field is a marker of whether a game has<br/>potential for use in a tournament."></span>
+            Valuable <span class="glyphicon glyphicon-question-sign" data-h-tip="This field is a marker of whether a game is<br/>hard to replace,
+            expensive, or likely used in tournaments."></span>
         </th>
         <th class="col-xs-2" style="text-align: center;">
             Checked Out @
@@ -49,7 +50,7 @@
                 <%= game.by %>
             </td>
             <td class="col-xs-2" style="text-align: center;">
-                <% if game.tourney? %>
+                <% if game.valuable? %>
                     <span>Yes</span>
                 <% end %>
             </td>

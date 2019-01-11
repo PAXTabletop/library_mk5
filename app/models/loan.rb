@@ -6,7 +6,7 @@ class Loan < ActiveRecord::Base
 
   validates_each :game, on: :create do |record, attr, value|
     if value
-      record.errors.add(attr, 'Game is already checked out to an attendee.') unless value.checked_in?
+      record.errors.add(attr, "#{game.name} is already checked out to an attendee.") unless value.checked_in?
       record.errors.add(attr, 'Game does not exist.') if value.culled?
     end
   end

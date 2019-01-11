@@ -64,8 +64,8 @@ class Game < ActiveRecord::Base
     self.title ? self.title.publisher.name : "Publisher(Title: #{self.title_id}) Not Found"
   end
 
-  def tourney?
-    self.title ? self.title.likely_tournament : false
+  def valuable?
+    self.title ? self.title.valuable : false
   end
 
   def checked_out?
@@ -95,7 +95,7 @@ class Game < ActiveRecord::Base
     where("status = ? and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", Game::STATUS[:culled], event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
-  def self.search(title, publisher, tourney, checked, loaned, group)
+  def self.search(title, publisher, valuable, checked, loaned, group)
     title = title.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if title
     publisher = publisher.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if publisher
 
@@ -113,17 +113,18 @@ class Game < ActiveRecord::Base
 
     result = result.includes(title: :publisher)
 
-    if tourney
-      result = result.where(title: Title.where(likely_tournament: true))
+    if valuable
+      result = result.where(title: Title.where(valuable: true))
     end
     if checked
       result = result.includes(:checkouts).references(:checkouts).merge(Checkout.where(closed: false, event: Event.current))
     end
     if loaned
-      result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current))
-    end
-    if group.present?
-      result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, group: group, event: Event.current))
+      if group.present?
+        result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, group: group, event: Event.current))
+      else
+        result = result.includes(:loans).references(:loans).merge(Loan.where(closed: false, event: Event.current))
+      end
     end
     result.where(status: Game::STATUS[:active])
   end
@@ -131,9 +132,9 @@ class Game < ActiveRecord::Base
   def cull_game
     if self.checkouts.where(closed: false).size == 0
       self.update(status: Game::STATUS[:culled])
-      'Game successfully culled!'
+      "#{name} successfully culled!"
     else
-      'Game is still checked out! Please return game before culling it.'
+      "#{name} is still checked out! Please return game before culling it."
     end
   end
 
@@ -141,7 +142,7 @@ class Game < ActiveRecord::Base
     if self.checked_out?
       return {
         error: true,
-        message: 'Game is currently checked out by an attendee and can not be stored!'
+        message: "#{name} is currently checked out by an attendee and can not be stored!"
       }
     end
 
@@ -150,7 +151,7 @@ class Game < ActiveRecord::Base
       self.update(status: Game::STATUS[:active])
       return {
         error: false,
-        message: "Game successfully removed from storage!",
+        message: "#{name} successfully removed from storage!",
         removed: true
       }
     end
@@ -161,7 +162,7 @@ class Game < ActiveRecord::Base
 
     return {
       error: false,
-      message: "Game successfully stored!"
+      message: "#{name} successfully stored!"
     }
   end
 
@@ -170,7 +171,7 @@ class Game < ActiveRecord::Base
       name: self.name,
       publisher: self.by,
       barcode: self.barcode,
-      likely_tournament: self.tourney?
+      valuable: self.valuable?
     }
   end
 
@@ -185,11 +186,11 @@ class Game < ActiveRecord::Base
       params[:title] = title
       params.delete(:publisher)
 
-      if !title.likely_tournament && params[:likely_tournament]
-        title.update(likely_tournament: true)
+      if !title.valuable && params[:valuable]
+        title.update(valuable: true)
       end
 
-      params.delete(:likely_tournament)
+      params.delete(:valuable)
 
       game.update(params)
     end
@@ -209,12 +210,12 @@ class Game < ActiveRecord::Base
 
   def self.copies_as_csv
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
-    csv = ["Title,Publisher,Barcode,LikelyTournament"]
+    csv = ["Title,Publisher,Barcode,Valuable"]
     games = where(status: Game::STATUS[:active])
               .joins(:title, title: [:publisher])
-              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
+              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.valuable")
               .order('lower(titles.title)').map do |db_row|
-      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
+      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:valuable]}"
     end
 
     csv.concat(games).join("\n")
@@ -222,12 +223,12 @@ class Game < ActiveRecord::Base
 
   def self.storage_copies_as_csv
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
-    csv = ["Title,Publisher,Barcode,LikelyTournament"]
+    csv = ["Title,Publisher,Barcode,Valuable"]
     games = where(status: Game::STATUS[:stored])
               .joins(:title, title: [:publisher])
-              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.likely_tournament")
+              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.valuable")
               .order('lower(titles.title)').map do |db_row|
-      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:likely_tournament]}"
+      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:valuable]}"
     end
 
     csv.concat(games).join("\n")

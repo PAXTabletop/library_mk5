@@ -1,3 +1,5 @@
+<% content_for :title, 'Cold Storage' %>
+
 <div class="row">
     <div class="col-xs-6">
         <%= link_to 'Admin', admin_path %>
@@ -44,7 +46,14 @@
                         <div id="<%= title_id %>" class="panel-collapse collapse <%= games.length > 1 ? '' : 'in' %>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="list-group">
                                 <% games.each do |game| %>
-                                    <%= render partial: 'admin/stored_game', locals: { game: game }, layouts: false %>
+                                    <div class="list-group-item">
+                                        <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                                            <p class="col-xs-8">
+                                                <%= "#{game.barcode}" %>
+                                            </p>
+                                            <input type="button" data-game-barcode="<%= game.barcode %>" class="btn btn-danger col-xs-4 return-storage-btn" value="Return Game" />
+                                        </div>
+                                    </div>
                                 <% end %>
                             </div>
                         </div>

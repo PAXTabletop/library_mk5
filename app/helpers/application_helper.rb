@@ -1,7 +1,8 @@
 module ApplicationHelper
 
   def ct(datetime)
-    datetime + Event.current.utc_offset.hours
+    @_ct_current_event ||= Event.current
+    datetime + @_ct_current_event.utc_offset.hours
   end
 
 end

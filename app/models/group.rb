@@ -33,12 +33,12 @@ class Group < ActiveRecord::Base
     if game.checked_out?
       return {
         error: true,
-        message: 'Game is currently checked out by an attendee and can not be loaned!'
+        message: "#{game.name} is currently checked out by an attendee and can not be loaned!"
       }
     elsif game.status == Game::STATUS[:stored]
       return {
         error: true,
-        message: 'Game is currently in storage. Please remove it via the <a href="/admin/storage">storage page</a> first.'
+        message: "#{game.name} is currently in storage. Please remove it via the <a href='/admin/storage'>storage page</a> first."
       }
     end
 
@@ -47,13 +47,13 @@ class Group < ActiveRecord::Base
         game.current_loan.update!(closed: true, return_time: Time.now)
         return {
           error: false,
-          message: "Game successfully returned from #{self.name}!",
+          message: "#{game.name} successfully returned from #{self.name}!",
           removed: true
         }
       else
         return {
           error: true,
-          message: "Game is already loaned to another group: '#{game.current_loan.group.name}'!"
+          message: "#{game.name} is already loaned to another group: <a href='/loaners/group/#{game.current_loan.group.id}'>#{game.current_loan.group.name}</a>!"
         }
       end
     end
@@ -62,7 +62,7 @@ class Group < ActiveRecord::Base
 
     {
       error: false,
-      message: "Game successfully loaned to #{self.name}!"
+      message: "#{game.name} successfully loaned to #{self.name}!"
     }
   end
 

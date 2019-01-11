@@ -1,8 +1,27 @@
-<% if @game %>
+<% if @valuable %>
+    <div class="row alert alert-danger">
+        <div class="col-xs-6" style="text-align: center; font-size: 20px;">
+            <p style="font-size: 25px;">
+                Warning! This game is Valuable!
+                <br />
+                <small>Check with a Manager before clicking this button:</small>
+                <br />
+                <button type="button" class="btn btn-danger" onClick="cull_valuable('<%= @game.barcode %>')">Actually Cull</button>
+            </p>
+        </div>
+        <div class="col-xs-6">
+            <p style="font-size: 25px;">
+                <%= @game.barcode %> - <%= @game.name %>
+                <br/>
+                <small>by <%= @game.by %></small>
+            </p>
+        </div>
+    </div>
+<% elsif @game %>
     <div class="row alert alert-success">
         <div class="col-xs-6" style="text-align: center; font-size: 20px;">
             <p>
-                <%= @message || 'Game successfully logged!' %>
+                <%= @message || "#{@game.name} successfully logged!" %>
             </p>
         </div>
         <div class="col-xs-6">

@@ -10,10 +10,10 @@ class Checkout < ActiveRecord::Base
   validates :game, :presence => {:message => 'Game does not exist.'}
   validates_each :game, on: :create do |record, attr, value|
     if value
-      record.errors.add(attr, 'Game is already checked out.') unless value.checked_in?
-      record.errors.add(attr, "Game is currently loaned out to the group '#{value.current_loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{value.current_loan.group.id}'>Loaners page</a> tab first.") unless value.loaned_in?
+      record.errors.add(attr, "#{name} is already checked out.") unless value.checked_in?
+      record.errors.add(attr, "#{name} is currently loaned out to the group '#{value.current_loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{value.current_loan.group.id}'>Loaners page</a> tab first.") unless value.loaned_in?
       record.errors.add(attr, 'Game does not exist.') if value.culled?
-      record.errors.add(attr, 'Game is currently in storage.') if value.stored?
+      record.errors.add(attr, "#{name} is currently in storage.") if value.stored?
     end
   end
 

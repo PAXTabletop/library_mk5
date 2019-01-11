@@ -24,5 +24,4 @@ class Publisher < ActiveRecord::Base
   def active_titles
     self.titles.joins(:games).where(games: { status: Game::STATUS[:active] }).distinct('lower(regexp_replace(title, \' \', \'\'))')
   end
-
 end

@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (4.1.1)
       actionpack (= 4.1.1)
@@ -32,6 +32,7 @@ GEM
       execjs
       json
     bcrypt (3.1.7)
+    bcrypt (3.1.7-x86-mingw32)
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
@@ -68,7 +69,9 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     pg (0.17.1)
+    pg (0.17.1-x86-mingw32)
     polyglot (0.3.5)
+    puma (2.16.0)
     rack (1.5.2)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -125,6 +128,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
@@ -133,12 +137,10 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   pg
+  puma (~> 2.16.0)
   rails (= 4.1.1)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   tzinfo-data
   uglifier (>= 1.3.0)
   will_paginate
-
-BUNDLED WITH
-   1.10.5

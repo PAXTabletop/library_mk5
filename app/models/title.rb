@@ -25,11 +25,11 @@ class Title < ActiveRecord::Base
 
   def self.copies_as_csv
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
-    csv = ['Title,Publisher,LikelyTournament,Count']
+    csv = ['Title,Publisher,Valuable,Count']
     titles = joins(:games, :publisher)
                .where(games: { status: Game::STATUS[:active] })
-               .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title, initcap(publishers.name) as name, titles.likely_tournament, games.id")
-               .group("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' )", 'initcap(publishers.name)', :likely_tournament)
+               .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title, initcap(publishers.name) as name, titles.valuable, games.id")
+               .group("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' )", 'initcap(publishers.name)', :valuable)
                .count('games.id')
                .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
                .map do |title_map|

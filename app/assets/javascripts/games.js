@@ -12,4 +12,12 @@ $(document).ready(function(){
         $.get('/games', $(this).serialize(), null, 'script');
     });
 
+    $('#g-search-loaned').on('change', function(){
+    	if (this.checked) {
+    		$('#g-search-group').css("display", "inline-block");
+    	} else {
+    		$('#g-search-group').hide();
+    	}
+    });
+
 });

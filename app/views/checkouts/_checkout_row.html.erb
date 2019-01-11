@@ -5,7 +5,7 @@
     <td class="col-xs-2">
         <% if checkout.return_time %>
             <%= ct(checkout.return_time).strftime('%m/%d %I:%M%P') %>
-        <% else %>
+        <% elsif current_page?('/find') %>
             <input type="button" data-checkout-id="<%= checkout.id %>" class="btn btn-danger return-game" value="Return Game" />
         <% end %>
     </td>

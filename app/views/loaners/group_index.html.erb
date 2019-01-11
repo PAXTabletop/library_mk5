@@ -1,3 +1,5 @@
+<% content_for :title, "Loans for #{@group.name}" %>
+
 <div class="row">
     <div class="col-xs-12">
         <%= link_to 'Loaner Groups', loaners_path %>
@@ -20,14 +22,21 @@
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" href="#<%= title_id %>" aria-expanded="true" aria-controls="collapseOne">
-                                    <%= "#{loans.first.game.name} (#{pluralize(loans.length, 'copy')})" %>
+                                    <%= "#{loans.first.name} (#{pluralize(loans.length, 'copy')})" %>
                                 </a>
                             </h4>
                         </div>
                         <div id="<%= title_id %>" class="panel-collapse collapse <%= loans.length > 1 ? '' : 'in' %>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="list-group">
                                 <% loans.each do |loan| %>
-                                    <%= render partial: 'loaners/loaned_game', locals: { loan: loan }, layouts: false %>
+                                    <div class="list-group-item">
+                                        <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                                            <p class="col-xs-8">
+                                                <%= "#{loan.barcode} @ #{ct(loan.check_out_time).strftime('%m/%d %I:%M%P')}" %>
+                                            </p>
+                                            <input type="button" data-game-barcode="<%= loan.barcode %>" class="btn btn-danger col-xs-4 return-loaner-btn" value="Return Game" />
+                                        </div>
+                                    </div>
                                 <% end %>
                             </div>
                         </div>

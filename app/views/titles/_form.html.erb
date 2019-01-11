@@ -5,15 +5,15 @@
     <td class="col-xs-3">
         <select class="form-control" name="publisher_id">
             <% Publisher.active.each do |pub| %>
-                <option <%= @title.publisher.id == pub.id ? 'selected' : nil %> value="<%= pub.id %>"><%= pub.name %></option>
+                <option <%= @title.publisher.id == pub.id ? 'selected' : nil %> value="<%= pub.id %>"><%= pub.name.force_encoding('utf-8') %></option>
             <% end %>
         </select>
     </td>
     <td class="col-xs-1"></td>
     <td class="col-xs-2">
-        <select class="form-control" name="likely_tournament">
-            <option <%= @title.likely_tournament ? 'selected' : nil %> value="true">Yes</option>
-            <option <%= @title.likely_tournament ? nil : 'selected' %> value="false">No</option>
+        <select class="form-control" name="valuable">
+            <option <%= @title.valuable ? 'selected' : nil %> value="true">Yes</option>
+            <option <%= @title.valuable ? nil : 'selected' %> value="false">No</option>
         </select>
     </td>
     <td class="col-xs-2">
