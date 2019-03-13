@@ -130,7 +130,7 @@ class Game < ActiveRecord::Base
   end
 
   def cull_game
-    if self.checkouts.where(closed: false).size == 0
+    if self.checkouts.for_current_event.where(closed: false).size == 0
       self.update(status: Game::STATUS[:culled])
       "#{name} successfully culled!"
     else
