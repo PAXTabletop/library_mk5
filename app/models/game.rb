@@ -15,7 +15,7 @@ class Game < ActiveRecord::Base
   validates_format_of :barcode, with: Utilities.BARCODE_FORMAT
   validates :title, presence: true
 
-  ST_LIMIT_COUNT = 150
+  ST_LIMIT_COUNT = 200
 
   STATUS = { :active => 0, :culled => 1, :stored => 2 }
 
@@ -196,9 +196,7 @@ class Game < ActiveRecord::Base
     end
 
     if !game.errors || game.errors.messages.blank? 
-      if !Event.current.setup_complete?
-        Setup.where(event: Event.current).add_new_game(game)
-      end
+      Setup.where(event: Event.current).add_new_game(game)
     end
 
     game
