@@ -73,6 +73,7 @@ GEM
     polyglot (0.3.5)
     puma (2.16.0)
     rack (1.5.2)
+    rack-cors (1.0.3)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.1.1)
@@ -138,6 +139,7 @@ DEPENDENCIES
   jquery-rails
   pg
   puma (~> 2.16.0)
+  rack-cors
   rails (= 4.1.1)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

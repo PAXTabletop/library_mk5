@@ -44,3 +44,5 @@ gem 'dropbox_api'
 # gem 'debugger', group: [:development, :test]
 
 gem 'puma', '~> 2.16.0'
+
+gem 'rack-cors'
