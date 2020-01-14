@@ -4,144 +4,50 @@
     <div class="col-xs-6">
         <%= link_to 'Admin', admin_path %>
         &gt;
-        Games in Storage
+        Storage
     </div>
 </div>
 
-<div class="row"><br /></div>
-
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <p>Titles listed here are in the cold storage vaults of Captain Morgan's Personal Supply. They will not show up in other parts of the system, but are not fully culled.</p>
+    <div class="col-xs-12" style="text-align: center;">
+        <p>This will add or remove a game to cold storage. They will not show up in other parts of the system, but are not fully culled.</p>
     </div>
-    <div class="col-md-2"></div>
 </div>
 
 <div class="row">
     <div class="col-xs-2"></div>
-    <div class="col-xs-10 text-right">
-        <input type="button" class="btn btn-primary" id="storage-btn" value="Download Games in Storage" />
+    <div class="col-xs-8 glyphicon-custom-left" style="text-align:center;">
+        <input type="text" id="s-barcode" class="form-control" name="barcode" placeholder="Enter GAME barcode to store game." autocomplete="off" autofocus />
+        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
     </div>
+    <div class="col-xs-2"></div>
 </div>
 
-<div class="row"><br /></div>
+<div class="row" style="margin-top: 15px;">
+    <div class="col-xs-2"></div>
+    <div id="game-display" class="col-xs-8"></div>
+    <div class="col-xs-2"></div>
+</div>
 
-<div class="row" id="l-row">
-    <div class="col-xs-3"></div>
-    <div class="col-xs-6 glyphicon-custom-left">
-        <input type="text" id="s-barcode" class="form-control" placeholder="Enter GAME barcode to store game." autofocus />
-        <span class="glyphicon glyphicon-tower form-control-feedback"></span>
-        <div id="storage-container-container">
-            <div id="storage-container" class="panel-group" style="padding: 15px 15px;" role="tablist" aria-multiselectable="true">
-                <% @storage_by_title_id.each do |title_id, games| %>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" href="#<%= title_id %>" aria-expanded="true" aria-controls="collapseOne">
-                                    <%= "#{games.first.name} (#{pluralize(games.length, 'copy')})" %>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="<%= title_id %>" class="panel-collapse collapse <%= games.length > 1 ? '' : 'in' %>" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="list-group">
-                                <% games.each do |game| %>
-                                    <div class="list-group-item">
-                                        <div class="row" style="padding-left: 15px; padding-right: 15px;">
-                                            <p class="col-xs-8">
-                                                <%= "#{game.barcode}" %>
-                                            </p>
-                                            <input type="button" data-game-barcode="<%= game.barcode %>" class="btn btn-danger col-xs-4 return-storage-btn" value="Return Game" />
-                                        </div>
-                                    </div>
-                                <% end %>
-                            </div>
-                        </div>
-                    </div>
-                <% end %>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <p style="text-align: center;">
+            <span id="storage-count"><%= @stored_games_count %></span> games in storage.
+        </p>
     </div>
-    <div class="col-xs-1"></div>
     <div class="col-xs-2"></div>
 </div>
 
 <script>
     $(document).ready(function(){
-        $('#storage-btn').click(function(){
-            getFileAt('/storage/csv', 'TTLibrary_Storage.csv');
-        });
-
         $('#s-barcode').change(function(){
-            var gBarcode = $(this).val();
-
-            if(!bc_regex.test(gBarcode)){
-                $.notify('Invalid barcode format! Barcode should be at least 7 characters long and only contain alphanumeric characters.', 'warning', 5000);
-                $(this).val('');
-                return;
-            }
-
-            storeOrUnstoreGame(gBarcode);
-        });
-
-        $('#storage-container-container').delegate('.return-storage-btn', 'click', function(){
-            storeOrUnstoreGame($(this).data('game-barcode'));
-        });
-
-        function getFileAt(url, fileName){
-            var anchor = document.createElement('a'),
-                handle;
-            if(typeof anchor.download != 'string'){
-                handle = window.open();
-            }
-            $.get(url, function(data){
-                var csv = 'data:attachment/csv;base64,' + btoa(data.csv);
-                if(typeof anchor.download === 'string'){
-                    anchor.download = fileName;
-                    anchor.href = csv;
-                    anchor.click();
-                } else {
-                    handle.location = csv;
-                }
-            });
-        }
-
-        function storeOrUnstoreGame(barcode){
-            $.post('/store', { game_barcode: barcode }).success(function(response){
-                if(response.error){
-                    $.notify(response.message, 'danger');
-                } else {
-                    if (response && response.message){
-                        $.notify(response.message);
-                    }
-
-                    var reduceFunc = function(obj, element) {
-                      if (element.classList.contains("in")) {
-                        obj["#" + element.id] = true;
-                      }
-                      return obj;
-                    };
-
-                    var mapFunc = function(element) {
-                        return element.id;
-                    }
-
-                    var openSelector = Object.keys($(".panel-collapse").get().reduce(reduceFunc, {})).join(",");
-                    var order = "";
-
-                    if (response.removed) {
-                        order = "?order=" + $(".panel-collapse").get().map(mapFunc).join(",");
-                    }
-                    
-                    $("#storage-container-container").load(window.location.href + order + " #storage-container", function() {
-                        $(openSelector).addClass('in');
-                    });
-                }
-            }).error(function(){
-                $.notify(DEFAULT_ERROR, 'danger');
-            }).complete(function(){
-                $('#s-barcode').val('');
-            });
-        }
+            $.get('/admin/storage', $(this).serialize(), null, 'script');
+        }).blur(function(){
+            // set focus to occur 10 ms later because blur event does not complete yet
+            setTimeout(function() {
+                $('#s-barcode').focus();
+            }, 0);
+        }).focus();
     });
 </script>

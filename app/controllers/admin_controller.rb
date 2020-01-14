@@ -61,23 +61,15 @@ class AdminController < ApplicationController
   end
 
   def storage
-    @storage_by_title_id = Game.stored.select(:title_id, :barcode).includes(:title).group_by{ |game| game.title_id }
-  end
-
-  def store_game
-    @game = Game.get(params[:game_barcode], [Game::STATUS[:active], Game::STATUS[:stored]]) if params[:game_barcode]
-    result = @game.toggle_storage_status if @game
-
-    if !result
-      render json: {
-        error: true,
-        message: "Game does not exist."
+    respond_to do |format|
+      format.js {
+        @game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]]) if params[:barcode]
+        result = @game.toggle_storage_status if @game
+        @message = result[:message] if result
+        @stored_games_count = Game.stored.count
       }
-    else
-      render json: {
-        error: result[:error],
-        message: result[:message],
-        removed: result[:removed]
+      format.html {
+        @stored_games_count = Game.stored.count
       }
     end
   end

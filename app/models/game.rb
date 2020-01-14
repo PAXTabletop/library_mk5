@@ -130,20 +130,17 @@ class Game < ActiveRecord::Base
   end
 
   def cull_game
-    if self.checkouts.for_current_event.where(closed: false).size == 0
-      self.update(status: Game::STATUS[:culled])
-      "#{name} successfully culled!"
-    else
-      "#{name} is still checked out! Please return game before culling it."
+    if self.checked_out?
+      self.open_checkout.return
     end
+
+    self.update(status: Game::STATUS[:culled])
+    "#{name} successfully culled!"
   end
 
   def toggle_storage_status
     if self.checked_out?
-      return {
-        error: true,
-        message: "#{name} is currently checked out by an attendee and can not be stored!"
-      }
+      self.open_checkout.return
     end
 
     # If already stored, switch to active

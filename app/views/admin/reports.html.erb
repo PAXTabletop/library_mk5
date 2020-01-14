@@ -73,6 +73,24 @@
     </div>
 </div>
 
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            This file lists games that are in Cold Storage. This includes barcode, title, and publisher.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-10 text-right">
+        <input type="button" class="btn btn-primary" id="storage-btn" value="Download Cold Storage" />
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $('#copies-btn').click(function(){
@@ -85,6 +103,10 @@
 
         $('#checkouts-btn').click(function(){
             getFileAt('/checkouts/csv', 'TTLibrary_Checkouts_<%= Event.current.formatted_name %>.csv');
+        });
+
+        $('#storage-btn').click(function(){
+            getFileAt('/storage/csv', 'TTLibrary_Storage.csv');
         });
     });
 

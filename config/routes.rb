@@ -96,8 +96,6 @@ Rails.application.routes.draw do
   get '/suggestions/:event', to: 'admin#suggestions', as: :suggestions
   post '/suggest', to: 'application#suggest_a_title'
 
-  post '/store', to: 'admin#store_game'
-
   get '/admin/stats', to: 'admin#stats'
 
   # Example of regular route:

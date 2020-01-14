@@ -1,0 +1,3 @@
+$('#game-display').hide().html('<%= escape_javascript(render 'game') %>').slideDown(250);
+$('#storage-count').html('<%= @stored_games_count %>');
+$('#s-barcode').val('');
