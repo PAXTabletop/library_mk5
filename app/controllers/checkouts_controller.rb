@@ -1,7 +1,7 @@
 class CheckoutsController < ApplicationController
 
   def index
-    if Event.current.setup_complete?
+    if Event.current.try(:setup_complete?)
       @checkouts = Checkout.all
     else
       @current_event = Event.current

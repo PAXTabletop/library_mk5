@@ -1,6 +1,6 @@
 default: &default
   adapter: postgresql
-# encoding set for win environments
+  # encoding set for win environments
   encoding: win1252
   pool: 5
   timeout: 5000
@@ -10,6 +10,12 @@ default: &default
 development:
   <<: *default
   database: library_mk4_dev
+
+docker:
+  <<: *default
+  database: library_mk4_docker
+  host: db
+  encoding: utf8
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

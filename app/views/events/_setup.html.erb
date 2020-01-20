@@ -1,7 +1,8 @@
+<% if @current_event %>
 <div class="row setup-msg text-center">
     <div class="col-xs-1"></div>
     <div class="col-xs-10">
-        <h3>Welcome to setup for <%= Event.current.formatted_name %>!</h3>
+        <h3>Welcome to setup for <%= @current_event.formatted_name %>!</h3>
         <p>Please complete these steps to set up the Tabletop Library. Check off each item once it's complete.</p>
     </div>
 </div>
@@ -137,3 +138,11 @@
         });
     });
 </script>
+<% else %>
+<div class="row no-event-msg">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10" style="text-align: center;">
+        <h4>No event created! Please go <%= link_to("create one", :events) %>.</h4>
+    </div>
+</div>
+<% end %>
