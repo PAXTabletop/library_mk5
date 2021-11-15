@@ -25,19 +25,20 @@ class Title < ActiveRecord::Base
 
   def self.copies_as_csv
     placeholder = SecureRandom.uuid.downcase.gsub('-', '')
-    csv = ['Title,Publisher,Valuable,Count']
+    csv = ['Title,Publisher,Valuable,Count,IDnum']
     titles = joins(:games, :publisher)
                .where(games: { status: Game::STATUS[:active] })
-               .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title, initcap(publishers.name) as name, titles.valuable, games.id")
-               .group("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' )", 'initcap(publishers.name)', :valuable)
+               .select("titles.title as title, initcap(publishers.name) as name, titles.valuable, games.id, titles.id")
+               .group('titles.title', 'initcap(publishers.name)', :valuable, 'titles.id')
                .count('games.id')
                .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
                .map do |title_map|
       title = title_map.first.first
       pub = title_map.first.second
       likely = title_map.first.third
+      idnum = title_map.first.fourth
       copies = title_map.second
-      "\"#{title}\",\"#{pub}\",#{likely},#{copies}"
+      "\"#{title}\",\"#{pub}\",#{likely},#{copies},#{idnum}"
     end
 
     csv.concat(titles).join("\n")

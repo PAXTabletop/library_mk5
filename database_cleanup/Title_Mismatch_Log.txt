@@ -1,0 +1,22 @@
+
+ 
+Title Corrector was run on 2021-09-17 17:21:56.868675
+The following games could not be linked to BGG ID#s: 
+
+ 
+Title Corrector was run on 2021-09-17 17:33:56.610224
+The following games could not be linked to BGG ID#s: 
+Battle Con: Connection Fighting
+Capture, with no matches selected among duplicate BGG entries. No manual correction attempted
+Churrascaria
+Collector, the
+Cubissimo
+Darkness, with no matches selected among duplicate BGG entries. No manual correction attempted
+Epoch, with no matches selected among duplicate BGG entries. No manual correction attempted
+Macaryoshka
+Munchkin Loot Letter
+Robin Hood, with no matches selected among duplicate BGG entries. No manual correction attempted
+Robit Riddle
+Spyrush
+Weave, with no matches selected among duplicate BGG entries. No manual correction attempted
+Works, the
