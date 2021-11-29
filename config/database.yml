@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
 # encoding set for win environments
-  encoding: win1252
+  encoding: utf8
   pool: 5
   timeout: 5000
   host: localhost
