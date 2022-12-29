@@ -105,6 +105,11 @@ footer.tt-footer {
     background-size: contain;
 }
 
+.arisia-tag {
+    background: center url("/assets/arisia_logo.png") no-repeat;
+    background-size: contain;
+}
+
 header[data-event="prime"], header[data-event="west"] {
     background-color: #009DDC;
     #logo {
@@ -135,7 +140,7 @@ header[data-event="dev"] {
         color: #00A192;
     }
 }
-header[data-event="setup"] {
+header[data-event="setup"], header[data-event="arisia"] {
     background-color: #0D0D0D;
     #logo {
         color: #0D0D0D;
@@ -191,7 +196,7 @@ footer[data-event="aus"], .btn-default[data-event="aus"]  {
 footer[data-event="dev"], .btn-default[data-event="dev"]  {
     background-color: #00A192;
 }
-footer[data-event="setup"], .btn-default[data-event="setup"]  {
+footer[data-event="setup"], .btn-default[data-event="setup"], footer[data-event="arisia"], .btn-default[data-event="arisia"]  {
     background-color: #0D0D0D;
 }
 footer[data-event="unplugged"], .btn-default[data-event="unplugged"]  {
@@ -229,7 +234,7 @@ path[data-event="aus"] {
 path[data-event="dev"] {
     fill: #00A192;
 }
-path[data-event="setup"] {
+path[data-event="setup"], path[data-event="arisia"] {
     fill: #0D0D0D;
 }
 path[data-event="unplugged"] {

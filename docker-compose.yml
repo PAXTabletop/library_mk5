@@ -1,0 +1,46 @@
+version: '3'
+
+volumes:
+  box: {}
+  node_modules:
+    external: true
+  pgdata:
+    external: true
+
+services:
+  ruby:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .envrc
+    environment:
+      - DB_HOST=postgres
+      - NODE_ENV=development
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    volumes:
+      - node_modules:/opt/library/node_modules
+      - .:/opt/library
+      - box:/var/bundler
+      - type: tmpfs
+        target: /opt/library/tmp
+    ports:
+      - "3000:3000"
+      - "3035:3035"
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+  # The database server - only needed for dev and test
+  # The Postgre DB
+  postgres:
+    image: postgres:12-alpine
+    restart: always
+    env_file:
+      - .envrc
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+

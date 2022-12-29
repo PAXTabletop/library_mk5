@@ -4,8 +4,10 @@ default: &default
   encoding: utf8
   pool: 5
   timeout: 5000
-  host: localhost
-  username: postgres
+  host: <%= ENV.fetch("DB_HOST") { 'postgres' } %>
+  port: <%= ENV.fetch("DB_PORT") { 5432 } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { 'example' } %>
 
 development:
   <<: *default

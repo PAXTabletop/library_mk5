@@ -43,6 +43,8 @@ class Event < ActiveRecord::Base
         'chicago-comic-&-entertainment-expo'
       when /shux|shut\sup|sit\sdown/i
         'shux'
+      when /arisia/i
+        'arisia'
       else
         self.name
     end
@@ -84,6 +86,10 @@ class Event < ActiveRecord::Base
 
   def is_c2e2
     /chicago\s*comic\s*entertainment\s*expo|c2e2/i.match self.name
+  end
+
+  def is_arisia
+    /arisia/i.match self.name
   end
 
   def self.one_event_ago
