@@ -117,7 +117,7 @@
             handle = window.open();
         }
         $.get(url, function(data){
-            var csv = 'data:attachment/csv;base64,' + btoa(data.csv);
+            var csv = 'data:attachment/csv;base64,' + btoa(unescape(encodeURIComponent(data.csv)));
             if(typeof anchor.download === 'string'){
                 anchor.download = fileName;
                 anchor.href = csv;
