@@ -2,11 +2,13 @@
     <div class="row alert alert-danger">
         <div class="col-xs-6" style="text-align: center; font-size: 20px;">
             <p style="font-size: 25px;">
-                Warning! This game is Valuable!
+                Warning, this Game is Valuable!
                 <br />
-                <small>Check with a Manager before clicking this button:</small>
-                <br />
-                <button type="button" class="btn btn-danger" onClick="cull_valuable('<%= @game.barcode %>')">Actually Cull</button>
+                <small>
+                    If you're sure you want to cull this game,
+                    <br />
+                    please scan it again.
+                </small>
             </p>
         </div>
         <div class="col-xs-6">

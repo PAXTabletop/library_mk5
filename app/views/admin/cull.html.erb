@@ -14,29 +14,40 @@
         <h3>
             Cull Game
         </h3>
-        <p>This will remove a game copy from the system.</p>
+        <p>This will remove a copy of a game from the library.</p>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10 glyphicon-custom-left" style="text-align:center;">
-        <input type="text" id="cull-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode here." autofocus />
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8 glyphicon-custom-left" style="text-align:center;">
+        <input type="text" id="cull-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode to remove from library." autofocus />
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
     </div>
-    <div class="col-xs-1"></div>
+    <div class="col-xs-hidden col-sm-2"></div>
 </div>
 
-<div id="game-display"></div>
+<div class="row"><br /></div>
+
+<div class="row">
+    <div class="col-xs-1 col-sm-2"></div>
+        <div id="game-display" class="col-xs-10 col-sm-8"></div>
+    <div class="col-xs-1 col-sm-2"></div>
+</div>
 
 <script>
+    let previousBarcode;
+
     $(document).ready(function(){
         $('#cull-barcode').change(function(){
-            $.get('/admin/cull', {"barcode": $(this).val()}, null, 'script');
+            const barcode = $(this).val();
+            if (previousBarcode === barcode) {
+                // cull valuable game
+                $.get('/admin/cull', {"barcode": barcode, approve: true}, null, 'script');
+            } else {
+                $.get('/admin/cull', {"barcode": barcode}, null, 'script');
+                previousBarcode = barcode;
+            }
         });
     });
-
-    function cull_valuable(barcode) {
-        $.get('/admin/cull', {"barcode": barcode, approve: true}, null, 'script');
-    }
 </script>

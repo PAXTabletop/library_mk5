@@ -39,8 +39,6 @@ $(document).ready(function(){
                 adminBarcode(true);
             }
         });
-    }).on('input', function(){
-        $('#g-name').html('');
     });
 
     // Submit new game information. On success, hide form and display new info.

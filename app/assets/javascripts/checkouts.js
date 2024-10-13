@@ -62,7 +62,7 @@ $(document).ready(function(){
             });
         }).error(function(response){
             if(response.status == 400){
-                $('#a-form').modal();
+                saveAttendee();
             }else{
                 $.notify(DEFAULT_ERROR, 'danger');
                 attendeeBarcode(true);
@@ -74,68 +74,6 @@ $(document).ready(function(){
     $('#checkouts-x-btn').click(function(){
         resetCheckout();
     });
-
-    // Clear all attendee form fields when the form is hidden.
-    $('#a-form').on('hidden.bs.modal', function(){
-        $('#a-form').find('input').val('');
-    }).on('shown.bs.modal', function(){
-        $('#a-form').find('[name="first_name"]').focus();
-    });
-
-    // Hide form, clear attendee barcode field on cancel click.
-    $('#a-form-cancel').click(function(){
-        $('#a-form').modal('hide');
-        attendeeBarcode(true);
-    });
-
-    // Submit new attendee information. On success, hide form and display new info.
-    var saveAttendee = function(){
-            var data = $('#a-form').find('.form-control').serializeArray();
-            data.push({
-                name: 'barcode',
-                value: $('#a-barcode').val()
-            });
-            $('#a-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
-            $.post('attendee/new', data).success(function(response){
-                if(response.attendee){
-                    $('#a-form').modal('hide');
-                    $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: $('#a-barcode').val() }).success(function(response){
-                        if(response.errors){
-                            $.each(response.errors, function(k, v){
-                                $.notify(v, 'danger');
-                            });
-                        }else{
-                            $.notify('Successfully checked out ' + response.game + '!');
-                            resetCheckout();
-                        }
-                        if(response.approval){
-                            $.notify(response.approval, 'success', 8000);
-                        }
-                    }).error(function(){
-                        $.notify(DEFAULT_ERROR, 'danger');
-                    }).complete(function(){
-                        attendeeBarcode(true);
-                    });
-                } else {
-                    // got errors
-                    $.each(response.errors, function(k, v){
-                        var input = $('[name="' + k + '"]');
-
-                        input.parent().addClass('has-error');
-                        input.siblings('.glyphicon').show();
-                    });
-                }
-            }).error(function(){
-
-            });
-        },
-        saveAttendeeByEnter = function(e){
-            if(e.keyCode === 13 && $('#a-form').is(':visible')){
-                saveAttendee();
-            }
-        };
-    $('#a-form-save').click(saveAttendee);
-    $('#a-form').find('input[type="text"]').keypress(saveAttendeeByEnter);
 
     $('#find-barcode').change(function(){
         $.get('/find', $(this).serialize(), null, 'script');
@@ -153,28 +91,62 @@ $(document).ready(function(){
         });
     });
 });
-function gameBarcode(bool){
+
+function gameBarcode(active){
     var barcode = $('#g-barcode');
 
-    barcode.prop('disabled', !bool);
-    if(bool){
+    barcode.prop('disabled', !active);
+    if(active){
         barcode.val('').focus();
     }
-    $('#checkouts-x-btn').toggle(!bool);
+    $('#checkouts-x-btn').toggle(!active);
 }
 
-function attendeeBarcode(bool){
+function attendeeBarcode(active){
     var barcode = $('#a-barcode');
 
-    barcode.prop('disabled', !bool);
-    if(bool){
+    if(active){
         barcode.val('').focus();
     }
 }
+
+// Submit new attendee information. On success, hide form and display new info.
+function saveAttendee(){
+    $.post('attendee/new', { barcode: $('#a-barcode').val() }).success(function(response){
+        if(response.attendee){
+            $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: $('#a-barcode').val() }).success(function(response){
+                if(response.errors){
+                    $.each(response.errors, function(k, v){
+                        $.notify(v, 'danger');
+                    });
+                }else{
+                    $.notify('Successfully checked out ' + response.game + '!');
+                    resetCheckout();
+                }
+                if(response.approval){
+                    $.notify(response.approval, 'success', 8000);
+                }
+            }).error(function(){
+                $.notify(DEFAULT_ERROR, 'danger');
+            }).complete(function(){
+                attendeeBarcode(true);
+            });
+        } else {
+            $.notify(DEFAULT_ERROR, 'danger');
+            attendeeBarcode(true);
+        }
+    }).error(function(){
+        $.notify(DEFAULT_ERROR, 'danger');
+        attendeeBarcode(true);
+    });
+};
 
 function resetCheckout(){
     gameBarcode(true);
     $('#g-name').text('');
     $('#g-barcode').val('');
+
+    attendeeBarcode(false);
     $('#a-row').hide();
+    $('#a-barcode').val('');
 }

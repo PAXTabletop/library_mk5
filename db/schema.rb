@@ -11,25 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181230000859) do
+ActiveRecord::Schema.define(version: 20240910232019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attendees", force: true do |t|
     t.string   "barcode",    limit: 20
-    t.string   "first_name"
-    t.string   "last_name"
-    t.boolean  "volunteer",             default: false
-    t.string   "handle"
     t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "id_state",   limit: 30
   end
 
   add_index "attendees", ["barcode"], name: "index_attendees_on_barcode", using: :btree
   add_index "attendees", ["event_id"], name: "index_attendees_on_event_id", using: :btree
+
+  create_table "bggcategory", id: false, force: true do |t|
+    t.integer "cat_id",   null: false
+    t.text    "cat_name"
+  end
+
+  create_table "bggfamily", id: false, force: true do |t|
+    t.integer "fam_id",   null: false
+    t.text    "fam_name"
+  end
+
+  create_table "bggmechanic", id: false, force: true do |t|
+    t.integer "mech_id",   null: false
+    t.text    "mech_name"
+  end
 
   create_table "checkouts", force: true do |t|
     t.integer  "game_id"
@@ -97,6 +107,21 @@ ActiveRecord::Schema.define(version: 20181230000859) do
   add_index "loans", ["game_id"], name: "index_loans_on_game_id", using: :btree
   add_index "loans", ["group_id"], name: "index_loans_on_group_id", using: :btree
 
+  create_table "metadata", id: false, force: true do |t|
+    t.integer "pax_id",      null: false
+    t.integer "min_player"
+    t.integer "max_player"
+    t.integer "year_pub"
+    t.integer "playtime"
+    t.integer "min_age"
+    t.decimal "avg_rating"
+    t.decimal "weight"
+    t.text    "families"
+    t.text    "mechanics"
+    t.text    "categories"
+    t.text    "description"
+  end
+
   create_table "publishers", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -139,6 +164,9 @@ ActiveRecord::Schema.define(version: 20181230000859) do
     t.boolean  "valuable",     default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "raw_title"
+    t.boolean  "edit_lock"
+    t.integer  "bgg_id"
   end
 
   add_index "titles", ["publisher_id"], name: "index_titles_on_publisher_id", using: :btree

@@ -1,39 +1,45 @@
 <% content_for :title, 'Games List' %>
 
 <form id="g-search">
-    <div class="col-xs-6 glyphicon-custom-left">
-        <input type="text" id="g-search-title" class="form-control" name="title" placeholder="Title or Barcode"
-               value="<%= @searchTitle %>" autofocus />
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-    </div>
-    <div class="col-xs-4 glyphicon-custom-left">
-        <input type="text" id="g-search-publisher" class="form-control" name="publisher" placeholder="Publisher"
-               value="<%= @searchPublisher %>" />
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-    </div>
-    <div class="col-xs-2">
-        <input type="submit" class="form-control" value="Search" />
-    </div>
-    <div class="col-xs-12">
-        <div class="btn-group-toggle search-btn" data-toggle="buttons">
-            <label class="btn btn-default <%= @searchValuable ? "active" : "" %>">
-                <input type="checkbox" id="g-search-valuable" name="valuable" <%= @searchValuable ? "checked" : "" %>> Valuable?
-            </label>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 glyphicon-custom-left">
+            <input type="text" id="g-search-title" class="form-control" name="title" placeholder="Title or Barcode"
+                value="<%= @searchTitle %>" autofocus />
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
-        <div class="btn-group-toggle search-btn" data-toggle="buttons">
-            <label class="btn btn-default <%= @searchChecked ? "active" : "" %>">
-                <input type="checkbox" id="g-search-checked" name="checked" <%= @searchChecked ? "checked" : "" %>> Checked out?
-            </label>
+        <div class="col-xs-12 col-sm-4 glyphicon-custom-left">
+            <input type="text" id="g-search-publisher" class="form-control" name="publisher" placeholder="Publisher"
+                value="<%= @searchPublisher %>" />
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
-        <div class="btn-group-toggle search-btn" data-toggle="buttons">
-            <label class="btn btn-default <%= @searchLoaned ? "active" : "" %>">
-                <input type="checkbox" id="g-search-loaned" name="loaned" <%= @searchLoaned ? "checked" : "" %>> Loaned out?
-            </label>
+        <div class="col-xs-2 hidden-lg hidden-md hidden-sm"></div>
+        <div class="col-xs-8 col-sm-2">
+            <input type="submit" class="form-control" value="Search" />
         </div>
-        <div style="display: <%= @searchLoaned ? "inline-block" : "none"%>;" id="g-search-group">
-            <label class="checkbox-inline">Loaned To: </label>
-            <% options = options_from_collection_for_select(Group.active, 'id', 'name', @searchGroup) %>
-            <%= select_tag(:group, options, { :prompt => 'Any Group' }) %>
+        <div class="col-xs-2 hidden-lg hidden-md hidden-sm"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                <label class="btn btn-default <%= @searchValuable ? "active" : "" %>">
+                    <input type="checkbox" id="g-search-valuable" name="valuable" <%= @searchValuable ? "checked" : "" %>> Valuable?
+                </label>
+            </div>
+            <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                <label class="btn btn-default <%= @searchChecked ? "active" : "" %>">
+                    <input type="checkbox" id="g-search-checked" name="checked" <%= @searchChecked ? "checked" : "" %>> Checked out?
+                </label>
+            </div>
+            <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                <label class="btn btn-default <%= @searchLoaned ? "active" : "" %>">
+                    <input type="checkbox" id="g-search-loaned" name="loaned" <%= @searchLoaned ? "checked" : "" %>> Loaned out?
+                </label>
+            </div>
+            <div style="display: <%= @searchLoaned ? "inline-block" : "none"%>;" id="g-search-group">
+                <label class="checkbox-inline">Loaned To: </label>
+                <% options = options_from_collection_for_select(Group.active, 'id', 'name', @searchGroup) %>
+                <%= select_tag(:group, options, { :prompt => 'Any Group' }) %>
+            </div>
         </div>
     </div>
 </form>

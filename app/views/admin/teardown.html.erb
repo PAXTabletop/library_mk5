@@ -15,26 +15,26 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-8 glyphicon-custom-left" style="text-align:center;">
-        <input type="text" id="teardown-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode here." autocomplete="off" autofocus />
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8 glyphicon-custom-left" style="text-align:center;">
+        <input type="text" id="teardown-barcode" class="form-control" name="barcode" placeholder="Scan GAME's barcode to log at teardown." autocomplete="off" autofocus />
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
     </div>
-    <div class="col-xs-2"></div>
+    <div class="col-xs-hidden col-sm-2"></div>
 </div>
 
 <div class="row" style="margin-top: 15px;">
-    <div class="col-xs-2"></div>
-    <div id="game-display" class="col-xs-8"></div>
-    <div class="col-xs-2"></div>
+    <div class="col-xs-1 col-sm-2"></div>
+    <div id="game-display" class="col-xs-10 col-sm-8"></div>
+    <div class="col-xs-1 col-sm-2"></div>
 </div>
 
 <div class="row">
-    <div class="col-xs-2"></div>
-    <div id="games-left-table" class="col-xs-8">
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div id="games-left-table" class="col-xs-12 col-sm-8">
         <%= render 'games_left_table' %>
     </div>
-    <div class="col-xs-2"></div>
+    <div class="col-xs-hidden col-sm-2"></div>
 </div>
 
 <script>

@@ -14,19 +14,26 @@
         <h3>
             New Game
         </h3>
+        <p>This will add a copy of a game to the library.</p>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10 glyphicon-custom-left">
-        <input type="text" id="new-g-barcode" class="form-control" placeholder="Enter new GAME's barcode here." autofocus />
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8 glyphicon-custom-left">
+        <input type="text" id="new-g-barcode" class="form-control" placeholder="Scan GAME's barcode to add to library." autofocus />
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
     </div>
-    <div class="col-xs-1"></div>
+    <div class="col-xs-hidden col-sm-2"></div>
 </div>
 
-<div id="g-name"></div>
+<div class="row"><br /></div>
+
+<div class="row">
+    <div class="col-xs-1 col-sm-2"></div>
+        <div id="g-name" class="col-xs-10 col-sm-8"></div>
+    <div class="col-xs-1 col-sm-2"></div>
+</div>
 
 <div class="modal fade" id="g-form" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
