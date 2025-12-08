@@ -25,7 +25,8 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <p>
-            This file lists individual copies of all games including their title, publisher name, barcode, and whether they are tagged as "likely" for tournaments.
+            These files list games that are in the library. The first button lists all copies of the games individually and inclues title, publisher, barcode, and valuable/tournament flag. The second lists games grouped by title and publisher, with valuable flag, number of copies, and title ID.
+            <br/><br/><em>The second button is the default library view posted after each show.</em>
         </p>
     </div>
 </div>
@@ -33,25 +34,8 @@
 <div class="row">
     <div class="col-xs-2"></div>
     <div class="col-xs-10 text-right">
-        <input type="button" class="btn btn-primary" id="copies-btn" value="Download Library by Game Copy" />
-    </div>
-</div>
-
-<div class="row"><br/></div>
-
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <p>
-            This file lists the library by title. Fields included are title, publisher name, whether a title is tagged as "likely" for tournament, and the number of game copies per title. <br/><br/><em>This is the default library view posted after each show.</em>
-        </p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-10 text-right">
-        <input type="button" class="btn btn-primary" id="titles-btn" value="Download Library by Title" />
+        <input type="button" class="btn btn-primary" id="copies-btn" value="Download library by copy" />
+        <input type="button" class="btn btn-primary" id="titles-btn" value="Download library by title" />
     </div>
 </div>
 
@@ -69,7 +53,7 @@
 <div class="row">
     <div class="col-xs-2"></div>
     <div class="col-xs-10 text-right">
-        <input type="button" class="btn btn-primary" id="checkouts-btn" value="Download Checkouts for <%= Event.current.formatted_name %>" />
+        <input type="button" class="btn btn-primary" id="checkouts-btn" value="Download checkouts for <%= Event.current.formatted_name %>" />
     </div>
 </div>
 
@@ -79,7 +63,7 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <p>
-            This file lists games that are in Cold Storage. This includes barcode, title, and publisher.
+            These files list games that are in Cold Storage. The first button lists all copies of the games individually and inclues title, publisher, barcode, and valuable flag. The second lists games grouped by title and publisher, with valuable flag, number of copies, and title ID.
         </p>
     </div>
 </div>
@@ -87,9 +71,29 @@
 <div class="row">
     <div class="col-xs-2"></div>
     <div class="col-xs-10 text-right">
-        <input type="button" class="btn btn-primary" id="storage-btn" value="Download Cold Storage" />
+        <input type="button" class="btn btn-primary" id="storage-copies-btn" value="Download Cold Storage by copy" />
+        <input type="button" class="btn btn-primary" id="storage-titles-btn" value="Download Cold Storage by title" />
     </div>
 </div>
+
+<div class="row"><br/></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <p>
+            This files list games that are in the library and in Cold Storage. It lists all copies of the games individually and inclues title, publisher, barcode, valuable flag, and storage status.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-10 text-right">
+        <input type="button" class="btn btn-primary" id="total-copies-btn" value="Download all games by copy" />
+    </div>
+</div>
+
 
 <script>
     $(document).ready(function(){
@@ -105,8 +109,16 @@
             getFileAt('/checkouts/csv', 'TTLibrary_Checkouts_<%= Event.current.formatted_name %>.csv');
         });
 
-        $('#storage-btn').click(function(){
-            getFileAt('/storage/csv', 'TTLibrary_Storage.csv');
+        $('#storage-copies-btn').click(function(){
+            getFileAt('/storage/copies/csv', 'TTLibrary_Storage_Copies.csv');
+        });
+
+        $('#storage-titles-btn').click(function(){
+            getFileAt('/storage/titles/csv', 'TTLibrary_Storage_Titles.csv');
+        });
+
+        $('#total-copies-btn').click(function(){
+            getFileAt('/total/copies/csv', 'TTLibrary_Total_Copies.csv');
         });
     });
 

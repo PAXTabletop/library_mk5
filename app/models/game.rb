@@ -204,12 +204,11 @@ class Game < ActiveRecord::Base
   end
 
   def self.copies_as_csv
-    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ["Title,Publisher,Barcode,Valuable"]
     games = where(status: Game::STATUS[:active])
               .joins(:title, title: [:publisher])
-              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.valuable")
-              .order('lower(titles.title)').map do |db_row|
+              .select("titles.title as name, publishers.name as publisher, games.barcode, titles.valuable")
+              .order('titles.title').map do |db_row|
       "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:valuable]}"
     end
 
@@ -217,13 +216,24 @@ class Game < ActiveRecord::Base
   end
 
   def self.storage_copies_as_csv
-    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     csv = ["Title,Publisher,Barcode,Valuable"]
     games = where(status: Game::STATUS[:stored])
               .joins(:title, title: [:publisher])
-              .select("regexp_replace(initcap(regexp_replace(lower(titles.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as name, initcap(publishers.name) as publisher, games.barcode, titles.valuable")
-              .order('lower(titles.title)').map do |db_row|
+              .select("titles.title as name, publishers.name as publisher, games.barcode, titles.valuable")
+              .order('titles.title').map do |db_row|
       "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:valuable]}"
+    end
+
+    csv.concat(games).join("\n")
+  end
+
+  def self.total_copies_as_csv
+    csv = ["Title,Publisher,Barcode,Valuable,Storage"]
+    games = where(status: [Game::STATUS[:stored], Game::STATUS[:active]])
+              .joins(:title, title: [:publisher])
+              .select("titles.title as name, publishers.name as publisher, games.barcode, titles.valuable, case when games.status = 2 then TRUE else FALSE end as status")
+              .order('titles.title').map do |db_row|
+      "\"#{db_row[:name]}\",\"#{db_row[:publisher]}\",#{db_row[:barcode]},#{db_row[:valuable]},#{db_row[:status]}"
     end
 
     csv.concat(games).join("\n")
@@ -265,7 +275,7 @@ class Game < ActiveRecord::Base
 
   def self.sql_remaining_from(table)
     <<-SQL
-      select g.barcode, initcap(lower(t.title)) as title, initcap(lower(p.name)) as publisher
+      select g.barcode, t.title as title, p.name as publisher
       from games g
       inner join titles t on t.id = g.title_id
       inner join publishers p on p.id = t.publisher_id
@@ -285,7 +295,7 @@ class Game < ActiveRecord::Base
 
     connection.execute(<<-SQL
         select
-          g.*, initcap(lower(t.title)) as title, initcap(lower(p.name)) as publisher
+          g.*, t.title as title, p.name as publisher
           from (
             select distinct
               g.barcode, g.title_id, g.created_at::date as created_at

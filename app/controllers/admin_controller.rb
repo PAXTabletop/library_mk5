@@ -74,8 +74,16 @@ class AdminController < ApplicationController
     end
   end
 
-  def csv
+  def titles_csv
+    render json: { csv: Title.storage_titles_as_csv }
+  end
+
+  def copies_csv
     render json: { csv: Game.storage_copies_as_csv }
+  end
+
+  def total_copies_csv
+    render json: { csv: Game.total_copies_as_csv }
   end
 
   def setup_tag

@@ -105,11 +105,17 @@
                 <li>
                     <a href="#stopping-the-library">Stopping/restarting the Library server</a>
                 </li>
+                <li>
+                    <a href="#packaging-the-server">Packaging up the server to send back</a>
+                </li>
             </ol>
             <h4>FAQ</h4>
             <ul>
                 <li>
                     <a href="#server-wont-start">The Server Shows An Error On Startup</a>
+                </li>
+                <li>
+                    <a href="#error-dialogs">The Server Show Error Dialogs/Popups on Startup</a>
                 </li>
             </ul>
         </div>
@@ -230,7 +236,7 @@
                 <small>[required]</small>
             </h3>
             <p>
-                Follow these steps to create a new Event and prepare the Library to be used at a new event.
+                This may already be setup for the current event, but you can follow these steps to create a new Event and prepare the Library to be used at a new event.
             </p>
             <ul>
                 <li>
@@ -354,8 +360,6 @@
         </div>
     </div>
 
-    <div class="row"><br/></div>
-
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -386,6 +390,35 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
+            <h3 id="packaging-the-server">
+                Packaging up the server to send back
+                <small>[required]</small>
+            </h3>
+            <p>
+                Follow these steps to zip back up the library software with the data from the finished event.
+            </p>
+            <ul>
+                <li>
+                    After completing teardown scanning, follow the above steps to <a href="#stopping-the-library">stop the Library server</a>.
+                </li>
+                <li>
+                    Move up a folder in the file browser to see a single folder that holds all the library software.
+                </li>
+                <li>
+                    Right click that folder and choose "Send to compressed folder" or "Compress to..." and select .zip.
+                </li>
+                <li>
+                    Email the zip file after it finishes compressing to the Manager/Tabletop Library Software Developers.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row"><br/></div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
             <h3 id="server-wont-start">The Server Shows An Error On Startup</h3>
             <p>
                 Q: I get some weird error message in the command line terminal when I try to <a href="#starting-the-library">start the server with the "rails s" command</a>. What am I doing wrong?
@@ -397,6 +430,20 @@
                 <pre>
     C:\tabletop_library_mk5</pre>
                 This will prevent the error from occuring and allow you to start the server. The location, with the exception of this issue, does not affect how the server runs.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3 id="error-dialogs">The Server Show Error Dialogs/Popups on Startup</h3>
+            <p>
+                Q: I get some weird error message in dialogs/popups about missing DLLs when I try to <a href="#starting-the-library">start the server with the "rails s" command</a>. What am I doing wrong?
+                <br/><br/>
+                A: Your computer may be missing some required Visual C++ Redistributable Runtimes. The required installer should be in the root of the library package, in the same folder where the "start.bat" file was.
+                <pre>vcredist_x86.exe</pre>
+                In order to fix this, you need to double click the file with the above name to run the installer.
             </p>
         </div>
     </div>

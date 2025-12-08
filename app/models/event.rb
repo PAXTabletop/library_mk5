@@ -176,13 +176,12 @@ class Event < ActiveRecord::Base
   end
 
   def checkouts_by_title
-    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     Event.connection.execute(
       <<-SQL
         select * from (
           select
-            regexp_replace(initcap(regexp_replace(lower(t.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title
-            ,string_agg(distinct initcap(lower(p.name)), ', ') as publisher
+            t.title as title
+            ,string_agg(distinct p.name, ', ') as publisher
             ,count(distinct c.id) as checkouts
             ,count(distinct g.id) as copies_during_show
             ,round(count(distinct c.id)::numeric / count(distinct g.id)::numeric, 1) as checkouts_per_copy
@@ -206,7 +205,7 @@ class Event < ActiveRecord::Base
     Event.connection.execute(
       <<-SQL
         select
-          initcap(lower(p.name)) as publisher
+          p.name as publisher
           ,count(distinct c.id) as checkouts
         from checkouts c
         inner join games g on g.id = c.game_id
@@ -297,12 +296,11 @@ class Event < ActiveRecord::Base
   #
   # @returns [Array<Game>] array of games with id, name, and times_checked_out
   def top_games(limit=10)
-    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
     games = Event.connection.execute(
       <<-SQL
         select * from (
           select
-            regexp_replace(initcap(regexp_replace(lower(t.title), '''', '#{placeholder}')), '#{placeholder}', '''', 'i' ) as title
+            t.title as title
             ,t.id as title_id
             ,count(distinct c.id) as checkouts
           from games g

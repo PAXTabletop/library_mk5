@@ -14,7 +14,7 @@ class TitlesController < ApplicationController
   end
 
   def csv
-    render json: { csv: Title.copies_as_csv }
+    render json: { csv: Title.titles_as_csv }
   end
 
 end

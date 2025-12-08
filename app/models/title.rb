@@ -23,13 +23,32 @@ class Title < ActiveRecord::Base
     result
   end
 
-  def self.copies_as_csv
-    placeholder = SecureRandom.uuid.downcase.gsub('-', '')
+  def self.titles_as_csv
     csv = ['Title,Publisher,Valuable,Count,IDnum']
     titles = joins(:games, :publisher)
                .where(games: { status: Game::STATUS[:active] })
-               .select("titles.title as title, initcap(publishers.name) as name, titles.valuable, games.id, titles.id")
-               .group('titles.title', 'initcap(publishers.name)', :valuable, 'titles.id')
+               .select("titles.title as publishers.name as name, titles.valuable, games.id, titles.id")
+               .group('titles.title', 'publishers.name', :valuable, 'titles.id')
+               .count('games.id')
+               .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
+               .map do |title_map|
+      title = title_map.first.first
+      pub = title_map.first.second
+      likely = title_map.first.third
+      idnum = title_map.first.fourth
+      copies = title_map.second
+      "\"#{title}\",\"#{pub}\",#{likely},#{copies},#{idnum}"
+    end
+
+    csv.concat(titles).join("\n")
+  end
+
+  def self.storage_titles_as_csv
+    csv = ['Title,Publisher,Valuable,Count,IDnum']
+    titles = joins(:games, :publisher)
+               .where(games: { status: Game::STATUS[:stored] })
+               .select("titles.title as publishers.name as name, titles.valuable, games.id, titles.id")
+               .group('titles.title', 'publishers.name', :valuable, 'titles.id')
                .count('games.id')
                .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
                .map do |title_map|
