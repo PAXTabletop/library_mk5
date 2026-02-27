@@ -63,4 +63,22 @@ class Title < ActiveRecord::Base
     csv.concat(titles).join("\n")
   end
 
+  def self.total_titles_as_csv
+    csv = ['Title,Publisher,Valuable,Travel Count,Storage Count,IDnum']
+
+    # Get all titles that have either active or stored games
+    titles = includes(:games, :publisher)
+             .where(games: { status: [Game::STATUS[:active], Game::STATUS[:stored]] })
+             .distinct
+             .order('titles.title')
+
+    titles_data = titles.map do |title|
+      travel_count = title.games.where(status: Game::STATUS[:active]).count
+      stored_count = title.games.where(status: Game::STATUS[:stored]).count
+      "\"#{title.title}\",\"#{title.publisher.name}\",#{title.valuable},#{travel_count},#{stored_count},#{title.id}"
+    end
+
+    csv.concat(titles_data).join("\n")
+  end
+
 end

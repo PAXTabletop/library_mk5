@@ -96,6 +96,10 @@ class AdminController < ApplicationController
     render json: { csv: Game.total_copies_as_csv }
   end
 
+  def total_titles_csv
+    render json: { csv: Title.total_titles_as_csv }
+  end
+
   def setup_tag
     Event.current.update_setup_tag(params[:tag])
     render json: :nothing
