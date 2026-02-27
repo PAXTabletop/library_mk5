@@ -36,12 +36,15 @@
             <table class="table table-striped">
                 <tr>
                     <th class="col-xs-1">
+                        Cull
+                    </th>
+                    <th class="col-xs-1">
                         Barcode
                     </th>
                     <th class="col-xs-3">
                         Title
                     </th>
-                    <th class="col-xs-2">
+                    <th class="col-xs-1">
                         Added
                     </th>
                     <th class="col-xs-2">
@@ -55,14 +58,17 @@
                     </th>
                 </tr>
                 <% Game.missing_games.each do |g_row| %>
-                    <tr>
+                    <tr data-barcode="<%= g_row['barcode'] %>">
+                        <td class="col-xs-1">
+                            <a href="#" class="btn btn-danger report-tab-copy" onclick="cullMissingGame('<%= j g_row['barcode'] %>')">Cull</a>
+                        </td>
                         <td class="col-xs-1">
                             <%= g_row['barcode'] %>
                         </td>
                         <td class="col-xs-3">
                             <%= g_row['title'] %>
                         </td>
-                        <td class="col-xs-2">
+                        <td class="col-xs-1">
                             <%= g_row['created_at'] %>
                         </td>
                         <td class="col-xs-2">
@@ -109,3 +115,27 @@
         <div class="col-md-2"></div>
     </div>
 <% end %>
+
+<script>
+function cullMissingGame(barcode) {
+  $.ajax({
+    url: '/admin/cull_missing',
+    type: 'GET',
+    data: { barcode: barcode },
+    dataType: 'json',
+    success: function(response) {
+      if (response.success) {
+        $.notify(response.message, 'success');
+        $('tr[data-barcode="' + barcode + '"]').fadeOut(function() {
+          $(this).remove();
+        });
+      } else {
+        $.notify(response.message, 'danger');
+      }
+    },
+    error: function() {
+      $.notify('Error culling game', 'danger');
+    }
+  });
+}
+</script>

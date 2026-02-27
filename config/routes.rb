@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get '/admin/teardown', to: 'admin#teardown', as: :teardown
   get '/admin/events', to: 'admin#events', as: :events
   get '/admin/cull', to: 'admin#cull', as: :cull
+  get '/admin/cull_missing', to: 'admin#cull_missing', as: :cull_missing
   get '/admin/new_game', to: 'admin#new_game', as: :new_game
   get '/admin/metrics/:event', to: 'admin#metrics', as: :metrics
   get '/admin/purge', to: 'admin#purge', as: :purge

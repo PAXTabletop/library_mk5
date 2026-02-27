@@ -46,6 +46,16 @@ class AdminController < ApplicationController
     end
   end
 
+  def cull_missing
+    @game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]]) if params[:barcode]
+    if @game
+      message = @game.cull_game
+      render json: { success: true, message: message }
+    else
+      render json: { success: false, message: 'Game not found.' }
+    end
+  end
+
   def metrics
     @event = Event.find(params[:event]) if params[:event] # && params[:event].is_a?(Integer)
   end
