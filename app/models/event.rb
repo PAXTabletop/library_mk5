@@ -180,7 +180,7 @@ class Event < ActiveRecord::Base
       <<-SQL
         select * from (
           select
-            t.title as title
+            min(t.title) as title
             ,string_agg(distinct p.name, ', ') as publisher
             ,count(distinct c.id) as checkouts
             ,count(distinct g.id) as copies_during_show
@@ -193,7 +193,7 @@ class Event < ActiveRecord::Base
             g.status = #{Game::STATUS[:active]}
             or (g.status = #{Game::STATUS[:culled]} and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
             or (g.status = #{Game::STATUS[:stored]} and g.updated_at::date between '#{self.start_date - 2.days}' and '#{self.end_date + 2.days}')
-          group by 1
+          group by lower(t.title)
           order by 3 desc, 1, 2
         ) c
         where checkouts > 0
@@ -242,7 +242,7 @@ class Event < ActiveRecord::Base
             ,to_char((c.check_out_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as checkouts
           from checkouts c
-          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
+          where event_id = #{self.id} and ((c.check_out_time + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) c
         full join
@@ -252,7 +252,7 @@ class Event < ActiveRecord::Base
             ,to_char((c.return_time + '#{self.utc_offset} hours'::interval), 'HH24:00:00') as time
             ,count(*) as returns
           from checkouts c
-          where event_id = #{self.id} and ((c.created_at + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
+          where event_id = #{self.id} and ((c.return_time + '#{self.utc_offset} hours'::interval)::date between '#{self.start_date}' and '#{self.end_date}')
           group by 1,2
           ) r
           on c.date = r.date

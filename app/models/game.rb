@@ -179,7 +179,11 @@ class Game < ActiveRecord::Base
     game.errors.add('publisher', 'Publisher can not be blank.') if params[:publisher].blank?
 
     unless params[:title].blank? || params[:publisher].blank?
-      title = Title.find_or_create_by(title: format(params[:title]), publisher: Publisher.find_or_create_by(name: format(params[:publisher])))
+      formatted_title = format(params[:title])
+      formatted_publisher = format(params[:publisher])
+      publisher = Publisher.where('lower(name) = lower(?)', formatted_publisher).first_or_create(name: formatted_publisher)
+      title = Title.where('lower(title) = lower(?) and publisher_id = ?', formatted_title, publisher.id)
+                    .first_or_create(title: formatted_title, publisher: publisher)
       params[:title] = title
       params.delete(:publisher)
 

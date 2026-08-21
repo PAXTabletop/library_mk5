@@ -10,24 +10,43 @@ class Title < ActiveRecord::Base
   end
 
   def self.search(search)
-    search_txt = nil
-    search_txt = search.strip.gsub(/\s/, '') if search
+    search_txt = normalize_search_text(search)
+    return where(nil) if search_txt.empty?
 
-    if search_txt
+    if unaccent_available?
       search_str = search_txt.size > 1 ? "%#{search_txt}%" : "#{search_txt}%"
-      result = where('lower(regexp_replace(title, \' \', \'\', \'g\')) like lower(?)', search_str)
+      where("#{normalized_title_sql} like ?", search_str)
     else
-      result = where(nil)
-    end
+      matching_ids = pluck(:id, :title).select do |id, title|
+        normalized_title = normalize_search_text(title)
+        search_txt.size > 1 ? normalized_title.include?(search_txt) : normalized_title.start_with?(search_txt)
+      end.map(&:first)
 
-    result
+      where(id: matching_ids)
+    end
+  end
+
+  def self.normalize_search_text(text)
+    I18n.transliterate(text.to_s).downcase.gsub(/[^a-z0-9]+/, '')
+  end
+
+  def self.normalized_title_sql
+    "regexp_replace(lower(unaccent(coalesce(title, ''))), '[^a-z0-9]+', '', 'g')"
+  end
+
+  def self.unaccent_available?
+    return @unaccent_available unless @unaccent_available.nil?
+
+    @unaccent_available = connection.select_value("SELECT EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'unaccent')").to_s == 't'
+  rescue ActiveRecord::StatementInvalid
+    @unaccent_available = false
   end
 
   def self.titles_as_csv
     csv = ['Title,Publisher,Valuable,Count,IDnum']
     titles = joins(:games, :publisher)
                .where(games: { status: Game::STATUS[:active] })
-               .select("titles.title as publishers.name as name, titles.valuable, games.id, titles.id")
+               .select("titles.title, publishers.name as name, titles.valuable, games.id, titles.id")
                .group('titles.title', 'publishers.name', :valuable, 'titles.id')
                .count('games.id')
                .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
@@ -47,7 +66,7 @@ class Title < ActiveRecord::Base
     csv = ['Title,Publisher,Valuable,Count,IDnum']
     titles = joins(:games, :publisher)
                .where(games: { status: Game::STATUS[:stored] })
-               .select("titles.title as publishers.name as name, titles.valuable, games.id, titles.id")
+               .select("titles.title, publishers.name as name, titles.valuable, games.id, titles.id")
                .group('titles.title', 'publishers.name', :valuable, 'titles.id')
                .count('games.id')
                .sort{ |a, b| a.first.first.downcase <=> b.first.first.downcase }
@@ -64,19 +83,27 @@ class Title < ActiveRecord::Base
   end
 
   def self.total_titles_as_csv
-    csv = ['Title,Publisher,Valuable,Travel Count,Storage Count,IDnum']
+    csv = ['Title,Publisher(s),Valuable,Travel Count,Storage Count,IDnum(s)']
 
-    # Get all titles that have either active or stored games
-    titles = includes(:games, :publisher)
-             .where(games: { status: [Game::STATUS[:active], Game::STATUS[:stored]] })
-             .distinct
-             .order('titles.title')
-
-    titles_data = titles.map do |title|
-      travel_count = title.games.where(status: Game::STATUS[:active]).count
-      stored_count = title.games.where(status: Game::STATUS[:stored]).count
-      "\"#{title.title}\",\"#{title.publisher.name}\",#{title.valuable},#{travel_count},#{stored_count},#{title.id}"
+    games = Game.where(status: [Game::STATUS[:active], Game::STATUS[:stored]])
+                .includes(title: :publisher)
+    normalized = ->(value) { value.to_s.downcase }
+    title_groups = games.group_by do |game|
+      normalized.call(game.title.title)
     end
+
+    titles_data = title_groups.map do |_key, grouped_games|
+      display_game = grouped_games.min_by { |game| [normalized.call(game.title.title), game.title_id] }
+      title = display_game.title
+      publishers = grouped_games.map { |game| game.title.publisher.name }.uniq.sort_by { |name| normalized.call(name) }
+      travel_count = grouped_games.count { |game| game.status == Game::STATUS[:active] }
+      stored_count = grouped_games.count { |game| game.status == Game::STATUS[:stored] }
+      valuable = grouped_games.any? { |game| game.title.valuable }
+      title_ids = grouped_games.map(&:title_id).uniq.sort
+      [normalized.call(title.title), "\"#{title.title}\",\"#{publishers.join(', ')}\",#{valuable},#{travel_count},#{stored_count},\"#{title_ids.join(', ')}\""]
+    end
+    .sort_by { |title_data| title_data.first(2) }
+    .map(&:last)
 
     csv.concat(titles_data).join("\n")
   end
