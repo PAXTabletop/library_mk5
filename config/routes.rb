@@ -5,11 +5,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  root 'checkouts#index'
+  root 'checkouts#checkout_page'
 
   # tabs
   get '/games', to: 'games#index', as: :games
-  get '/find', to: 'checkouts#find', as: :find
   get '/admin', to: 'admin#index', as: :admin
   get '/recent', to: 'checkouts#recent', as: :recent
   get '/longest', to: 'checkouts#longest', as: :longest
@@ -19,9 +18,11 @@ Rails.application.routes.draw do
   get '/status', to: 'application#app_status', as: :status
 
   # checkouts page
+  get '/checkout', to: 'checkouts#checkout_page', as: :checkout
   get '/attendee/status', to: 'attendees#status'
   post '/attendee/new', to: 'attendees#new'
   post '/checkout/new', to: 'checkouts#new'
+  get '/return', to: 'checkouts#return_page', as: :return_page
   post '/return', to: 'checkouts#return'
 
   # loaners & groups

@@ -1,9 +1,9 @@
-<% content_for :title, 'Checkout / Return' %>
+<% content_for :title, 'Checkout' %>
 
-<div class="row">
+<div class="row" id="checkout-page" data-checkout-mode="checkout">
     <div class="col-xs-hidden col-sm-2"></div>
     <div class="col-xs-10 col-sm-7 glyphicon-custom-left">
-        <input type="text" id="g-barcode" class="form-control" placeholder="Scan GAME's barcode to checkout or return." autofocus autocomplete="off"/>
+        <input type="text" id="g-barcode" class="form-control" placeholder="Scan GAME's barcode to checkout." autofocus autocomplete="off"/>
         <span class="glyphicon glyphicon-tower form-control-feedback"></span>
         <h3 id="g-name"></h3>
     </div>

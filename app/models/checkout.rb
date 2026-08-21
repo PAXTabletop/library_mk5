@@ -139,7 +139,26 @@ class Checkout < ActiveRecord::Base
     csv.concat(checkouts).join("\n")
   end
 
-  def self.purge_recommendations(gradation = 0.5)
+  def self.purge_recommendations(gradation = 0.5, setup_scanned_only = false)
+    setup_filter = if setup_scanned_only
+      <<-SQL
+          and not exists (
+            select 1
+            from games unscanned_game
+            where unscanned_game.title_id = t.id
+              and unscanned_game.status = 0
+              and not exists (
+                select 1
+                from setups current_setup
+                where current_setup.game_id = unscanned_game.id
+                  and current_setup.event_id = #{Event.current.id}
+              )
+          )
+      SQL
+    else
+      ''
+    end
+
     Checkout.connection.execute(
       <<-SQL
         select
@@ -179,6 +198,8 @@ class Checkout < ActiveRecord::Base
             inner join events e on e.id = c.event_id
             group by 1
           ) c on c.game_id = g.id
+          where 1 = 1
+          #{setup_filter}
           group by 1
           ) t
         where

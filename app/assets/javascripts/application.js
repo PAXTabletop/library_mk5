@@ -68,6 +68,9 @@ function hideSuggest(){
     $('#suggest-form').hide().removeClass('has-error');
     $('#suggest-btn').show();
     $('#suggest-title').val('');
+    if(typeof restoreBarcodeFocus == 'function'){
+        restoreBarcodeFocus();
+    }
 }
 
 /*

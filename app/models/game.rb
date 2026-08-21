@@ -145,7 +145,7 @@ class Game < ActiveRecord::Base
 
     # If already stored, switch to active
     if self.status == Game::STATUS[:stored]
-      self.update(status: Game::STATUS[:active])
+      self.update!(status: Game::STATUS[:active])
       return {
         error: false,
         message: "#{name} successfully removed from storage!",

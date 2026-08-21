@@ -1,8 +1,8 @@
 class CheckoutsController < ApplicationController
 
-  def index
+  def checkout_page
     if Event.current.setup_complete?
-      @checkouts = Checkout.all
+      render 'checkout'
     else
       @current_event = Event.current
       render '/events/_setup'
@@ -10,17 +10,43 @@ class CheckoutsController < ApplicationController
   end
 
   def new
-    checkout = Checkout.new_checkout(params.permit(:a_barcode, :g_barcode))
+    if params[:a_barcode]
+      checkout = Checkout.new_checkout(params.permit(:a_barcode, :g_barcode))
 
-    if checkout.errors.messages.blank?
-      render json: {
-          approval: checkout.approval_tag,
-          game: checkout.game.name
-        }
+      if checkout.errors.messages.blank?
+        render json: {
+            approval: checkout.approval_tag,
+            game: checkout.game.name
+          }
+      else
+        render json: {
+            errors: checkout.errors.messages
+          }
+      end
+      return
+    end
+
+    game = Game.get(params[:g_barcode], [Game::STATUS[:active], Game::STATUS[:stored]])
+    if !game
+      render json: { errors: ['Game not found!'] }
+    elsif game.status == Game::STATUS[:stored]
+      game.toggle_storage_status
+      render json: { game: game.name, storage_removed: game.active? }
     else
-      render json: {
-          errors: checkout.errors.messages
-        }
+      checkout = game.open_checkout
+      checkout.return if checkout
+      loan = game.current_loan
+      loan.update!(closed: true, return_time: Time.now.utc) if loan
+      render json: { game: game.name, cleared: !!(checkout || loan) }
+    end
+  end
+
+  def return_page
+    if Event.current.setup_complete?
+      render 'return'
+    else
+      @current_event = Event.current
+      render '/events/_setup'
     end
   end
 
@@ -31,7 +57,8 @@ class CheckoutsController < ApplicationController
         render json: { errors: ['Game not found!'] }
         return
       elsif game.status == Game::STATUS[:stored]
-        render json: { errors: ["#{game.name} is currently in storage. Please remove it via the <a href='/admin/storage'>storage page</a> first."]}
+        game.toggle_storage_status
+        render json: { game: game.name, storage_removed: game.active? }
         return
       end
       checkout = game.open_checkout
@@ -40,7 +67,8 @@ class CheckoutsController < ApplicationController
         checkout.return
         render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: game.name }
       elsif loan
-        render json: { errors: ["#{game.name} is currently loaned out to the group '#{loan.group.name}'. Please return it via the group's <a href='/loaners/group/#{loan.group.id}'>Loaners page</a> tab first."]}
+        loan.update!(closed: true, return_time: Time.now.utc)
+        render json: { time: ct(loan.return_time).strftime('%m/%d %I:%M%P'), game: game.name }
       else
         render json: { game: game.name }
       end
@@ -49,23 +77,6 @@ class CheckoutsController < ApplicationController
       checkout.return
 
       render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: checkout.game.name }
-    end
-  end
-
-  def find
-    if params[:barcode]
-      # check for games
-      game = Game.get(params[:barcode])
-      # check attendees
-      attendee = Attendee.where(
-        "barcode = ? and event_id = ?",
-        params[:barcode].upcase,
-        @current_event
-      ).order(id: :desc).first
-      # if both exist, set attendee to nil
-      @object = game || attendee
-      # return latest checkouts for game/attendee
-      @checkouts = @object ? @object.checkouts.where(event: Event.current).order(id: :desc).limit(5) : []
     end
   end
 

@@ -65,6 +65,8 @@ class AdminController < ApplicationController
   end
 
   def purge
+    @setup_scanned_only = params[:setup_scanned] == 'true'
+    @purge_recommendations = Event.four_events_ago ? Checkout.purge_recommendations(0.5, @setup_scanned_only) : []
   end
 
   def missing

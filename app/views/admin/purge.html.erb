@@ -20,44 +20,23 @@
     </div>
 
     <div class="row">
-        <table class="table table-striped">
-            <tr>
-                <th class="col-xs-4">
-                    Title
-                </th>
-                <th class="col-xs-2">
-                    Total Copies
-                </th>
-                <th class="col-xs-2">
-                    Last Copy Added On
-                </th>
-                <th class="col-xs-2">
-                    C/O Last Four Shows
-                </th>
-                <th class="col-xs-2">
-                    C/O Last Five Shows
-                </th>
-            </tr>
-            <% Checkout.purge_recommendations.each_with_index do |p_row, index| %>
-                <tr data-event-id="<%= index %>">
-                    <td class="col-xs-4">
-                        <%= p_row['title'] %>
-                    </td>
-                    <td class="col-xs-2">
-                        <%= p_row['copies'] %>
-                    </td>
-                    <td class="col-xs-2">
-                        <%= p_row['latest_created_at'] %>
-                    </td>
-                    <td class="col-xs-2">
-                        <%= p_row['checkouts_from_four'] %>
-                    </td>
-                    <td class="col-xs-2">
-                        <%= p_row['checkouts_from_five'] %>
-                    </td>
-                </tr>
-            <% end %>
-        </table>
+        <div class="col-md-8">
+            <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                <label class="btn btn-default <%= @setup_scanned_only ? 'active' : '' %>">
+                    <input type="checkbox" id="purge-setup-scanned" <%= @setup_scanned_only ? 'checked' : '' %>> Hide games not setup scanned
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <br />
+    </div>
+
+    <div class="row">
+        <div id="purge-table">
+            <%= render 'purge_table', recommendations: @purge_recommendations %>
+        </div>
     </div>
 <% else %>
     <div class="row">

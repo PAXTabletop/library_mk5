@@ -17,6 +17,10 @@ $(document).ready(function(){
         adminBarcode(true);
     });
 
+    $('#purge-setup-scanned').change(function(){
+        $.get('/admin/purge', { setup_scanned: this.checked }, null, 'script');
+    });
+
     // Make a call to /attendee/status when a new barcode is entered.
     $('#new-g-barcode').change(function(){
         var barcode_val = $(this).val();

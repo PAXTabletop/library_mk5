@@ -1,6 +1,23 @@
-$(document).ready(function(){
+var lastBarcode;
 
-    // Make a call to /return when a new barcode is entered.
+$(document).ready(function(){
+    $('#g-barcode, #a-barcode').focus(function(){
+        lastBarcode = $(this);
+    });
+
+    $('#g-barcode, #a-barcode').blur(function(){
+        var barcode = $(this);
+        setTimeout(function(){
+            if($('#suggest-form').is(':visible')){
+                return;
+            }
+            if(barcode.is(':visible') && !barcode.prop('disabled')){
+                barcode.focus();
+            }
+        }, 0);
+    });
+
+    // Use the page-specific checkout or return API when a game barcode is entered.
     $('#g-barcode').change(function(){
         var barcode_val = $(this).val();
 
@@ -11,16 +28,29 @@ $(document).ready(function(){
         }
         gameBarcode(false);
 
-        $.post('/return', { barcode: barcode_val }).success(function(response){
+        var checkoutMode = $('#checkout-page').length > 0;
+        var returnMode = $('#return-page').length > 0;
+        var statusRequest = checkoutMode ? $.post('/checkout/new', { g_barcode: barcode_val }) : $.post('/return', { barcode: barcode_val });
+
+        statusRequest.success(function(response){
             if(response.errors){
                 $.each(response.errors, function(k, v){
                     $.notify(v, 'danger');
                 });
                 gameBarcode(true);
-            }else if(response.time){
-                $.notify('Successfully returned ' + response.game + '!', 5000);
+            }else if(returnMode){
+                if(response.time){
+                    $.notify('Successfully returned ' + response.game + '!', 5000);
+                }else if(response.storage_removed){
+                    $.notify('Removed ' + response.game + ' from storage.', 5000);
+                }else{
+                    $.notify(response.game + ' is not currently checked out.', 'warning', 5000);
+                }
                 resetCheckout();
             }else{
+                if(checkoutMode && response.cleared){
+                    $.notify('Previously active checkout or loan cleared for ' + response.game + '.', 5000);
+                }
                 $('#g-name').text('Checking out: ' + response.game)
                 $('#a-row').show();
                 $('#a-barcode').focus();
@@ -43,7 +73,7 @@ $(document).ready(function(){
         attendeeBarcode(false);
 
         $.get('attendee/status', { barcode: barcode_val }).success(function(response){
-            $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: barcode_val }).success(function(response){
+            $.post('/checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: barcode_val }).success(function(response){
                 if(response.errors){
                     $.each(response.errors, function(k, v){
                         $.notify(v, 'danger');
@@ -75,21 +105,6 @@ $(document).ready(function(){
         resetCheckout();
     });
 
-    $('#find-barcode').change(function(){
-        $.get('/find', $(this).serialize(), null, 'script');
-    });
-
-    $('#found-div').delegate('.return-game', 'click', function(){
-        var _me = $(this);
-        $.post('/return', { co_id: _me.data('checkout-id') }).success(function(response){
-            $.notify('Successfully returned ' + response.game + '!', 5000);
-            var cell = _me.closest('.col-xs-2');
-            cell.html(response.time);
-            cell.next().html("RETURNED");
-        }).error(function(){
-            $.notify(DEFAULT_ERROR, 'danger');
-        });
-    });
 });
 
 function gameBarcode(active){
@@ -107,6 +122,14 @@ function attendeeBarcode(active){
 
     if(active){
         barcode.val('').focus();
+    }
+}
+
+function restoreBarcodeFocus(){
+    if(lastBarcode && lastBarcode.is(':visible') && !lastBarcode.prop('disabled')){
+        lastBarcode.focus();
+    }else{
+        gameBarcode(true);
     }
 }
 
