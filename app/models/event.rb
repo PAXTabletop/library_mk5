@@ -134,6 +134,13 @@ class Event < ActiveRecord::Base
     self.update({ reset_setup: Time.now })
   end
 
+  def archive_attendees!
+    raise ArgumentError, 'Event has not ended' unless end_date < Date.current
+
+    update!(attendee_count: attendees.count)
+    attendees.delete_all
+  end
+
   def is_last_day?
     self.end_date == Date.today
   end
@@ -146,9 +153,9 @@ class Event < ActiveRecord::Base
         select
           e.id as event_id
           ,e.name as event
-          ,count(distinct c.attendee_id) as attendees
+          ,coalesce(e.attendee_count, count(distinct c.attendee_id)) as attendees
           ,count(distinct c.id) as checkouts
-          ,round(count(distinct c.id)::numeric / count(distinct c.attendee_id)::numeric, 5) as avg_co_per_attendee
+          ,round(count(distinct c.id)::numeric / coalesce(e.attendee_count, count(distinct c.attendee_id))::numeric, 5) as avg_co_per_attendee
         from events e
         inner join checkouts c on c.event_id = e.id
         #{where_clause}

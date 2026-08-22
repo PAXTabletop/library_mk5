@@ -16,6 +16,6 @@
         <%= checkout.game.full_name %>
     </td>
     <td class="col-xs-3">
-        <%= checkout.attendee.full_name %>
+        <%= checkout.attendee ? checkout.attendee.full_name : 'Archived attendee' %>
     </td>
 </tr>

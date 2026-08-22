@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20240910232019) do
+ActiveRecord::Schema.define(version: 20260822000000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20240910232019) do
     t.datetime "setup_add_new_games"
     t.datetime "setup_library_server"
     t.datetime "reset_setup"
+    t.integer  "attendee_count"
   end
 
   add_index "events", ["start_date"], name: "index_events_on_start_date", using: :btree
