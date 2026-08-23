@@ -91,8 +91,6 @@ Rails.application.routes.draw do
   get '/total/copies/csv', to: 'admin#total_copies_csv'
   get '/total/titles/csv', to: 'admin#total_titles_csv'
 
-  get '/admin/backup', to: 'admin#backup', as: :backup
-  post '/backup', to: 'backup#initiate'
 
   get '/game/status', to: 'games#status'
   post '/game/new', to: 'games#new'

@@ -136,9 +136,6 @@ class AdminController < ApplicationController
   def reports
   end
 
-  def backup
-  end
-
   def added_games
     @event = Event.find(params[:event]) if params[:event]
     @games = Game.added_during_show(@event)
