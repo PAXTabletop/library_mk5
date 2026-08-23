@@ -21,28 +21,6 @@ class Checkout < ActiveRecord::Base
   scope :closed, -> { where(closed: true) }
   scope :active, -> { where(closed: false) }
 
-  APPROVAL_MAP = {
-    # 'normalizedtitle' => 'name',
-    'roborally' => {
-      handle: 'drain'
-    },
-    '' => {
-      handle: 'warp',
-      message: ''
-    },
-    'smashup' => {
-      handle: 'el_draco',
-      message: 'Robot/Zombies are OP. -El Draco'
-    },
-    'smallworld' => {
-      handle: 'gundabad'
-    },
-    'theduke' => {
-      handle: 'frisky',
-      message: 'Frisky watches this checkout with awe and reverence!'
-    }
-  }
-
   HALF_DAY = 15.hours
 
   def self.longest_checkout_time_today(offset)
@@ -94,23 +72,6 @@ class Checkout < ActiveRecord::Base
 
   def self.longest
     self.where(event: Event.current, return_time: nil).order(:updated_at).limit(5)
-  end
-
-  def approval_tag
-    title_text = self.game.name
-    title_text = title_text.gsub(' ', '').downcase
-    if APPROVAL_MAP.key?(title_text) && Event.current.is_pax
-      approval = APPROVAL_MAP[title_text]
-      name = approval[:handle]
-      display_name = name.split('_').map(&:capitalize).join(' ')
-
-      message = approval[:message]
-      if message.nil? || message.size == 0
-        message = "#{display_name} approves of this checkout!"
-      end
-
-      "<img width=\"25px\" height=\"25px\" src=\"/assets/images/#{name}.jpg\"></img>&nbsp;#{message}"
-    end
   end
 
   def hours_played

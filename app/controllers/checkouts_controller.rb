@@ -15,7 +15,6 @@ class CheckoutsController < ApplicationController
 
       if checkout.errors.messages.blank?
         render json: {
-            approval: checkout.approval_tag,
             game: checkout.game.name
           }
       else

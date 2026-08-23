@@ -82,9 +82,6 @@ $(document).ready(function(){
                     $.notify('Successfully checked out ' + response.game + '!');
                     resetCheckout();
                 }
-                if(response.approval){
-                    $.notify(response.approval, 'success', 8000);
-                }
             }).error(function(){
                 $.notify(DEFAULT_ERROR, 'danger');
             }).complete(function(){
@@ -145,9 +142,6 @@ function saveAttendee(){
                 }else{
                     $.notify('Successfully checked out ' + response.game + '!');
                     resetCheckout();
-                }
-                if(response.approval){
-                    $.notify(response.approval, 'success', 8000);
                 }
             }).error(function(){
                 $.notify(DEFAULT_ERROR, 'danger');
