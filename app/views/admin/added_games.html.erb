@@ -1,16 +1,6 @@
 <% content_for :title, 'Added Games' %>
 
-<div class="row">
-    <div class="col-xs-12">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        <%= link_to 'Events', events_path %>
-        &gt;
-        <%= link_to "Library Stats for #{@event.name}", metrics_path(@event) %>
-        &gt;
-        New Games
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: 'New Games' %>
 
 <div class="row">
     <h3>

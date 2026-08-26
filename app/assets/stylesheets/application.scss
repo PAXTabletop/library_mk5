@@ -18,6 +18,40 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@media (max-width: 500px) {
+    #home-mode-buttons {
+        display: flex;
+        justify-content: center;
+        padding: 0 5px;
+        width: 100%;
+    }
+
+    #home-mode-buttons .home-scan-buttons {
+        display: flex;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    #home-mode-buttons .home-scan-buttons .btn {
+        flex: 1 1 0;
+        float: none;
+        font-size: 15px;
+        min-width: 0;
+        padding: 9px 8px;
+    }
+
+    #home-mode-buttons .home-scan-buttons img {
+        height: 40px;
+        width: 52px;
+    }
+
+    #home-mode-buttons .home-scan-buttons .home-mode-icon {
+        font-size: 36px;
+        height: 40px;
+        width: 52px;
+    }
+}
+
 #body-wrapper {
     max-width: 1050px;
     margin: 0 auto 3em;
@@ -51,8 +85,7 @@ footer.tt-footer {
     height: auto;
     justify-content: space-around;
     width: 100%;
-    position: fixed;
-    bottom: 0;
+    pointer-events: all;
     color: #fff;
     a {
         color: #fff;
@@ -233,24 +266,58 @@ path[data-event="unplugged"] {
     max-width: 35em;
 }
 
+#footer-dock {
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
 #suggest-row {
     align-items: center;
-    bottom: 3em;
     display: flex;
     justify-content: flex-end;
-    position: fixed;
-    right: 0;
+    padding: 0 5px 6px;
     width: 100%;
     pointer-events: none;
 
     a {
-        margin: 27px 5px;
+        margin: 0 5px;
         pointer-events: all;
     }
 
     input {
         margin-right: 3px;
         pointer-events: all;
+    }
+
+    @media (max-width: 500px) {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 8px 6px;
+
+        #suggest-form {
+            flex: 0 0 100%;
+            justify-content: center;
+            margin: 0 0 6px;
+            order: -1;
+        }
+
+        #suggest-title {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        a {
+            margin: 0 3px;
+        }
+
+        input {
+            margin-left: 3px;
+            margin-right: 3px;
+        }
     }
 }
 

@@ -1,5 +1,10 @@
 <% content_for :title, 'Admin' %>
 
+<ol class="breadcrumb">
+    <li><%= link_to 'Home', root_path %></li>
+    <li class="active">Admin</li>
+</ol>
+
 <div class="row text-center">
     <div class="col-xs-1"></div>
     <div class="col-xs-10">
@@ -16,6 +21,7 @@
             <%= render 'link', path: new_game_path, text: 'Add New Game', type: nil %>
             <%= render 'link', path: cull_path, text: 'Cull Existing Game', type: nil %>
             <%= render 'link', path: storage_path, text: 'Cold Storage Mgmt', type: nil %>
+            <%= render 'link', path: loaners_path, text: 'Loaners', type: nil %>
         </div>
 
         <div class="col-xs-12">

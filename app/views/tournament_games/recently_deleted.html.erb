@@ -1,14 +1,6 @@
 <% content_for :title, 'Removed Games' %>
 
-<div class="row">
-    <div class="col-xs-6">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        <%= link_to 'Tournament Games', tournament_path %>
-        &gt;
-        Recently Deleted Tournament Games
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: 'Recently Deleted Tournament Games' %>
 
 <div class="row"><br/></div>
 

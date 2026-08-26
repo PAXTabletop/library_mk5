@@ -1,16 +1,6 @@
 <% content_for :title, 'Suggestions' %>
 
-<div class="row">
-    <div class="col-xs-12">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        <%= link_to 'Events', events_path %>
-        &gt;
-        <%= link_to 'Metrics', metrics_path(@event) %>
-        &gt;
-        Suggestions for <%= @event.name %>
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: "Suggestions for #{@event.name}" %>
 
 <div class="row">
     <h3>

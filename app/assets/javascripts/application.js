@@ -32,7 +32,7 @@ $(document).ready(function(){
 
     $('#suggest-btn').click(function(){
         $(this).hide();
-        $('#suggest-form').show();
+        $('#suggest-form').css('display', 'flex');
         $('#suggest-title').focus();
     });
 
@@ -58,7 +58,6 @@ function pollStatus(){
     $.get('/status').success(function(response){
         $('#total-games').text(response.total_games);
         $('#open-checkouts').text(response.open_checkouts);
-        $('#longest-open-checkout').text(response.longest_open_checkout);
 
         setTimeout(pollStatus, 15000);
     });

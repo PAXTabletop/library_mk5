@@ -23,34 +23,6 @@ class Checkout < ActiveRecord::Base
 
   HALF_DAY = 15.hours
 
-  def self.longest_checkout_time_today(offset)
-    start_time = (Time.now - HALF_DAY).strftime('%Y-%m-%d %H:%M:%S')
-    minimum_time = self.where(closed: false)
-                     .where(
-                       "(check_out_time - '#{Checkout.connection.quote(offset)} hours'::interval) > ?",
-                       start_time
-                     ).minimum(:check_out_time).to_i
-
-    difference = minimum_time == 0 ? 0 : Time.now - minimum_time
-
-    Time.at(difference).utc.strftime('%H:%M:%S')
-  end
-
-  def self.longest_checkout_game_today(offset)
-    start_time = (Time.now - HALF_DAY).strftime('%Y-%m-%d %H:%M:%S')
-    min_checkout = self.where(closed: false).where(
-                       "(check_out_time - '#{Checkout.connection.quote(offset)} hours'::interval) > ?",
-                       start_time
-                     ).order(:check_out_time).first
-    if min_checkout
-      min_game = Game.find(min_checkout.game_id)
-      min_game_checkout = {
-        min_checkout: min_checkout,
-        min_game: min_game.name
-      }
-    end
-  end
-
   def fill_in_fields
     self.event = Event.current
     self.check_out_time = Time.now.utc
@@ -64,14 +36,6 @@ class Checkout < ActiveRecord::Base
     self.return_time = Time.now.utc
     self.closed = true
     self.save
-  end
-
-  def self.recent
-    self.where(event: Event.current, return_time: nil).order(updated_at: :desc).limit(5)
-  end
-
-  def self.longest
-    self.where(event: Event.current, return_time: nil).order(:updated_at).limit(5)
   end
 
   def hours_played

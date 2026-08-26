@@ -1,13 +1,6 @@
 <% content_for :title, 'New Game' %>
 
-<div class="row">
-    <div class="col-xs-8">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        New Game
-    </div>
-    <div class="col-xs-2"></div>
-</div>
+<%= render 'admin/breadcrumb', page: 'New Game' %>
 
 <div class="row">
     <div class="col-xs-12 text-center">

@@ -1,0 +1,82 @@
+<% content_for :title, 'Home' %>
+
+<div class="row" id="home-page" data-checkout-mode="checkout">
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-12">
+        <div id="home-mode-buttons" role="group" aria-label="Home mode">
+            <div class="btn-group home-scan-buttons">
+                <button type="button" id="checkout-mode-btn" class="btn btn-primary btn-lg">
+                    <%= image_tag 'cards_take.svg', alt: '' %>
+                    <span>Checkout</span>
+                </button>
+                <button type="button" id="return-mode-btn" class="btn btn-default btn-lg">
+                    <%= image_tag 'cards_return.svg', alt: '' %>
+                    <span>Return</span>
+                </button>
+                <button type="button" id="search-mode-btn" class="btn btn-default btn-lg">
+                    <span class="glyphicon glyphicon-search home-mode-icon" aria-hidden="true"></span>
+                    <span>Search</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-hidden col-sm-3"></div>
+</div>
+
+<form id="g-search">
+    <div class="row" id="home-scanner">
+        <div class="col-xs-hidden col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8 glyphicon-custom-left">
+            <input type="text" id="g-barcode" class="form-control" name="searchText" placeholder="Scan GAME's barcode to checkout." autofocus autocomplete="off"/>
+            <span id="home-input-icon" class="glyphicon glyphicon-tower form-control-feedback"></span>
+            <h3 id="g-name" style="display:none;"></h3>
+        </div>
+        <div class="col-xs-hidden col-sm-2"></div>
+    </div>
+
+    <div id="home-search-filters" style="display:none;">
+        <div class="row">
+            <div class="col-xs-hidden col-sm-2"></div>
+            <div class="col-xs-12 col-sm-8">
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="checkbox" id="g-search-valuable" name="valuable"> Valuable?
+                    </label>
+                </div>
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="checkbox" id="g-search-checked" name="checked"> Checked out?
+                    </label>
+                </div>
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="checkbox" id="g-search-loaned" name="loaned"> Loaned out?
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-2"></div>
+        </div>
+    </div>
+</form>
+
+<div class="row" id="a-row" style="display:none;">
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-10 col-sm-7 glyphicon-custom-left">
+        <input type="text" id="a-barcode" class="form-control" placeholder="Scan ATTENDEE's badge to checkout game." autocomplete="off" />
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    </div>
+    <div class="col-xs-2 col-sm-1">
+        <input id="checkouts-x-btn" type="button" class="btn btn-default" value="X" />
+    </div>
+    <div class="col-xs-hidden col-sm-2"></div>
+</div>
+
+<div id="checkout-activity" class="row" style="display:none;">
+    <div class="col-xs-hidden col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8">
+        <ul id="checkout-activity-list" class="list-group checkout-activity-list"></ul>
+    </div>
+    <div class="col-xs-hidden col-sm-2"></div>
+</div>
+
+<div id="games-table" style="display:none;"></div>

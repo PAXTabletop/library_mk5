@@ -95,20 +95,16 @@ class Game < ActiveRecord::Base
     where("status = ? and games.updated_at::date between (?::date - '2 day'::interval) and (?::date + '2 day'::interval)", Game::STATUS[:culled], event.start_date, event.end_date).includes(:title, title: :publisher).order('titles.title asc')
   end
 
-  def self.search(title, publisher, valuable, checked, loaned, group)
-    title = title.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if title
-    publisher = publisher.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if publisher
+  def self.search(searchText, valuable, checked, loaned, group)
+    search = searchText.gsub(/tag:([^\s]{1,})[\s]?/i, '').strip if searchText
 
-    if Utilities.BARCODE_FORMAT.match(title) && !/[a-z]+/.match(title) && /\d+/.match(title)
-      result = where(barcode: title.upcase)
-    else
-      result = self
-      if title.present?
-        result = result.where(title: Title.search(title))
-      end
-      if publisher.present?
-        result = result.joins(:title).where("titles.publisher_id IN (?)", Publisher.search(publisher).select(:id))
-      end
+    result = self
+    if search.present?
+      search_term = "%#{search}%"
+      result = result.joins(:title, title: :publisher).where(
+        "titles.title ILIKE :search OR publishers.name ILIKE :search OR games.barcode ILIKE :search",
+        search: search_term
+      )
     end
 
     result = result.includes(title: :publisher)

@@ -1,0 +1,89 @@
+#home-mode-buttons {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.home-scan-buttons {
+    display: inline-flex;
+}
+
+.home-scan-buttons .btn {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 150px;
+    padding: 12px 24px;
+}
+
+.home-scan-buttons img {
+    display: block;
+    height: 48px;
+    margin-bottom: 6px;
+    width: 64px;
+}
+
+.home-scan-buttons .home-mode-icon {
+    align-items: center;
+    display: flex;
+    font-size: 42px;
+    height: 48px;
+    justify-content: center;
+    margin-bottom: 6px;
+    width: 64px;
+}
+
+.home-scan-buttons .btn-default img {
+    filter: brightness(0) opacity(.65);
+}
+
+.home-scan-buttons .btn-default .home-mode-icon {
+    color: #595959;
+}
+
+.checkout-activity-list {
+    list-style: none;
+    max-width: 100%;
+    padding-left: 0;
+}
+
+.checkout-activity-list .list-group-item {
+    background-color: #eaf2ff;
+    border: 1px solid #cfe2ff;
+    border-left: 4px solid #337ab7;
+    color: #1f2d3d;
+    font-size: 15px;
+    margin-bottom: 6px;
+    padding: 10px 12px;
+}
+
+.checkout-activity-list .list-group-item.success {
+    background-color: #eaf7ea;
+    border-color: #c3e6cb;
+    border-left-color: #3c763d;
+}
+
+.checkout-activity-list .list-group-item.warning {
+    background-color: #fff7e6;
+    border-color: #f8e7b5;
+    border-left-color: #8a6d3b;
+}
+
+.checkout-activity-list .list-group-item.danger {
+    background-color: #fdeaea;
+    border-color: #f5c6c7;
+    border-left-color: #a94442;
+}
+
+#home-scanner {
+    margin-bottom: 20px;
+}
+
+#a-row {
+    margin-bottom: 20px;
+}
+
+#home-search-filters .col-xs-12 {
+    text-align: center;
+}
+

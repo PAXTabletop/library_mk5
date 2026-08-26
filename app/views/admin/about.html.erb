@@ -1,14 +1,6 @@
 <% content_for :title, 'Dev Team' %>
 
-<div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        About the Development Team
-    </div>
-    <div class="col-xs-1"></div>
-</div>
+<%= render 'admin/breadcrumb', page: 'About the Development Team' %>
 
 <div class="row"><br/></div>
 

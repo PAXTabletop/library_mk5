@@ -2,14 +2,9 @@
 
 <form id="g-search">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 glyphicon-custom-left">
-            <input type="text" id="g-search-title" class="form-control" name="title" placeholder="Title or Barcode"
-                value="<%= @searchTitle %>" autofocus />
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-        </div>
-        <div class="col-xs-12 col-sm-4 glyphicon-custom-left">
-            <input type="text" id="g-search-publisher" class="form-control" name="publisher" placeholder="Publisher"
-                value="<%= @searchPublisher %>" />
+            <div class="col-xs-12 col-sm-10 glyphicon-custom-left">
+                <input type="text" id="g-search-field" class="form-control" name="searchText" placeholder="Title, Publisher or Barcode"
+                value="<%= @searchText %>" autofocus />
             <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
         <div class="col-xs-2 hidden-lg hidden-md hidden-sm"></div>

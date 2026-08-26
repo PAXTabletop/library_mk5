@@ -4,5 +4,48 @@
 
 .search-btn {
   display: inline-block;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.games-table .game-mobile-only {
+  display: none;
+}
+
+.game-available-icon {
+  color: #3c763d;
+}
+
+.game-unavailable-icon {
+  color: #a94442;
+}
+
+.game-info-list dt {
+  float: left;
+  width: 7em;
+}
+
+.game-info-list dd {
+  margin-left: 8em;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 767px) {
+  .games-table .game-desktop-only {
+    display: none;
+  }
+
+  .games-table .game-mobile-only {
+    display: table-cell;
+  }
+
+  .games-table th,
+  .games-table td {
+    vertical-align: middle !important;
+  }
+
+  .games-table .game-availability {
+    font-size: 18px;
+  }
 }

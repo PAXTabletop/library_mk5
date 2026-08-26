@@ -1,12 +1,6 @@
 <% content_for :title, 'Setup' %>
 
-<div class="row">
-    <div class="col-xs-8">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        Setup
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: 'Setup' %>
 
 <div class="row">
     <div class="col-xs-12" style="text-align: center;">

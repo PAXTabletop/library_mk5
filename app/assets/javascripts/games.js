@@ -8,7 +8,11 @@ $(document).ready(function(){
         }
     });
 
-    $('#g-search').on('submit', function(){
+    $('#g-search').on('submit', function(event){
+        event.preventDefault();
+        if($('#home-page').length > 0 && $('#home-page').attr('data-checkout-mode') != 'search'){
+            return;
+        }
         $.get('/games', $(this).serialize(), null, 'script');
     });
 
@@ -18,6 +22,10 @@ $(document).ready(function(){
     	} else {
     		$('#g-search-group').hide();
     	}
+    });
+
+    $('#g-search input[type="checkbox"], #g-search select').on('change', function(){
+        $('#g-search').submit();
     });
 
 });

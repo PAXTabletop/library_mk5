@@ -1,14 +1,6 @@
 <% content_for :title, 'Metrics' %>
 
-<div class="row">
-    <div class="col-xs-12">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        <%= link_to 'Events', events_path %>
-        &gt;
-        Library Stats for <%= @event.name %>
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: "Library Stats for #{@event.name}" %>
 
 <div class="row">
     <h3>

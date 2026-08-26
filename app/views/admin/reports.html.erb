@@ -1,12 +1,6 @@
 <% content_for :title, 'Reports' %>
 
-<div class="row">
-    <div class="col-xs-8">
-        <%= link_to 'Admin', admin_path %>
-        &gt;
-        Database Reports
-    </div>
-</div>
+<%= render 'admin/breadcrumb', page: 'Database Reports' %>
 
 <div class="row"><br/></div>
 

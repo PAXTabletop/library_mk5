@@ -1,74 +1,115 @@
-<div class="row"><br/></div>
-<div class="row">
-    <div class="col-xs-6">
-        <% unless @searchTitle.blank? and @searchPublisher.blank? %>
-            <div>
-                <span>
-                    <%= (@searchTitle.blank? ? "Games" : @searchTitle) +
-                        (@searchPublisher.blank? ? "" : " by " + @searchPublisher) %>
-                </span>
-                <a href="<%= games_path %>" class="glyphicon glyphicon-remove"></a>
-            </div>
-        <% end %>
-    </div>
-    <div class="col-xs-6"></div>
-</div>
-
-<div class="row"><br/></div>
-
-<table class="table table-striped">
+<table class="table table-striped games-table">
     <tr>
-        <th class="col-xs-1">
+        <th class="col-xs-1 game-desktop-only">
             Barcode
         </th>
-        <th class="col-xs-3">
+        <th class="col-xs-6 col-sm-3">
             Title
         </th>
-        <th class="col-xs-2">
+        <th class="col-xs-2 game-desktop-only">
             Publisher
         </th>
-        <th class="col-xs-2" style="text-align: center;">
+        <th class="col-xs-2 game-desktop-only" style="text-align: center;">
             Valuable <span class="glyphicon glyphicon-question-sign" data-h-tip="This field is a marker of whether a game is<br/>hard to replace,
             expensive, or likely used in tournaments."></span>
         </th>
-        <th class="col-xs-2" style="text-align: center;">
+        <th class="col-xs-2 game-desktop-only" style="text-align: center;">
             Checked Out @
         </th>
-        <th class="col-xs-2" style="text-align: center;">
+        <th class="col-xs-2 game-desktop-only" style="text-align: center;">
             Loaned To
+        </th>
+        <th class="col-xs-3 game-mobile-only" style="text-align: center;">
+            Available
+        </th>
+        <th class="col-xs-3 game-mobile-only" style="text-align: center;">
+            More Info
         </th>
     </tr>
     <% @games.each do |game| %>
+        <% checked_out_at = game.checked_out? ? ct(game.open_checkout.check_out_time).strftime('%m/%d %I:%M%P') : '' %>
+        <% loaned_to = game.loaned? ? game.current_loan.group.name : '' %>
+        <% available = !game.checked_out? && !game.loaned? %>
         <tr>
-            <td class="col-xs-1">
+            <td class="col-xs-1 game-desktop-only">
                 <%= game.barcode %>
             </td>
-            <td class="col-xs-3">
+            <td class="col-xs-6 col-sm-3">
                 <%= game.name %>
             </td>
-            <td class="col-xs-2">
+            <td class="col-xs-2 game-desktop-only">
                 <%= game.by %>
             </td>
-            <td class="col-xs-2" style="text-align: center;">
+            <td class="col-xs-2 game-desktop-only" style="text-align: center;">
                 <% if game.valuable? %>
                     <span>Yes</span>
                 <% end %>
             </td>
-            <td class="col-xs-2" style="text-align: center;">
+            <td class="col-xs-2 game-desktop-only" style="text-align: center;">
                 <% if game.checked_out? %>
-                    <%= ct(game.open_checkout.check_out_time).strftime('%m/%d %I:%M%P') %>
+                    <%= checked_out_at %>
                 <% end %>
             </td>
-            <td class="col-xs-2" style="text-align: center;">
+            <td class="col-xs-2 game-desktop-only" style="text-align: center;">
                 <% if game.loaned? %>
                     <a href="<%= group_path(game.current_loan.group) %>">
-                        <%= game.current_loan.group.name %>
+                        <%= loaned_to %>
                     </a>
                 <% end %>
+            </td>
+            <td class="col-xs-3 game-mobile-only game-availability" style="text-align: center;">
+                <% if available %>
+                    <span class="glyphicon glyphicon-ok game-available-icon" aria-label="Available"></span>
+                <% else %>
+                    <span class="glyphicon glyphicon-remove game-unavailable-icon" aria-label="Unavailable"></span>
+                <% end %>
+            </td>
+            <td class="col-xs-3 game-mobile-only" style="text-align: center;">
+                <button type="button" class="btn btn-default btn-sm game-info-btn"
+                    data-toggle="modal"
+                    data-target="#game-info-modal"
+                    data-barcode="<%= h game.barcode %>"
+                    data-title="<%= h game.name %>"
+                    data-publisher="<%= h game.by %>"
+                    data-valuable="<%= game.valuable? ? 'Yes' : 'No' %>"
+                    data-checked-out="<%= checked_out_at.present? ? h(checked_out_at) : 'No' %>"
+                    data-loaned-out="<%= loaned_to.present? ? h(loaned_to) : 'No' %>">
+                    Info
+                </button>
             </td>
         </tr>
     <% end %>
 </table>
+
+<div class="modal fade" id="game-info-modal" tabindex="-1" role="dialog" aria-labelledby="game-info-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="game-info-title">Game Info</h4>
+            </div>
+            <div class="modal-body">
+                <dl class="game-info-list">
+                    <dt>Barcode</dt>
+                    <dd id="game-info-barcode"></dd>
+                    <dt>Title</dt>
+                    <dd id="game-info-name"></dd>
+                    <dt>Publisher</dt>
+                    <dd id="game-info-publisher"></dd>
+                    <dt>Valuable</dt>
+                    <dd id="game-info-valuable"></dd>
+                    <dt>Checked Out</dt>
+                    <dd id="game-info-checked-out"></dd>
+                    <dt>Loaned Out</dt>
+                    <dd id="game-info-loaned-out"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%= will_paginate @games %>
 
@@ -91,14 +132,24 @@
             $.ajax({
                 url: '/suggest',
                 method: 'post',
-                data: {title: "<%= (@searchTitle.blank? ? "Games" : @searchTitle) +
-                        (@searchPublisher.blank? ? "" : " by " + @searchPublisher) %>"},
+                data: {title: "<%= (@searchText.blank? ? "Games" : @searchText) %>"},
                 success: function (response) {
                     if (response.title) {
                         $.notify('Thanks for suggesting "' + response.title + '"!');
                     }
                 }
             })
+        });
+
+        $('.game-info-btn').click(function() {
+            var game = $(this).data();
+            $('#game-info-title').text(game.title);
+            $('#game-info-barcode').text(game.barcode);
+            $('#game-info-name').text(game.title);
+            $('#game-info-publisher').text(game.publisher);
+            $('#game-info-valuable').text(game.valuable);
+            $('#game-info-checked-out').text(game.checkedOut);
+            $('#game-info-loaned-out').text(game.loanedOut);
         });
     });
 </script>

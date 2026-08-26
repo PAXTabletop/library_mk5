@@ -1,14 +1,5 @@
 class CheckoutsController < ApplicationController
 
-  def checkout_page
-    if Event.current.setup_complete?
-      render 'checkout'
-    else
-      @current_event = Event.current
-      render '/events/_setup'
-    end
-  end
-
   def new
     if params[:a_barcode]
       checkout = Checkout.new_checkout(params.permit(:a_barcode, :g_barcode))
@@ -40,15 +31,6 @@ class CheckoutsController < ApplicationController
     end
   end
 
-  def return_page
-    if Event.current.setup_complete?
-      render 'return'
-    else
-      @current_event = Event.current
-      render '/events/_setup'
-    end
-  end
-
   def return
     if params[:barcode]
       game = Game.get(params[:barcode], [Game::STATUS[:active], Game::STATUS[:stored]])
@@ -77,14 +59,6 @@ class CheckoutsController < ApplicationController
 
       render json: { time: ct(checkout.return_time).strftime('%m/%d %I:%M%P'), game: checkout.game.name }
     end
-  end
-
-  def recent
-    @recent = Checkout.recent
-  end
-
-  def longest
-    @longest = Checkout.longest
   end
 
   def csv

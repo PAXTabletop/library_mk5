@@ -1,10 +1,12 @@
-<header data-event="<%= @current_event.short_name %>" style="height: 90px;">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-        <div id="tabletop-tag" class="pax-tag"></div>
-        <div id="logo">
-            <%= @current_event.short_name.upcase %>
+<%= link_to root_path do %>
+    <header data-event="<%= @current_event.short_name %>" style="height: 90px;">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-10">
+            <div id="tabletop-tag" class="pax-tag"></div>
+            <div id="logo">
+                <%= @current_event.short_name.upcase %>
+            </div>
         </div>
-    </div>
-    <div class="col-xs-1"></div>
-</header>
+        <div class="col-xs-1"></div>
+    </header>
+<% end %>
