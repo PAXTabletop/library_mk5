@@ -1,0 +1,146 @@
+<% content_for :title, 'Tutorial' %>
+
+<div id="tutorial-page" data-tutorial-mode="checkout">
+    <div class="row">
+        <div class="col-xs-hidden col-sm-2"></div>
+        <div class="col-xs-12">
+            <div class="tutorial-mode-buttons" role="group" aria-label="Home mode">
+                <button type="button" id="tutorial-prev" class="btn btn-default btn-sm tutorial-nav-button">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    Prev
+                </button>
+                <div class="btn-group tutorial-scan-buttons">
+                    <button type="button" id="tutorial-checkout-mode" class="btn btn-primary btn-lg">
+                        <%= image_tag 'cards_take.svg', alt: '' %>
+                        <span>Checkout</span>
+                    </button>
+                    <button type="button" id="tutorial-return-mode" class="btn btn-default btn-lg">
+                        <%= image_tag 'cards_return.svg', alt: '' %>
+                        <span>Return</span>
+                    </button>
+                    <button type="button" id="tutorial-search-mode" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-search tutorial-mode-icon" aria-hidden="true"></span>
+                        <span>Search</span>
+                    </button>
+                </div>
+                <div class="tutorial-nav-slot">
+                    <button type="button" id="tutorial-next" class="btn btn-default btn-sm tutorial-nav-button">
+                        Next
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                    <a href="<%= root_path %>" id="tutorial-home" class="btn btn-default btn-sm tutorial-nav-button">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-hidden col-sm-3"></div>
+    </div>
+
+    <div class="tutorial-view tutorial-checkout-view">
+        <div class="row tutorial-row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">(1) Scan GAME's barcode</div>
+                <div class="tutorial-input glyphicon-custom-left">
+                    <input type="text" class="form-control tutorial-game-barcode" value="EXAMPLE_BARCODE" disabled />
+                    <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+
+        <div class="row tutorial-row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">(2) Scan ATTENDEE's badge</div>
+                <div class="row tutorial-attendee-controls">
+                    <div class="col-xs-10">
+                        <div class="tutorial-input glyphicon-custom-left">
+                            <input type="text" class="form-control tutorial-attendee-barcode" value="EXAMPLE_BADGE" disabled />
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="button" class="btn btn-default" value="X" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">(3) Verify successful check out</div>
+                <div class="tutorial-result">Successfully checked out Example Game!</div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+    </div>
+
+    <div class="tutorial-view tutorial-return-view">
+        <div class="row tutorial-row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">(1) Scan GAME's barcode</div>
+                <div class="tutorial-input glyphicon-custom-left">
+                    <input type="text" class="form-control tutorial-game-barcode" value="EXAMPLE_BARCODE" placeholder="Scan GAME's barcode to return." disabled />
+                    <span class="glyphicon glyphicon-tower form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">(2) Verify successful return</div>
+                <div class="tutorial-result">Successfully returned Example Game!</div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+    </div>
+
+    <div class="tutorial-view tutorial-search-view">
+        <div class="row tutorial-row">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">Type search and press enter</div>
+                <div class="tutorial-input glyphicon-custom-left">
+                    <input type="text" class="form-control" placeholder="Title, Publisher or Barcode" disabled />
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+
+        <div class="row tutorial-search-filters">
+            <div class="col-xs-hidden col-sm-3"></div>
+            <div class="col-xs-12 col-sm-6 tutorial-control">
+                <div class="tutorial-step">Optional search filters</div>
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default disabled">
+                        <input type="checkbox" disabled /> Valuable?
+                    </label>
+                </div>
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default disabled">
+                        <input type="checkbox" disabled /> Checked out?
+                    </label>
+                </div>
+                <div class="btn-group-toggle search-btn" data-toggle="buttons">
+                    <label class="btn btn-default disabled">
+                        <input type="checkbox" disabled /> Loaned out?
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-hidden col-sm-3"></div>
+        </div>
+
+        <div class="tutorial-games-list">
+            <%= render 'games/table' %>
+        </div>
+    </div>
+</div>

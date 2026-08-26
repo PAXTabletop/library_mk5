@@ -1,0 +1,216 @@
+#tutorial-page {
+    .tutorial-mode-buttons {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .tutorial-nav-button {
+        flex: 0 0 auto;
+        font-weight: 700;
+        margin: 0 10px;
+    }
+
+    .tutorial-nav-slot {
+        flex: 0 0 70px;
+        margin: 0 10px;
+    }
+
+    .tutorial-nav-slot .tutorial-nav-button {
+        margin: 0;
+    }
+
+    #tutorial-home {
+        display: none;
+    }
+
+    #tutorial-prev .glyphicon {
+        margin-right: 3px;
+    }
+
+    #tutorial-next .glyphicon {
+        margin-left: 3px;
+    }
+
+    &[data-tutorial-mode="checkout"] #tutorial-prev {
+        visibility: hidden;
+    }
+
+    &[data-tutorial-mode="search"] {
+        #tutorial-next {
+            display: none;
+        }
+
+        #tutorial-home {
+            display: inline-block;
+        }
+    }
+
+    .tutorial-return-view,
+    .tutorial-search-view {
+        display: none;
+    }
+
+    .tutorial-scan-buttons {
+        display: inline-flex;
+    }
+
+    .tutorial-scan-buttons .btn {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 150px;
+        padding: 12px 24px;
+    }
+
+    .tutorial-scan-buttons img {
+        display: block;
+        height: 48px;
+        margin-bottom: 6px;
+        width: 64px;
+    }
+
+    .tutorial-mode-icon {
+        align-items: center;
+        color: #595959;
+        display: flex;
+        font-size: 42px;
+        height: 48px;
+        justify-content: center;
+        margin-bottom: 6px;
+        width: 64px;
+    }
+
+    .tutorial-scan-buttons .btn-primary .tutorial-mode-icon {
+        color: #fff;
+    }
+
+    .tutorial-scan-buttons .btn-default img {
+        filter: brightness(0) opacity(.65);
+    }
+
+    .tutorial-row {
+        margin-bottom: 20px;
+    }
+
+    .tutorial-control {
+        position: relative;
+    }
+
+    .tutorial-input {
+        position: relative;
+    }
+
+    .tutorial-input.glyphicon-custom-left .glyphicon {
+        left: 0;
+    }
+
+    .tutorial-attendee-controls .col-xs-10 {
+        padding-right: 0;
+    }
+
+    .tutorial-search-filters {
+        text-align: center;
+    }
+
+    .tutorial-search-filters .btn.disabled {
+        pointer-events: none;
+    }
+
+    .tutorial-games-list .pagination {
+        display: none;
+    }
+
+    .tutorial-step {
+        align-items: center;
+        display: flex;
+        font-size: 18px;
+        font-weight: 600;
+        justify-content: flex-end;
+        line-height: 20px;
+        min-height: 34px;
+        position: absolute;
+        right: 100%;
+        text-align: right;
+        top: 0;
+        width: 300px;
+    }
+
+    .tutorial-result {
+        background-color: #eaf7ea;
+        border: 1px solid #c3e6cb;
+        border-left: 4px solid #3c763d;
+        color: #1f2d3d;
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 767px) {
+    #tutorial-page {
+        .tutorial-step {
+            display: block;
+            margin-bottom: 8px;
+            min-height: 0;
+            position: static;
+            text-align: left;
+            width: auto;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    #tutorial-page {
+        .tutorial-mode-buttons {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            width: 100%;
+        }
+
+        .tutorial-scan-buttons {
+            display: flex;
+            flex: 1 1 auto;
+            max-width: 100%;
+            min-width: 0;
+            width: auto;
+        }
+
+        .tutorial-nav-button {
+            font-size: 11px;
+            margin: 0 3px;
+            padding: 5px 4px;
+        }
+
+        .tutorial-nav-slot {
+            flex-basis: 54px;
+            margin: 0 3px;
+        }
+
+        .tutorial-nav-slot .tutorial-nav-button {
+            margin: 0;
+        }
+
+        .tutorial-scan-buttons .btn {
+            flex: 1 1 0;
+            float: none;
+            font-size: 15px;
+            min-width: 0;
+            padding: 9px 8px;
+        }
+
+        .tutorial-scan-buttons img {
+            height: 40px;
+            width: 52px;
+        }
+
+        .tutorial-mode-icon {
+            font-size: 36px;
+            height: 40px;
+            width: 52px;
+        }
+    }
+}

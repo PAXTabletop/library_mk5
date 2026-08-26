@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
 
   root 'home#home_page'
+  get '/tutorial', to: 'home#tutorial', as: :tutorial
 
   # tabs
   get '/games', to: 'games#index', as: :games

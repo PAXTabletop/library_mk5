@@ -33,9 +33,8 @@ class Checkout < ActiveRecord::Base
   end
 
   def return
-    self.return_time = Time.now.utc
-    self.closed = true
-    self.save
+    now = Time.now.utc
+    update_columns(return_time: now, closed: true, updated_at: now)
   end
 
   def hours_played
