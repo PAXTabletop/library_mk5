@@ -1,4 +1,4 @@
-class CreateTournamentGames < ActiveRecord::Migration
+class CreateTournamentGames < ActiveRecord::Migration[4.2]
   def change
     create_table :tournament_games do |t|
       t.text :title

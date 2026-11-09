@@ -1,4 +1,4 @@
-class CreateEventTables < ActiveRecord::Migration
+class CreateEventTables < ActiveRecord::Migration[4.2]
   def change
     create_table :setups do |t|
       t.integer :game_id

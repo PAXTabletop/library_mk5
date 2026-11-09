@@ -1,4 +1,4 @@
-class AddSetupFieldsToEvents < ActiveRecord::Migration
+class AddSetupFieldsToEvents < ActiveRecord::Migration[4.2]
   def change
     add_column :events, :setup_computer_tz, :timestamp, default: nil
     add_column :events, :setup_scan_games, :timestamp, default: nil

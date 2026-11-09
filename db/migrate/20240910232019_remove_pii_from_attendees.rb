@@ -1,4 +1,4 @@
-class RemovePiiFromAttendees < ActiveRecord::Migration
+class RemovePiiFromAttendees < ActiveRecord::Migration[4.2]
   def change
     remove_column :attendees, :first_name, :string
     remove_column :attendees, :last_name, :string
