@@ -9,7 +9,7 @@ default: &default
 
 development:
   <<: *default
-  database: library_mk4_dev
+  database: library_mk5_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
