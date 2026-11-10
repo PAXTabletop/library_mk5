@@ -6,18 +6,19 @@ default: &default
   timeout: 5000
   host: localhost
   username: postgres
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
 
 development:
   <<: *default
-  database: library_mk4_dev
+  database: <%= ENV.fetch("LIBRARY_DEV_DB", "library_mk5_dev") %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: library_mk4_test
+  database: <%= ENV.fetch("LIBRARY_TEST_DB", "library_mk4_test") %>
 
 production:
   <<: *default
-  database: library_mk4_prod
+  database: <%= ENV.fetch("LIBRARY_PROD_DB", "library_mk4_prod") %>

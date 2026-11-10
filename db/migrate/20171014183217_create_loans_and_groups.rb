@@ -1,4 +1,4 @@
-class CreateLoansAndGroups < ActiveRecord::Migration
+class CreateLoansAndGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :loans do |t|
       t.integer :game_id

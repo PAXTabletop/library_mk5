@@ -70,9 +70,9 @@ $(document).ready(function(){
         var returnMode = $('#return-page').length > 0 || $('#home-page').attr('data-checkout-mode') == 'return';
         var statusRequest = checkoutMode ? $.post('/checkout/new', { g_barcode: barcode_val }) : $.post('/return', { barcode: barcode_val });
 
-        statusRequest.success(function(response){
-            if(response.errors){
-                $.each(response.errors, function(k, v){
+        statusRequest.done(function(response){
+            if(response.fails){
+                $.each(response.fails, function(k, v){
                     addCheckoutActivity(v, 'danger');
                 });
                 gameBarcode(true);
@@ -94,7 +94,7 @@ $(document).ready(function(){
                 $('#a-row').show();
                 $('#a-barcode').focus();
             }
-        }).error(function(){
+        }).fail(function(){
             addCheckoutActivity(DEFAULT_ERROR, 'danger');
             gameBarcode(true);
         });
@@ -111,22 +111,22 @@ $(document).ready(function(){
         }
         attendeeBarcode(false);
 
-        $.get('attendee/status', { barcode: barcode_val }).success(function(response){
-            $.post('/checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: barcode_val }).success(function(response){
-                if(response.errors){
-                    $.each(response.errors, function(k, v){
+        $.get('attendee/status', { barcode: barcode_val }).done(function(response){
+            $.post('/checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: barcode_val }).done(function(response){
+                if(response.fails){
+                    $.each(response.fails, function(k, v){
                         addCheckoutActivity(v, 'danger');
                     });
                 }else{
                     addCheckoutActivity('Successfully checked out ' + response.game + '!', 'success');
                     resetCheckout();
                 }
-            }).error(function(){
+            }).fail(function(){
                 addCheckoutActivity(DEFAULT_ERROR, 'danger');
-            }).complete(function(){
+            }).always(function(){
                 attendeeBarcode(true);
             });
-        }).error(function(response){
+        }).fail(function(response){
             if(response.status == 400){
                 saveAttendee();
             }else{
@@ -170,27 +170,27 @@ function restoreBarcodeFocus(){
 
 // Submit new attendee information. On success, hide form and display new info.
 function saveAttendee(){
-    $.post('attendee/new', { barcode: $('#a-barcode').val() }).success(function(response){
+    $.post('attendee/new', { barcode: $('#a-barcode').val() }).done(function(response){
         if(response.attendee){
-            $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: $('#a-barcode').val() }).success(function(response){
-                if(response.errors){
-                    $.each(response.errors, function(k, v){
+            $.post('checkout/new', { g_barcode: $('#g-barcode').val(), a_barcode: $('#a-barcode').val() }).done(function(response){
+                if(response.fails){
+                    $.each(response.fails, function(k, v){
                         addCheckoutActivity(v, 'danger');
                     });
                 }else{
                     addCheckoutActivity('Successfully checked out ' + response.game + '!', 'success');
                     resetCheckout();
                 }
-            }).error(function(){
+            }).fail(function(){
                 addCheckoutActivity(DEFAULT_ERROR, 'danger');
-            }).complete(function(){
+            }).always(function(){
                 attendeeBarcode(true);
             });
         } else {
             addCheckoutActivity(DEFAULT_ERROR, 'danger');
             attendeeBarcode(true);
         }
-    }).error(function(){
+    }).fail(function(){
         addCheckoutActivity(DEFAULT_ERROR, 'danger');
         attendeeBarcode(true);
     });

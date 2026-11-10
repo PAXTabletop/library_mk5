@@ -1,0 +1,11 @@
+LIBRARY MK5 — LAN DEPLOYMENT TEST CANDIDATE
+
+1. Read deployment/README_DEPLOYMENT.md before using existing data.
+2. Double-click 01_Install_Dependencies.bat
+3. Double-click 02_Verify_Test_Environment.bat (disposable test DB only)
+4. Restore your existing database backup to a DIFFERENT database.
+5. Double-click 03_Start_Library.bat and select the restored copy.
+6. Test from the host and a second LAN computer.
+7. Double-click 04_Backup_Database.bat for backups.
+
+THIS IS NOT YET APPROVED FOR LIVE EVENT USE.

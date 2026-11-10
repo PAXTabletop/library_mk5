@@ -1,11 +1,11 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  name: "Test Event 2025"
+  location: "Test Location"
+  start_date: 2025-11-08
+  end_date: 2025-11-09
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  name: "Test Event 2026"
+  location: "Test Location"
+  start_date: 2026-11-07
+  end_date: 2026-11-08

@@ -32,10 +32,10 @@ $(document).ready(function(){
         }
         adminBarcode(false);
 
-        $.get('/game/status', { barcode: barcode_val }).success(function(response){
+        $.get('/game/status', { barcode: barcode_val }).done(function(response){
             $.get('/game/display', { barcode: barcode_val, message: response.message }, null, 'script');
             adminBarcode(true);
-        }).error(function(response){
+        }).fail(function(response){
             if(response.status == 400){
                 $('#g-form').modal();
             }else{
@@ -54,7 +54,7 @@ $(document).ready(function(){
                 value: barcode_val
             });
             $('#g-form').find('input').parent().removeClass('has-error').find('.glyphicon').hide();
-            $.post('/game/new', data).success(function(response){
+            $.post('/game/new', data).done(function(response){
                 if(response.game){
                     $('#g-form').modal('hide');
                     $.get('/game/display', { barcode: barcode_val, message: response.game.name + ' successfully added!' }, null, 'script');
@@ -66,14 +66,14 @@ $(document).ready(function(){
                     publisherDataSource.initialize(true);
                 }else{
                     // got errors
-                    $.each(response.errors, function(k, v){
+                    $.each(response.fails, function(k, v){
                         var input = $('[name="' + k + '"]');
 
                         input.parent().addClass('has-error');
                         input.siblings('.glyphicon').show();
                     });
                 }
-            }).error(function(){
+            }).fail(function(){
 
             });
         },

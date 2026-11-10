@@ -1,4 +1,4 @@
-class CreateBaseTables < ActiveRecord::Migration
+class CreateBaseTables < ActiveRecord::Migration[4.2]
   def change
     create_table :attendees do |t|
       t.string :barcode, limit: 20

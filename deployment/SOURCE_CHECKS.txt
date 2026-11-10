@@ -1,0 +1,4 @@
+Ruby source files syntax-checked with Ruby 3.3.8: 83
+Syntax failures: 0
+
+NOTE: This is NOT a Rails 8 runtime test.

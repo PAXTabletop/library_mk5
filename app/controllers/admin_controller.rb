@@ -104,7 +104,7 @@ class AdminController < ApplicationController
 
   def setup_tag
     Event.current.update_setup_tag(params[:tag])
-    render json: :nothing
+    head :ok
   end
 
   def tournament_games

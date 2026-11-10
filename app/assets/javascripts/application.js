@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-sprockets
 //= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
@@ -55,7 +54,7 @@ $(document).ready(function(){
 });
 
 function pollStatus(){
-    $.get('/status').success(function(response){
+    $.get('/status').done(function(response){
         $('#total-games').text(response.total_games);
         $('#open-checkouts').text(response.open_checkouts);
 

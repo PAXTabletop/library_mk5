@@ -1,4 +1,4 @@
-class AddIndexToTables < ActiveRecord::Migration
+class AddIndexToTables < ActiveRecord::Migration[4.2]
   def change
   	# Attendees
     add_index :attendees, :barcode

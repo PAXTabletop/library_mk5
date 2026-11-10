@@ -1,4 +1,4 @@
-class ChangeCulledToStatus < ActiveRecord::Migration
+class ChangeCulledToStatus < ActiveRecord::Migration[4.2]
   def change
     reversible do |change|
       change.up{
