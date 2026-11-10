@@ -1,0 +1,23 @@
+LIBRARY MK5 - CHANGES TO APPLY TO ORIGINAL GIT BRANCH
+
+Source: comparison of the original uploaded library_mk5.zip against Library_Mk5_LAN_Deployment_Test.zip.
+
+Target: your original GitHub Desktop repository, branch ruby_railsupgrade2026.
+
+1. In GitHub Desktop, verify you are on ruby_railsupgrade2026 and have No local changes.
+2. Close any running Rails server for this project.
+3. Make a backup copy of the project folder (do not overwrite the .git folder).
+4. Open this ZIP. Copy its listed files and folders into the ROOT of the existing library_mk5 project folder, preserving relative paths. Allow replacement of the five existing files (.gitignore, config/database.yml, config/environments/production.rb, config/secrets.yml, test/models/event_test.rb).
+5. DO NOT copy a new project directory on top of .git or replace the working database.
+6. In GitHub Desktop, inspect the changes. You should see 5 modified files and 14 new files (plus this README if you choose to keep it).
+7. Run existing tests in the original project: bundle exec rails test
+8. Verify production assets and LAN startup on a disposable restored database before relying on the scripts.
+9. Commit in GitHub Desktop with summary: Add Windows LAN deployment tools and configuration
+
+NOTES:
+- The database.yml defaults retain the original database names. Environment variables LIBRARY_DEV_DB, LIBRARY_TEST_DB, LIBRARY_PROD_DB can override them.
+- No database migrations or schema changes are included in this transfer.
+- config/secrets.yml now expects an environment-supplied secret. Verify any launchers supply it before production startup.
+- config.force_ssl is enabled only when FORCE_SSL=true, appropriate for HTTP-only trusted LAN deployment.
+- This is a source-code transfer, not a claim that the deployment scripts have been verified on your Windows host.
+- Avoid committing credentials, logs, database backups or secrets.
